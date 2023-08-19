@@ -568,6 +568,7 @@ __WEAK void DMA1_Channel1_IRQHandler(void) {
 
 struct USART_name husart1; //Объявляем структуру по USART.(см. ch32v203x_RVMSIS.h)
 struct USART_name husart2; //Объявляем структуру по USART.(см. ch32v203x_RVMSIS.h)
+struct USART_name husart3; //Объявляем структуру по USART.(см. ch32v203x_RVMSIS.h)
 
 /**
  ******************************************************************************
@@ -639,6 +640,7 @@ void RVMSIS_USART1_Init(void) {
     USART1->GPR = 0;
 
     NVIC_EnableIRQ(USART1_IRQn); //Включим прерывания по USART1
+    NVIC_SetPriority(USART1_IRQn, 0);
 }
 
 /**
@@ -711,6 +713,80 @@ void RVMSIS_USART2_Init(void) {
     USART2->GPR = 0;
 
     NVIC_EnableIRQ(USART2_IRQn); //Включим прерывания по USART2
+    NVIC_SetPriority(USART2_IRQn, 0);
+}
+
+/**
+ ******************************************************************************
+ *  @breif Настройка USART3. Параметры 115200 8 N 1
+ ******************************************************************************
+ */
+
+void RVMSIS_USART3_Init(void) {
+
+    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_GPIOB); //Включение тактирование порта B
+    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_AFIO); //Включение альтернативных функций
+
+    //Для конфигурирование ножек UART для Full Duplex нужно использовать Alternate function push-pull(См. п.п. 9.1.11 GPIO configurations for device peripherals стр.111 Reference Manual)
+    //Tx - Alternative Function output Push-pull(Maximum output speed 50 MHz)
+    MODIFY_REG(GPIOB->CFGHR, GPIO_CFGHR_CNF10, 0b10 << GPIO_CFGHR_CNF10_Pos);
+    MODIFY_REG(GPIOB->CFGHR, GPIO_CFGHR_MODE10, 0b11 << GPIO_CFGHR_MODE10_Pos);
+    //Rx - Input floating
+    MODIFY_REG(GPIOB->CFGHR, GPIO_CFGHR_CNF11, 0b1 << GPIO_CFGHR_CNF11_Pos);
+    MODIFY_REG(GPIOB->CFGHR, GPIO_CFGHR_MODE11, 0b00 << GPIO_CFGHR_MODE11_Pos);
+
+    //Запустим тактирование USART3
+    SET_BIT(RCC->APB1PCENR, RCC_APB1Periph_USART3);
+
+    /*Расчет Fractional baud rate generation
+     есть формула:
+     Tx/Rx baud = fCK/(16*USARTDIV)
+     где fCK - Input clock to the peripheral (PCLK1 for USART2, 3, 4, 5 or PCLK2 for USART1)
+     в нашем случае fCK = 36000000
+     допустим нам нужна скорость 9600
+     9600 = 36000000/(16*USARTDIV)
+     Тогда USARTDIV = 36000000/9600*16 = 234.375
+     DIV_Mantissa в данном случае будет 234, что есть 0xEA
+     DIV_Fraction будет, как 0.375*16 = 6, что есть 0x6
+     Тогда весь регистр USART->BRR для скорости 9600 будет выглядеть, как 0xEA6.
+     для примера еще разберем скорость 115200: (Неточность по скорости будет 0.15%. Не рекомендуется)
+     115200 = 36000000/(16*USARTDIV)
+     Тогда USARTDIV = 36000000/115200*16 = 19.53125
+     DIV_Mantissa в данном случае будет 19, что есть 0x13
+     DIV_Fraction будет, как 0.53125*16 = 8, что есть 0x8
+     Тогда весь регистр USART->BRR для скорости 115200 будет выглядеть, как 0x138.
+     */
+
+    MODIFY_REG(USART3->BRR, USART_BRR_DIV_Mantissa, 0x13 << USART_BRR_DIV_Mantissa_Pos);
+    MODIFY_REG(USART3->BRR, USART_BRR_DIV_Fraction, 0x8 << USART_BRR_DIV_Fraction_Pos);
+
+    //18.10.4 USART Control Register1 (USARTx_CTLR1) (x=1/2/3/4/5/6/7/8)
+    SET_BIT(USART3->CTLR1, USART_CTLR1_UE);//USART enable
+    CLEAR_BIT(USART3->CTLR1, USART_CTLR1_M); //Word lenght 1 Start bit, 8 Data bits, n Stop bit
+    CLEAR_BIT(USART3->CTLR1, USART_CTLR1_WAKE); //Wake up idle Line
+    CLEAR_BIT(USART3->CTLR1, USART_CTLR1_PCE); //Partity control disabled
+    //настройка прерываний
+    CLEAR_BIT(USART3->CTLR1, USART_CTLR1_PEIE);//partity error interrupt disabled
+    CLEAR_BIT(USART3->CTLR1, USART_CTLR1_TXEIE); //TXE interrupt is inhibited
+    CLEAR_BIT(USART3->CTLR1, USART_CTLR1_TCIE); //Transmission complete interrupt disabled
+    SET_BIT(USART3->CTLR1, USART_CTLR1_RXNEIE); //Прерывание по приему данных включено
+    SET_BIT(USART3->CTLR1, USART_CTLR1_IDLEIE); //Прерывание по флагу IDLE включено
+    SET_BIT(USART3->CTLR1, USART_CTLR1_TE); //Transmitter is enabled
+    SET_BIT(USART3->CTLR1, USART_CTLR1_RE); //Receiver is enabled and begins searching for a start bit
+    CLEAR_BIT(USART3->CTLR1, USART_CTLR1_RWU);
+    CLEAR_BIT(USART3->CTLR1, USART_CTLR1_SBK);
+
+    //Остальную настройку, не касающуюся стандартного USART, мы пока трогать не будем, но на всякий случай обнулим
+    //18.10.5 USART Control Register2 (USARTx_CTLR2) (x=1/2/3/4/5/6/7/8)
+    USART3->CTLR2 = 0;
+    CLEAR_BIT(USART3->CTLR2, USART_CTLR2_STOP); //1 стоп бит.
+    //18.10.6 USART Control Register 3 (USARTx_CTLR3) (x=1/2/3/4/5/6/7/8)
+    USART3->CTLR3 = 0;
+    //18.10.7 USART Guard Time and Prescaler Register (USARTx_GPR) (x=1/2/3/4/5/6/7/8)
+    USART3->GPR = 0;
+
+    NVIC_EnableIRQ(USART3_IRQn); //Включим прерывания по USART3
+    NVIC_SetPriority(USART3_IRQn, 4);
 }
 
 /**
@@ -722,8 +798,12 @@ void RVMSIS_USART2_Init(void) {
 __WEAK void USART1_IRQHandler(void) {
     if (READ_BIT(USART1->STATR, USART_STATR_RXNE)) {
         //Если пришли данные по USART
-        husart1.rx_buffer[husart1.rx_counter] = USART1->DATAR; //Считаем данные в соответствующую ячейку в rx_buffer
-        husart1.rx_counter++; //Увеличим счетчик принятых байт на 1
+        if (husart1.rx_counter < USART_MAX_LEN_RX_BUFFER) { //Если байт прилетело меньше, чем размер буфера
+            husart1.rx_buffer[husart1.rx_counter] = USART1->DATAR; //Считаем данные в соответствующую ячейку в rx_buffer
+            husart1.rx_counter++; //Увеличим счетчик принятых байт на 1
+        } else {
+            husart1.rx_counter = 0; //Если больше - сбросим счетчик.
+        }
     }
     if (READ_BIT(USART1->STATR, USART_STATR_IDLE)) {
         //Если прилетел флаг IDLE
@@ -735,21 +815,49 @@ __WEAK void USART1_IRQHandler(void) {
 
 /**
  ******************************************************************************
- *  @breif Прерывание по USART1
+ *  @breif Прерывание по USART2
  ******************************************************************************
  */
 
 __WEAK void USART2_IRQHandler(void) {
     if (READ_BIT(USART2->STATR, USART_STATR_RXNE)) {
         //Если пришли данные по USART
-        husart2.rx_buffer[husart2.rx_counter] = USART2->DATAR; //Считаем данные в соответствующую ячейку в rx_buffer
-        husart2.rx_counter++; //Увеличим счетчик принятых байт на 1
+        if (husart2.rx_counter < USART_MAX_LEN_RX_BUFFER) { //Если байт прилетело меньше, чем размер буфера
+            husart2.rx_buffer[husart2.rx_counter] = USART2->DATAR; //Считаем данные в соответствующую ячейку в rx_buffer
+            husart2.rx_counter++; //Увеличим счетчик принятых байт на 1
+        } else {
+            husart2.rx_counter = 0; //Если больше - сбросим счетчик.
+        }
     }
     if (READ_BIT(USART2->STATR, USART_STATR_IDLE)) {
         //Если прилетел флаг IDLE
         USART2->DATAR; //Сбросим флаг IDLE
         husart2.rx_len = husart2.rx_counter; //Узнаем, сколько байт получили
         husart2.rx_counter = 0; //сбросим счетчик приходящих данных
+    }
+}
+
+/**
+ ******************************************************************************
+ *  @breif Прерывание по USART3
+ ******************************************************************************
+ */
+
+__WEAK void USART3_IRQHandler(void) {
+    if (READ_BIT(USART3->STATR, USART_STATR_RXNE)) {
+        //Если пришли данные по USART
+        if (husart3.rx_counter < USART_MAX_LEN_RX_BUFFER) { //Если байт прилетело меньше, чем размер буфера
+            husart3.rx_buffer[husart3.rx_counter] = USART3->DATAR; //Считаем данные в соответствующую ячейку в rx_buffer
+            husart3.rx_counter++; //Увеличим счетчик принятых байт на 1
+        } else {
+            husart3.rx_counter = 0; //Если больше - сбросим счетчик.
+        }
+    }
+    if (READ_BIT(USART3->STATR, USART_STATR_IDLE)) {
+        //Если прилетел флаг IDLE
+        USART3->DATAR; //Сбросим флаг IDLE
+        husart3.rx_len = husart3.rx_counter; //Узнаем, сколько байт получили
+        husart3.rx_counter = 0; //сбросим счетчик приходящих данных
     }
 }
 
@@ -1603,7 +1711,8 @@ bool RVMSIS_SPI_Data_Receive_8BIT(SPI_TypeDef* SPI, uint8_t* data, uint16_t Size
     if (!READ_BIT(SPI->STATR, SPI_STATR_BSY)) {
         //Проверим занятость шины
 
-        if (READ_BIT(SPI->STATR, SPI_STATR_OVR) || READ_BIT(SPI->STATR, SPI_STATR_RXNE)) {
+        if (READ_BIT(SPI->STATR,
+                SPI_STATR_OVR) || READ_BIT(SPI->STATR, SPI_STATR_RXNE)) {
             //Т.к. мы можем принимать данные в любой момент, например после режима "transmit-only mode"
             //то следует проверить статусы OVR и RXNE. Если хотя бы один из них установлен,
             //то сбросим их при помощи чтения регистра DR.
@@ -1650,7 +1759,8 @@ bool RVMSIS_SPI_Data_Receive_16BIT(SPI_TypeDef* SPI, uint16_t* data, uint16_t Si
     if (!READ_BIT(SPI->STATR, SPI_STATR_BSY)) {
         //Проверим занятость шины
 
-        if (READ_BIT(SPI->STATR, SPI_STATR_OVR) || READ_BIT(SPI->STATR, SPI_STATR_RXNE)) {
+        if (READ_BIT(SPI->STATR,
+                SPI_STATR_OVR) || READ_BIT(SPI->STATR, SPI_STATR_RXNE)) {
             //Т.к. мы можем принимать данные в любой момент, например после режима "transmit-only mode"
             //то следует проверить статусы OVR и RXNE. Если хотя бы один из них установлен,
             //то сбросим их при помощи чтения регистра DR.
