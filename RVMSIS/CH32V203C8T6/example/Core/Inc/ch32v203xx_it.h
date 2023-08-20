@@ -11,17 +11,15 @@
 #include "main.h"
 #include "ch32v20x_RVMSIS.h"
 
-#define __WEAK                                __attribute__((weak))
-#define __INTERRUPTF                          __attribute__ ((interrupt("WCH-Interrupt-fast")))
-#define __INTERRUPTM                          __attribute__((interrupt("machine")))
 
-__INTERRUPTM void SysTick_Handler(void);
+__attribute__((interrupt("machine"))) void SysTick_Handler(void);
 __attribute__((interrupt("machine"))) void TIM3_IRQHandler(void);
 __attribute__((interrupt("machine"))) void EXTI0_IRQHandler(void);
 __attribute__((interrupt("machine"))) void ADC1_2_IRQHandler(void);
 __attribute__((interrupt("machine"))) void DMA1_Channel1_IRQHandler(void);
 __attribute__((interrupt("machine"))) void USART1_IRQHandler(void);
 __attribute__((interrupt("machine"))) void USART2_IRQHandler(void);
+__attribute__((interrupt("machine"))) void USART3_IRQHandler(void);
 
 
 #endif /* INC_CH32V203XX_IT_H_ */

@@ -9,7 +9,7 @@ int main(void) {
     RVMSIS_SysTick_Timer_init(); //Настройка системного таймера
     RVMSIS_USART3_Init(); //См. файл syscalls.c USART3 115200 8N1 выбран для отладки через printf. Ножка PB10
 #ifdef DEBUG_USE
-    printf("Hello world! %d\r\n");
+    printf("Hello world!\r\n");
 #endif
 
     while(1) {

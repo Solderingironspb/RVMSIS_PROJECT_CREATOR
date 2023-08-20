@@ -64,6 +64,8 @@ void RVMSIS_TIM3_PWM_CHANNEL1_init(void);
 void RVMSIS_TIM3_PWM_CHANNEL2_init(void);
 void RVMSIS_ADC_DMA_init(void);
 void RVMSIS_USART1_Init(void);
+void RVMSIS_USART2_Init(void);
+void RVMSIS_USART3_Init(void);
 bool RVMSIS_USART_Transmit(USART_TypeDef* USART, uint8_t* data, uint16_t Size, uint32_t Timeout_ms);
 void RVMSIS_I2C_Reset(void);
 void RVMSIS_I2C1_Init(void);

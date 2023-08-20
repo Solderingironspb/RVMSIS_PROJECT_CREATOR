@@ -7,17 +7,20 @@
 C_SRCS += \
 ../Core/Src/ch32v203xx_it.c \
 ../Core/Src/ch32v20x_RVMSIS.c \
-../Core/Src/main.c 
+../Core/Src/main.c \
+../Core/Src/syscalls.c 
 
 OBJS += \
 ./Core/Src/ch32v203xx_it.o \
 ./Core/Src/ch32v20x_RVMSIS.o \
-./Core/Src/main.o 
+./Core/Src/main.o \
+./Core/Src/syscalls.o 
 
 C_DEPS += \
 ./Core/Src/ch32v203xx_it.d \
 ./Core/Src/ch32v20x_RVMSIS.d \
-./Core/Src/main.d 
+./Core/Src/main.d \
+./Core/Src/syscalls.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

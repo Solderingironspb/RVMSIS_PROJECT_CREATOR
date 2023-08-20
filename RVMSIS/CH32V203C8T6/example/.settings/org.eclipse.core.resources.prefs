@@ -1,6 +1,2 @@
 eclipse.preferences.version=1
-encoding//Core/Inc/ch32v20x_RVMSIS.h=GBK
-encoding//Core/Inc/main.h=GBK
-encoding//Core/Src/ch32v203xx_it.c=GBK
-encoding//Core/Src/main.c=UTF-8
 encoding//Core/Startup/startup_ch32v20x_D6.S=GBK
