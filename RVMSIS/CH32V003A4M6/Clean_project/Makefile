@@ -156,7 +156,7 @@ LDFLAGS = $(MCU) -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -nostartfiles -Xlinker --gc-sec
 # Disassemble the ELF file
 ##########################################################################
 
-CROSS_CREATE_LISTING = --all-headers --demangle --disassemble
+CROSS_CREATE_LISTING = --all-headers --demangle --disassemble -M xw
 
 disassemble: $(BUILD_DIR)/$(TARGET).elf
 	$(GNU_TOOLCHAIN)/$(PREFIX)objdump $(CROSS_CREATE_LISTING) $< > $(BUILD_DIR)/$(TARGET).disasm
