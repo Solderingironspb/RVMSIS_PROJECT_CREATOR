@@ -5,72 +5,72 @@
  *      Author: Solderingiron
  */
 #include "ch32v00x_RVMSIS.h"
-/*============================== ßØß°ß≥ß¥ß≤ß∞ß´ß¨ß° RCC =======================================*/
+/*============================== –ù–ê–°–¢–†–û–ô–ö–ê RCC =======================================*/
 /**
  ***************************************************************************************
- *  @breif ßØß—ß„ß‰ß‚ß‡ß€ß‹ß— ßÆß¨ CH32V003J4M6 ßﬂß— ßÈß—ß„ß‰ß‡ß‰ßÂ 48MHz ß‡ß‰ ß”ßﬂßÂß‰ß‚ß÷ßﬂßﬂß÷ß‘ß‡ RC ß‘ß÷ßﬂß÷ß‚ß—ß‰ß‡ß‚ß—
- *  ß£ßﬂßÂß‰ß‚ß÷ßﬂßﬂß⁄ß€ RC ß‘ß÷ßﬂß÷ß‚ß—ß‰ß‡ß‚ß— ßﬂß— 24 MHz
- *  ADC ßﬂß—ß„ß‰ß‚ß‡ß÷ßﬂ ßﬂß— 24MHz
+ *  @breif –ù–∞—Å—Ç—Ä–æ–π–∫–∞ –ú–ö CH32V003J4M6 –Ω–∞ —á–∞—Å—Ç–æ—Ç—É 48MHz –æ—Ç –≤–Ω—É—Ç—Ä–µ–Ω–Ω–µ–≥–æ RC –≥–µ–Ω–µ—Ä–∞—Ç–æ—Ä–∞
+ *  –í–Ω—É—Ç—Ä–µ–Ω–Ω–∏–π RC –≥–µ–Ω–µ—Ä–∞—Ç–æ—Ä–∞ –Ω–∞ 24 MHz
+ *  ADC –Ω–∞—Å—Ç—Ä–æ–µ–Ω –Ω–∞ 24MHz
  *  SYSCLK 48MHz
  *
  ***************************************************************************************
  */
 void RVMSIS_RCC_SystemClock_48MHz(void) {
-    SET_BIT(RCC->CTLR, RCC_HSION); //ß©ß—ß·ßÂß„ß‰ß⁄ßﬁ ß”ßﬂßÂß‰ß‚ß÷ßﬂßﬂß⁄ß€ RC ß‘ß÷ßﬂß÷ß‚ß—ß‰ß‡ß‚ ßﬂß— 24 ßÆß§ßË
+    SET_BIT(RCC->CTLR, RCC_HSION);  // –ó–∞–ø—É—Å—Ç–∏–º –≤–Ω—É—Ç—Ä–µ–Ω–Ω–∏–π RC –≥–µ–Ω–µ—Ä–∞—Ç–æ—Ä –Ω–∞ 24 –ú–ì—Ü
     while (READ_BIT(RCC->CTLR, RCC_HSIRDY) == 0);
-    //ß•ß‡ßÿß’ß÷ßﬁß„ßÒ ß·ß‡ß’ßﬂßÒß‰ß⁄ßÒ ßÊß›ß—ß‘ß— ß‡ ß‘ß‡ß‰ß‡ß”ßﬂß‡ß„ß‰ß⁄
-    CLEAR_BIT(RCC->CTLR, RCC_HSEBYP);//ß±ß‚ß‡ß„ß‰ß‡ ß„ß“ß‚ß‡ß„ß⁄ßﬁ ßÔß‰ß‡ß‰ ß“ß⁄ß‰ ß” 0(ß∑ß‡ß‰ßÒ ß⁄ßŸßﬂß—ßÈß—ß›ßÓßﬂß‡ ß‡ßﬂ ß⁄ ß‰ß—ß‹ ß’ß‡ß›ßÿß÷ßﬂ ß“ßÌß‰ßÓ ß” 0).
-    CLEAR_BIT(RCC->CTLR, RCC_HSEON); //ß£ßﬂß÷ßÍßﬂß⁄ß€ ß‹ß”ß—ß‚ßËß÷ß”ßÌß€ ß‚ß÷ßŸß‡ßﬂß—ß‰ß‡ß‚ ß‡ß‰ß„ßÂß‰ß„ß‰ß”ßÂß÷ß‰.
-    CLEAR_BIT(RCC->CTLR, RCC_CSSON); //ß£ßÌß‹ß›ßßÈß⁄ßﬁ CSS
-    MODIFY_REG(RCC->CFGR0, RCC_SW, 0b00 << RCC_SW_Pos); //ß£ßÌß“ß÷ß‚ß÷ßﬁ HSI ß” ß‹ß—ßÈß÷ß„ß‰ß”ß÷ System Clock(PLL ß›ßÂßÈßÍß÷ ß·ß‡ß‹ß— ßﬂß÷ ß”ßÌß“ß⁄ß‚ß—ß‰ßÓ, ß‡ßﬂ ßÂ ßﬂß—ß„ ß‡ß‰ß‹ß›ßßÈß÷ßﬂ)
-    CLEAR_BIT(RCC->CTLR, RCC_PLLON); //ß£ßÌß‹ß›ßßÈß⁄ßﬁ PLL
-    MODIFY_REG(RCC->CFGR0, RCC_HPRE, 0b00 << RCC_HPRE_Pos); //ßﬂß÷ ß’ß÷ß›ß⁄ßﬁ ßﬂß⁄ßÈß÷ß‘ß‡, ßÈß—ß„ß‰ß‡ß‰ß— ß’ß‡ ß”ß‹ß›ßßÈß÷ßﬂß⁄ßÒ ß’ß‡ß›ßÿßﬂß— ß“ßÌß‰ßÓ 24ßﬁß‘ßË
-    //ß∂ß›ß÷ßÍ ß’ß‡ß›ßÿß÷ßﬂ ß„ß—ßﬁ ß’ß÷ß›ß⁄ß‰ßÓß„ßÒ ßﬂß— 3
+    // –î–æ–∂–¥–µ–º—Å—è –ø–æ–¥–Ω—è—Ç–∏—è —Ñ–ª–∞–≥–∞ –æ –≥–æ—Ç–æ–≤–Ω–æ—Å—Ç–∏
+    CLEAR_BIT(RCC->CTLR, RCC_HSEBYP);                        // –ü—Ä–æ—Å—Ç–æ —Å–±—Ä–æ—Å–∏–º —ç—Ç–æ—Ç –±–∏—Ç –≤ 0(–•–æ—Ç—è –∏–∑–Ω–∞—á–∞–ª—å–Ω–æ –æ–Ω –∏ —Ç–∞–∫ –¥–æ–ª–∂–µ–Ω –±—ã—Ç—å –≤ 0).
+    CLEAR_BIT(RCC->CTLR, RCC_HSEON);                         // –í–Ω–µ—à–Ω–∏–π –∫–≤–∞—Ä—Ü–µ–≤—ã–π —Ä–µ–∑–æ–Ω–∞—Ç–æ—Ä –æ—Ç—Å—É—Ç—Å—Ç–≤—É–µ—Ç.
+    CLEAR_BIT(RCC->CTLR, RCC_CSSON);                         // –í—ã–∫–ª—é—á–∏–º CSS
+    MODIFY_REG(RCC->CFGR0, RCC_SW, 0b00 << RCC_SW_Pos);      // –í—ã–±–µ—Ä–µ–º HSI –≤ –∫–∞—á–µ—Å—Ç–≤–µ System Clock(PLL –ª—É—á—à–µ –ø–æ–∫–∞ –Ω–µ –≤—ã–±–∏—Ä–∞—Ç—å, –æ–Ω —É –Ω–∞—Å –æ—Ç–∫–ª—é—á–µ–Ω)
+    CLEAR_BIT(RCC->CTLR, RCC_PLLON);                         // –í—ã–∫–ª—é—á–∏–º PLL
+    MODIFY_REG(RCC->CFGR0, RCC_HPRE, 0b00 << RCC_HPRE_Pos);  // –Ω–µ –¥–µ–ª–∏–º –Ω–∏—á–µ–≥–æ, —á–∞—Å—Ç–æ—Ç–∞ –¥–æ –≤–∫–ª—é—á–µ–Ω–∏—è –¥–æ–ª–∂–Ω–∞ –±—ã—Ç—å 24–º–≥—Ü
+    // –§–ª–µ—à –¥–æ–ª–∂–µ–Ω —Å–∞–º –¥–µ–ª–∏—Ç—å—Å—è –Ω–∞ 3
     /* Flash 0 wait state */
-    FLASH->ACTLR &= (uint32_t) ((uint32_t) ~FLASH_ACTLR_LATENCY);
-    FLASH->ACTLR |= (uint32_t) FLASH_ACTLR_LATENCY_1;
-    MODIFY_REG(RCC->CFGR0, RCC_ADCPRE, 0b00100 << RCC_ADCPRE_Pos);    //ADC Prescaler /6, ßÈß‰ß‡ß“ ß“ßÌß›ß‡ 12MHz, ß‰.ß‹. ßﬁß—ß‹ß„ß⁄ßﬁß—ß›ßÓßﬂß—ßÒ ßÈß—ß„ß‰ß‡ß‰ß— ß‰ßÂß‰ 14 MHz
-    CLEAR_BIT(RCC->CFGR0, RCC_PLLSRC); //HSI ßﬂß÷ ß’ß÷ß›ß⁄ß‰ß„ßÒ ß⁄ ßﬂß÷ ß‡ß‰ß·ß‚ß—ß”ß›ßÒß÷ß‰ß„ßÒ ß” PLL.
-    SET_BIT(RCC->CTLR, RCC_PLLON); //ß©ß—ß·ßÂß„ß‰ß⁄ßﬁ PLL
-    //ß¥.ß‹. PLL ßÂßÿß÷ ßŸß—ß·ßÂßÎß÷ßﬂ, ß”ßÌß“ß÷ß‚ß÷ßﬁ ß÷ß‘ß‡ ß” ß‹ß—ßÈß÷ß„ß‰ß”ß÷ System Clock:
-    MODIFY_REG(RCC->CFGR0, RCC_SW, 0b10 << RCC_SW_Pos);//ß£ßÌß“ß÷ß‚ß÷ßﬁ PLL ß” ß‹ß—ßÈß÷ß„ß‰ß”ß÷ System Clock
+    FLASH->ACTLR &= (uint32_t)((uint32_t)~FLASH_ACTLR_LATENCY);
+    FLASH->ACTLR |= (uint32_t)FLASH_ACTLR_LATENCY_1;
+    MODIFY_REG(RCC->CFGR0, RCC_ADCPRE, 0b00100 << RCC_ADCPRE_Pos);  // ADC Prescaler /6, —á—Ç–æ–± –±—ã–ª–æ 12MHz, —Ç.–∫. –º–∞–∫—Å–∏–º–∞–ª—å–Ω–∞—è —á–∞—Å—Ç–æ—Ç–∞ —Ç—É—Ç 14 MHz
+    CLEAR_BIT(RCC->CFGR0, RCC_PLLSRC);                              // HSI –Ω–µ –¥–µ–ª–∏—Ç—Å—è –∏ –Ω–µ –æ—Ç–ø—Ä–∞–≤–ª—è–µ—Ç—Å—è –≤ PLL.
+    SET_BIT(RCC->CTLR, RCC_PLLON);                                  // –ó–∞–ø—É—Å—Ç–∏–º PLL
+    // –¢.–∫. PLL —É–∂–µ –∑–∞–ø—É—â–µ–Ω, –≤—ã–±–µ—Ä–µ–º –µ–≥–æ –≤ –∫–∞—á–µ—Å—Ç–≤–µ System Clock:
+    MODIFY_REG(RCC->CFGR0, RCC_SW, 0b10 << RCC_SW_Pos);  // –í—ã–±–µ—Ä–µ–º PLL –≤ –∫–∞—á–µ—Å—Ç–≤–µ System Clock
     while (READ_BIT(RCC->CTLR, RCC_PLLRDY) == 0);
-    //ß•ß‡ßÿß⁄ß’ß÷ßﬁß„ßÒ ß·ß‡ß’ßﬂßÒß‰ß⁄ßÒ ßÊß›ß—ß‘ß— ß”ß‹ß›ßßÈß÷ßﬂß⁄ßÒ PLL
+    // –î–æ–∂–∏–¥–µ–º—Å—è –ø–æ–¥–Ω—è—Ç–∏—è —Ñ–ª–∞–≥–∞ –≤–∫–ª—é—á–µ–Ω–∏—è PLL
     MODIFY_REG(RCC->CFGR0, RCC_SWS, 0b10 << RCC_SWS_Pos);
 }
 
-/*========================= ßØß°ß≥ß¥ß≤ß∞ß´ß¨ß° ß≥ß™ß≥ß¥ß¶ßÆßØß∞ß§ß∞ ß¥ß°ß´ßÆß¶ß≤ß° ==============================*/
+/*========================= –ù–ê–°–¢–†–û–ô–ö–ê –°–ò–°–¢–ï–ú–ù–û–ì–û –¢–ê–ô–ú–ï–†–ê ==============================*/
 
 /**
  ***************************************************************************************
- *  @breif ßØß—ß„ß‰ß‚ß‡ß€ß‹ß— SysTick ßﬂß— ßﬁß⁄ß‹ß‚ß‡ß„ß÷ß‹ßÂßﬂß’ßÌ
- *  ßØß— ßÔß‰ß‡ßﬁ ß‰ß—ß€ßﬁß÷ß‚ß÷ ßﬁßÌ ßﬂß—ß„ß‰ß‚ß‡ß⁄ßﬁ Delay ß⁄ ß—ßﬂß—ß›ß‡ß‘ HAL_GetTick()
+ *  @breif –ù–∞—Å—Ç—Ä–æ–π–∫–∞ SysTick –Ω–∞ –º–∏–∫—Ä–æ—Å–µ–∫—É–Ω–¥—ã
+ *  –ù–∞ —ç—Ç–æ–º —Ç–∞–π–º–µ—Ä–µ –º—ã –Ω–∞—Å—Ç—Ä–æ–∏–º Delay –∏ –∞–Ω–∞–ª–æ–≥ HAL_GetTick()
  ***************************************************************************************
  */
 void RVMSIS_SysTick_Timer_init(void) {
-    SysTick->CTLR &= ~(1 << 0); //ß£ßÌß‹ß›ßßÈß⁄ßﬁ ß‰ß—ß€ßﬁß÷ß‚ ß’ß›ßÒ ß·ß‚ß‡ß”ß÷ß’ß÷ßﬂß⁄ßÒ ßﬂß—ß„ß‰ß‚ß‡ß÷ß‹.
-    SysTick->CTLR |= (1 << 1); //1: Enable counter interrupts.
-    SysTick->CTLR &= ~(1 << 2); //0: HCLK for time base.48/8 = 6
-    SysTick->CTLR |= (1 << 3); //1: Count up to the comparison value and start counting from 0 again
-    SysTick->CMP = 5999; ////ßØß—ß„ß‰ß‚ß‡ß⁄ßﬁ ß·ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ß÷ ßﬂß— ßÈß—ß„ß‰ß‡ß‰ßÂ ß” 1 ß‹ß§ßË(ß‰.ß÷. ß„ß‚ß—ß“ß‡ß‰ß‹ß— ß“ßÂß’ß÷ß‰ ß‹ß—ßÿß’ßÂß ßﬁß„) 18000000 / 18000 = 1000ß§ßË
+    SysTick->CTLR &= ~(1 << 0);  // –í—ã–∫–ª—é—á–∏–º —Ç–∞–π–º–µ—Ä –¥–ª—è –ø—Ä–æ–≤–µ–¥–µ–Ω–∏—è –Ω–∞—Å—Ç—Ä–æ–µ–∫.
+    SysTick->CTLR |= (1 << 1);   // 1: Enable counter interrupts.
+    SysTick->CTLR &= ~(1 << 2);  // 0: HCLK for time base.48/8 = 6
+    SysTick->CTLR |= (1 << 3);   // 1: Count up to the comparison value and start counting from 0 again
+    SysTick->CMP = 5999;         ////–ù–∞—Å—Ç—Ä–æ–∏–º –ø—Ä–µ—Ä—ã–≤–∞–Ω–∏–µ –Ω–∞ —á–∞—Å—Ç–æ—Ç—É –≤ 1 –∫–ì—Ü(—Ç.–µ. —Å—Ä–∞–±–æ—Ç–∫–∞ –±—É–¥–µ—Ç –∫–∞–∂–¥—É—é –º—Å) 18000000 / 18000 = 1000–ì—Ü
     SysTick->CNT = 5999;
     NVIC_EnableIRQ(SysTicK_IRQn);
     NVIC_SetPriority(SysTicK_IRQn, 1);
-    SysTick->CTLR |= (1 << 0); //ß©ß—ß·ßÂß„ß‰ß⁄ßﬁ ß‰ß—ß€ßﬁß÷ß‚.
+    SysTick->CTLR |= (1 << 0);  // –ó–∞–ø—É—Å—Ç–∏–º —Ç–∞–π–º–µ—Ä.
 }
 
 /**
  ***************************************************************************************
- *  @breif ßØß—ß„ß‰ß‚ß‡ß€ß‹ß— Delay ß⁄ ß—ßﬂß—ß›ß‡ß‘ HAL_GetTick()
+ *  @breif –ù–∞—Å—Ç—Ä–æ–π–∫–∞ Delay –∏ –∞–Ω–∞–ª–æ–≥ HAL_GetTick()
  ***************************************************************************************
  */
-volatile uint32_t SysTimer_ms = 0; //ß±ß÷ß‚ß÷ßﬁß÷ßﬂßﬂß—ßÒ, ß—ßﬂß—ß›ß‡ß‘ß⁄ßÈßﬂß—ßÒ HAL_GetTick()
-volatile uint32_t Delay_counter_ms = 0; //ß≥ßÈß÷ß‰ßÈß⁄ß‹ ß’ß›ßÒ ßÊßÂßﬂß‹ßËß⁄ß⁄ Delay_ms
-volatile uint32_t Timeout_counter_ms = 0; //ß±ß÷ß‚ß÷ßﬁß÷ßﬂßﬂß—ßÒ ß’ß›ßÒ ß‰ß—ß€ßﬁß—ßÂß‰ß— ßÊßÂßﬂß‹ßËß⁄ß€
+volatile uint32_t SysTimer_ms = 0;         // –ü–µ—Ä–µ–º–µ–Ω–Ω–∞—è, –∞–Ω–∞–ª–æ–≥–∏—á–Ω–∞—è HAL_GetTick()
+volatile uint32_t Delay_counter_ms = 0;    // –°—á–µ—Ç—á–∏–∫ –¥–ª—è —Ñ—É–Ω–∫—Ü–∏–∏ Delay_ms
+volatile uint32_t Timeout_counter_ms = 0;  // –ü–µ—Ä–µ–º–µ–Ω–Ω–∞—è –¥–ª—è —Ç–∞–π–º–∞—É—Ç–∞ —Ñ—É–Ω–∫—Ü–∏–π
 
 /**
  ******************************************************************************
- *  @breif ß±ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ß÷ ß·ß‡ ßÊß›ß—ß‘ßÂ CNTIF
+ *  @breif –ü—Ä–µ—Ä—ã–≤–∞–Ω–∏–µ –ø–æ —Ñ–ª–∞–≥—É CNTIF
  ******************************************************************************
  */
 __WEAK void SysTick_Handler(void) {
@@ -88,7 +88,7 @@ __WEAK void SysTick_Handler(void) {
 /**
  ******************************************************************************
  *  @breif Delay_ms
- *  @param   uint32_t Milliseconds - ß•ß›ß⁄ßﬂß— ßŸß—ß’ß÷ß‚ßÿß‹ß⁄ ß” ßﬁß⁄ß›ß›ß⁄ß„ß÷ß‹ßÂßﬂß’ß—ßÁ
+ *  @param   uint32_t Milliseconds - –î–ª–∏–Ω–∞ –∑–∞–¥–µ—Ä–∂–∫–∏ –≤ –º–∏–ª–ª–∏—Å–µ–∫—É–Ω–¥–∞—Ö
  ******************************************************************************
  */
 void Delay_ms(uint32_t Milliseconds) {
@@ -96,33 +96,33 @@ void Delay_ms(uint32_t Milliseconds) {
     while (Delay_counter_ms != 0);
 }
 
-/*============================== ßØß°ß≥ß¥ß≤ß∞ß´ß¨ß° GPIO =======================================*/
+/*============================== –ù–ê–°–¢–†–û–ô–ö–ê GPIO =======================================*/
 
-//ß≥ß›ßÂßÿß÷ß“ßﬂß—ßÒ ßÊßÂßﬂß‹ßËß⁄ßÒ
-static void RVMSIS_GPIO_MODE_Set(GPIO_TypeDef *GPIO, uint8_t GPIO_Pin, uint8_t Reg, uint8_t Data) {
+// –°–ª—É–∂–µ–±–Ω–∞—è —Ñ—É–Ω–∫—Ü–∏—è
+static void RVMSIS_GPIO_MODE_Set(GPIO_TypeDef* GPIO, uint8_t GPIO_Pin, uint8_t Reg, uint8_t Data) {
     uint8_t Mode = 0;
     switch (Reg) {
-    case (0):
-        Mode = GPIO_Pin * 4;
-        MODIFY_REG(GPIO->CFGLR, (0x3UL << Mode), Data << Mode);
-        break;
-    case (1):
-        GPIO_Pin = GPIO_Pin - 8;
-        Mode = GPIO_Pin * 4;
-        MODIFY_REG(GPIO->CFGHR, (0x3UL << Mode), Data << Mode);
-        break;
+        case (0):
+            Mode = GPIO_Pin * 4;
+            MODIFY_REG(GPIO->CFGLR, (0x3UL << Mode), Data << Mode);
+            break;
+        case (1):
+            GPIO_Pin = GPIO_Pin - 8;
+            Mode = GPIO_Pin * 4;
+            MODIFY_REG(GPIO->CFGHR, (0x3UL << Mode), Data << Mode);
+            break;
     }
 }
 
-//ß≥ß›ßÂßÿß÷ß“ßﬂß—ßÒ ßÊßÂßﬂß‹ßËß⁄ßÒ
-static void RVMSIS_GPIO_SPEED_Set(GPIO_TypeDef *GPIO, uint8_t GPIO_Pin, uint8_t Speed) {
+// –°–ª—É–∂–µ–±–Ω–∞—è —Ñ—É–Ω–∫—Ü–∏—è
+static void RVMSIS_GPIO_SPEED_Set(GPIO_TypeDef* GPIO, uint8_t GPIO_Pin, uint8_t Speed) {
     uint8_t Reg = 0;
     if (GPIO_Pin < 8) {
         Reg = 0;
     } else {
         Reg = 1;
     }
-    //MODE
+    // MODE
     if (Speed == GPIO_SPEED_RESERVED) {
         RVMSIS_GPIO_MODE_Set(GPIO, GPIO_Pin, Reg, 0b00);
     } else if (Speed == GPIO_SPEED_10_MHZ) {
@@ -134,68 +134,68 @@ static void RVMSIS_GPIO_SPEED_Set(GPIO_TypeDef *GPIO, uint8_t GPIO_Pin, uint8_t 
     }
 }
 
-//ß≥ß›ßÂßÿß÷ß“ßﬂß—ßÒ ßÊßÂßﬂß‹ßËß⁄ßÒ
-static void RVMSIS_GPIO_CNF_Set(GPIO_TypeDef *GPIO, uint8_t Reg, uint8_t Mode, uint8_t* CNF_Pos) {
+// –°–ª—É–∂–µ–±–Ω–∞—è —Ñ—É–Ω–∫—Ü–∏—è
+static void RVMSIS_GPIO_CNF_Set(GPIO_TypeDef* GPIO, uint8_t Reg, uint8_t Mode, uint8_t* CNF_Pos) {
     switch (Reg) {
-    case (0):
-        MODIFY_REG(GPIO->CFGLR, (0x3UL << *CNF_Pos), Mode << *CNF_Pos);
-        break;
-    case (1):
-        MODIFY_REG(GPIO->CFGHR, (0x3UL << *CNF_Pos), Mode << *CNF_Pos);
+        case (0):
+            MODIFY_REG(GPIO->CFGLR, (0x3UL << *CNF_Pos), Mode << *CNF_Pos);
+            break;
+        case (1):
+            MODIFY_REG(GPIO->CFGHR, (0x3UL << *CNF_Pos), Mode << *CNF_Pos);
     }
 }
 
-//ß≥ß›ßÂßÿß÷ß“ßﬂß—ßÒ ßÊßÂßﬂß‹ßËß⁄ßÒ
-static void RVMSIS_GPIO_Reg_Set(GPIO_TypeDef *GPIO, uint8_t* GPIO_Pin, uint8_t Configuration_mode, uint8_t Type, uint8_t Reg, uint8_t* CNF_Pos) {
+// –°–ª—É–∂–µ–±–Ω–∞—è —Ñ—É–Ω–∫—Ü–∏—è
+static void RVMSIS_GPIO_Reg_Set(GPIO_TypeDef* GPIO, uint8_t* GPIO_Pin, uint8_t Configuration_mode, uint8_t Type, uint8_t Reg, uint8_t* CNF_Pos) {
     switch (Configuration_mode) {
-    case (GPIO_GENERAL_PURPOSE_OUTPUT):
-        switch (Type) {
-        case (GPIO_OUTPUT_PUSH_PULL):
-            RVMSIS_GPIO_CNF_Set(GPIO, Reg, 0b00, *(&CNF_Pos));
+        case (GPIO_GENERAL_PURPOSE_OUTPUT):
+            switch (Type) {
+                case (GPIO_OUTPUT_PUSH_PULL):
+                    RVMSIS_GPIO_CNF_Set(GPIO, Reg, 0b00, *(&CNF_Pos));
+                    break;
+                case (GPIO_OUTPUT_OPEN_DRAIN):
+                    RVMSIS_GPIO_CNF_Set(GPIO, Reg, 0b01, *(&CNF_Pos));
+                    break;
+            }
             break;
-        case (GPIO_OUTPUT_OPEN_DRAIN):
-            RVMSIS_GPIO_CNF_Set(GPIO, Reg, 0b01, *(&CNF_Pos));
+        case (GPIO_ALTERNATIVE_FUNCTION_OUTPUT):
+            switch (Type) {
+                case (GPIO_OUTPUT_PUSH_PULL):
+                    RVMSIS_GPIO_CNF_Set(GPIO, Reg, 0b10, *(&CNF_Pos));
+                    break;
+                case (GPIO_OUTPUT_OPEN_DRAIN):
+                    RVMSIS_GPIO_CNF_Set(GPIO, Reg, 0b11, *(&CNF_Pos));
+                    break;
+            }
             break;
-        }
-        break;
-    case (GPIO_ALTERNATIVE_FUNCTION_OUTPUT):
-        switch (Type) {
-        case (GPIO_OUTPUT_PUSH_PULL):
-            RVMSIS_GPIO_CNF_Set(GPIO, Reg, 0b10, *(&CNF_Pos));
+        case (GPIO_INPUT):
+            switch (Type) {
+                case (GPIO_INPUT_ANALOG):
+                    RVMSIS_GPIO_CNF_Set(GPIO, Reg, 0b00, *(&CNF_Pos));
+                    break;
+                case (GPIO_INPUT_FLOATING):
+                    RVMSIS_GPIO_CNF_Set(GPIO, Reg, 0b01, *(&CNF_Pos));
+                    break;
+                case (GPIO_INPUT_PULL_DOWN):
+                    RVMSIS_GPIO_CNF_Set(GPIO, Reg, 0b10, *(&CNF_Pos));
+                    CLEAR_BIT(GPIO->OUTDR, (0x1UL << *GPIO_Pin));
+                    break;
+                case (GPIO_INPUT_PULL_UP):
+                    RVMSIS_GPIO_CNF_Set(GPIO, Reg, 0b10, *(&CNF_Pos));
+                    SET_BIT(GPIO->OUTDR, (0x1UL << *GPIO_Pin));
+                    break;
+            }
             break;
-        case (GPIO_OUTPUT_OPEN_DRAIN):
-            RVMSIS_GPIO_CNF_Set(GPIO, Reg, 0b11, *(&CNF_Pos));
-            break;
-        }
-        break;
-    case (GPIO_INPUT):
-        switch (Type) {
-        case (GPIO_INPUT_ANALOG):
-            RVMSIS_GPIO_CNF_Set(GPIO, Reg, 0b00, *(&CNF_Pos));
-            break;
-        case (GPIO_INPUT_FLOATING):
-            RVMSIS_GPIO_CNF_Set(GPIO, Reg, 0b01, *(&CNF_Pos));
-            break;
-        case (GPIO_INPUT_PULL_DOWN):
-            RVMSIS_GPIO_CNF_Set(GPIO, Reg, 0b10, *(&CNF_Pos));
-            CLEAR_BIT(GPIO->OUTDR, (0x1UL << *GPIO_Pin));
-            break;
-        case (GPIO_INPUT_PULL_UP):
-            RVMSIS_GPIO_CNF_Set(GPIO, Reg, 0b10, *(&CNF_Pos));
-            SET_BIT(GPIO->OUTDR, (0x1UL << *GPIO_Pin));
-            break;
-        }
-        break;
     }
 }
 
 /**
  ***************************************************************************************
- *  @breif ß¢ßÌß„ß‰ß‚ß—ßÒ ß‹ß‡ßﬂßÊß⁄ß‘ßÂß‚ß—ßËß⁄ßÒ GPIO
- *  Reference Manual/ß„ßﬁ. ß·.9.2 GPIO registers (ß„ß‰ß‚. 171)
- *  ß±ß÷ß‚ß÷ß’ ßﬂß—ß„ß‰ß‚ß‡ß€ß‹ß‡ß€ (GPIOs and AFIOs) ßﬂßÂßÿßﬂß‡ ß”ß‹ß›ßßÈß⁄ß‰ßÓ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ß÷ ß·ß‡ß‚ß‰ß—.
- *  @param  *GPIO - ß±ß‡ß‚ß‰ GPIO(A, B, C, D, E)
- *  @param  GPIO_Pin - ßﬂß‡ßﬁß÷ß‚ ß·ß⁄ßﬂß— 0-15
+ *  @breif –ë—ã—Å—Ç—Ä–∞—è –∫–æ–Ω—Ñ–∏–≥—É—Ä–∞—Ü–∏—è GPIO
+ *  Reference Manual/—Å–º. –ø.9.2 GPIO registers (—Å—Ç—Ä. 171)
+ *  –ü–µ—Ä–µ–¥ –Ω–∞—Å—Ç—Ä–æ–π–∫–æ–π (GPIOs and AFIOs) –Ω—É–∂–Ω–æ –≤–∫–ª—é—á–∏—Ç—å —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏–µ –ø–æ—Ä—Ç–∞.
+ *  @param  *GPIO - –ü–æ—Ä—Ç GPIO(A, B, C, D, E)
+ *  @param  GPIO_Pin - –Ω–æ–º–µ—Ä –ø–∏–Ω–∞ 0-15
  *  @param  Congiguration_mode: GPIO_GENERAL_PURPOSE_OUTPUT, GPIO_ALTERNATIVE_FUNCTION_OUTPUT, GPIO_INPUT
  *  @param  Type: GPIO_OUTPUT_PUSH_PULL,
  *                GPIO_OUTPUT_OPEN_DRAIN,
@@ -210,139 +210,139 @@ static void RVMSIS_GPIO_Reg_Set(GPIO_TypeDef *GPIO, uint8_t* GPIO_Pin, uint8_t C
  ***************************************************************************************
  */
 
-void RVMSIS_GPIO_init(GPIO_TypeDef *GPIO, uint8_t GPIO_Pin, uint8_t Configuration_mode, uint8_t Type, uint8_t Speed) {
+void RVMSIS_GPIO_init(GPIO_TypeDef* GPIO, uint8_t GPIO_Pin, uint8_t Configuration_mode, uint8_t Type, uint8_t Speed) {
     uint8_t CNF_Pos = 0;
     if (GPIO == GPIOA) {
-        SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_GPIOA); //ß©ß—ß·ßÂß„ß‹ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ßÒ ß·ß‡ß‚ß‰ß— ß°
+        SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_GPIOA);  // –ó–∞–ø—É—Å–∫ —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏—è –ø–æ—Ä—Ç–∞ –ê
     } else if (GPIO == GPIOC) {
-        SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_GPIOC); //ß©ß—ß·ßÂß„ß‹ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ßÒ ß·ß‡ß‚ß‰ß— C
+        SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_GPIOC);  // –ó–∞–ø—É—Å–∫ —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏—è –ø–æ—Ä—Ç–∞ C
     } else if (GPIO == GPIOD) {
-        SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_GPIOD); //ß©ß—ß·ßÂß„ß‹ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ßÒ ß·ß‡ß‚ß‰ß— D
+        SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_GPIOD);  // –ó–∞–ø—É—Å–∫ —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏—è –ø–æ—Ä—Ç–∞ D
     }
 
     RVMSIS_GPIO_SPEED_Set(GPIO, GPIO_Pin, Speed);
 
     if (GPIO_Pin < 8) {
         CNF_Pos = (GPIO_Pin * 4) + 2;
-        RVMSIS_GPIO_Reg_Set(GPIO, (uint8_t*) &GPIO_Pin, Configuration_mode, Type, 0, &CNF_Pos);
+        RVMSIS_GPIO_Reg_Set(GPIO, (uint8_t*)&GPIO_Pin, Configuration_mode, Type, 0, &CNF_Pos);
     } else {
         GPIO_Pin = GPIO_Pin - 8;
         CNF_Pos = (GPIO_Pin * 4) + 2;
-        RVMSIS_GPIO_Reg_Set(GPIO, (uint8_t*) &GPIO_Pin, Configuration_mode, Type, 1, &CNF_Pos);
+        RVMSIS_GPIO_Reg_Set(GPIO, (uint8_t*)&GPIO_Pin, Configuration_mode, Type, 1, &CNF_Pos);
     }
 }
 
-/*ß¥ß—ß€ßﬁß÷ß‚ 1 ß’ß›ßÒ ß·ß‚ß⁄ßﬁß÷ß‚ß—*/
+/*–¢–∞–π–º–µ—Ä 1 –¥–ª—è –ø—Ä–∏–º–µ—Ä–∞*/
 void RVMSIS_TIM1_init(void) {
-    /*ß£ß‹ß›ßßÈß⁄ßﬁ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ß÷ ß‰ß—ß€ßﬁß÷ß‚ß— (ß„ß‰ß‚ß—ßﬂß⁄ßËß— 48)*/
-    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_TIM1); //ß©ß—ß·ßÂß„ß‹ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ßÒ ß‰ß—ß€ßﬁß÷ß‚ß— 1
-    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_AFIO); //ß©ß—ß·ßÂß„ß‹ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ßÒ ß—ß›ßÓß‰ß÷ß‚ßﬂß—ß‰ß⁄ß”ßﬂßÌßÁ ßÊßÂßﬂß‹ßËß⁄ß€
+    /*–í–∫–ª—é—á–∏–º —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏–µ —Ç–∞–π–º–µ—Ä–∞ (—Å—Ç—Ä–∞–Ω–∏—Ü–∞ 48)*/
+    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_TIM1);  // –ó–∞–ø—É—Å–∫ —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏—è —Ç–∞–π–º–µ—Ä–∞ 1
+    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_AFIO);  // –ó–∞–ø—É—Å–∫ —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏—è –∞–ª—å—Ç–µ—Ä–Ω–∞—Ç–∏–≤–Ω—ã—Ö —Ñ—É–Ω–∫—Ü–∏–π
 
-    CLEAR_BIT(TIM1->CTLR1, TIM_UDIS); //ß§ß÷ßﬂß÷ß‚ß⁄ß‚ß‡ß”ß—ß‰ßÓ ß„ß‡ß“ßÌß‰ß⁄ß÷ Update
-    CLEAR_BIT(TIM1->CTLR1, TIM_URS); //ß§ß÷ßﬂß÷ß‚ß⁄ß‚ß‡ß”ß—ß‰ßÓ ß·ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ß÷
-    CLEAR_BIT(TIM1->CTLR1, TIM_OPM); //One pulse mode off(ß≥ßÈß÷ß‰ßÈß⁄ß‹ ßﬂß÷ ß‡ß„ß‰ß—ßﬂß—ß”ß›ß⁄ß”ß—ß÷ß‰ß„ßÒ ß·ß‚ß⁄ ß‡ß“ßﬂß‡ß”ß›ß÷ßﬂß⁄ß⁄)
-    CLEAR_BIT(TIM1->CTLR1, TIM_DIR); //ß≥ßÈß⁄ß‰ß—ß÷ßﬁ ß”ßﬂß⁄ßŸ
-    MODIFY_REG(TIM1->CTLR1, TIM_CMS, 0b00 << TIM_CMS_Pos); //ß£ßÌß‚ß—ß”ßﬂß⁄ß”ß—ßﬂß⁄ß÷ ß·ß‡ ß‹ß‚ß—ß
-    SET_BIT(TIM1->CTLR1, TIM_ARPE); //Auto-reload preload enable
-    MODIFY_REG(TIM1->CTLR1, TIM_CTLR1_CKD, 0b00 << TIM_CTLR1_CKD_Pos); //ß±ß‚ß÷ß’ß’ß÷ß›ß÷ßﬂß⁄ß÷ ß”ßÌß‹ß›ßßÈß÷ßﬂß‡
+    CLEAR_BIT(TIM1->CTLR1, TIM_UDIS);                                   // –ì–µ–Ω–µ—Ä–∏—Ä–æ–≤–∞—Ç—å —Å–æ–±—ã—Ç–∏–µ Update
+    CLEAR_BIT(TIM1->CTLR1, TIM_URS);                                    // –ì–µ–Ω–µ—Ä–∏—Ä–æ–≤–∞—Ç—å –ø—Ä–µ—Ä—ã–≤–∞–Ω–∏–µ
+    CLEAR_BIT(TIM1->CTLR1, TIM_OPM);                                    // One pulse mode off(–°—á–µ—Ç—á–∏–∫ –Ω–µ –æ—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ—Ç—Å—è –ø—Ä–∏ –æ–±–Ω–æ–≤–ª–µ–Ω–∏–∏)
+    CLEAR_BIT(TIM1->CTLR1, TIM_DIR);                                    // –°—á–∏—Ç–∞–µ–º –≤–Ω–∏–∑
+    MODIFY_REG(TIM1->CTLR1, TIM_CMS, 0b00 << TIM_CMS_Pos);              // –í—ã—Ä–∞–≤–Ω–∏–≤–∞–Ω–∏–µ –ø–æ –∫—Ä–∞—é
+    SET_BIT(TIM1->CTLR1, TIM_ARPE);                                     // Auto-reload preload enable
+    MODIFY_REG(TIM1->CTLR1, TIM_CTLR1_CKD, 0b00 << TIM_CTLR1_CKD_Pos);  // –ü—Ä–µ–¥–¥–µ–ª–µ–Ω–∏–µ –≤—ã–∫–ª—é—á–µ–Ω–æ
 
-    /*ßØß—ß„ß‰ß‚ß‡ß€ß‹ß— ß·ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ß€ (ß≥ß‰ß‚ß—ßﬂß⁄ßËß— 409)*/
-    SET_BIT(TIM1->DMAINTENR, TIM_UIE); //Update interrupt enable
+    /*–ù–∞—Å—Ç—Ä–æ–π–∫–∞ –ø—Ä–µ—Ä—ã–≤–∞–Ω–∏–π (–°—Ç—Ä–∞–Ω–∏—Ü–∞ 409)*/
+    SET_BIT(TIM1->DMAINTENR, TIM_UIE);  // Update interrupt enable
 
     TIM1->PSC = 200 - 1;
     TIM1->ATRLR = 1000 - 1;
 
-    /*ß•ß›ßÒ ß‚ß—ß“ß‡ß‰ßÌ ß∫ß™ßÆ*/
+    /*–î–ª—è —Ä–∞–±–æ—Ç—ã –®–ò–ú*/
     MODIFY_REG(TIM1->BDTR, TIM_LOCK, 0b00 << TIM_LOCK_Pos);
     SET_BIT(TIM1->BDTR, TIM_AOE);
 
-    NVIC_EnableIRQ(TIM1_UP_IRQn); //ß≤ß—ßŸß‚ß÷ßÍß⁄ß‰ßÓ ß·ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ßÒ ß·ß‡ ß‰ß—ß€ßﬁß÷ß‚ßÂ 3
+    NVIC_EnableIRQ(TIM1_UP_IRQn);  // –†–∞–∑—Ä–µ—à–∏—Ç—å –ø—Ä–µ—Ä—ã–≤–∞–Ω–∏—è –ø–æ —Ç–∞–π–º–µ—Ä—É 3
     NVIC_SetPriority(TIM1_UP_IRQn, 0);
-    SET_BIT(TIM1->CTLR1, TIM_CEN); //ß©ß—ß·ßÂß„ß‹ ß‰ß—ß€ßﬁß÷ß‚ß—
+    SET_BIT(TIM1->CTLR1, TIM_CEN);  // –ó–∞–ø—É—Å–∫ —Ç–∞–π–º–µ—Ä–∞
 }
 
 __WEAK void TIM1_UP_IRQHandler(void) {
     if (READ_BIT(TIM1->INTFR, TIM_UIF)) {
-        CLEAR_BIT(TIM1->INTFR, TIM_UIF); //ß≥ß“ß‚ß‡ß„ß⁄ßﬁ ßÊß›ß—ß‘ ß·ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ßÒ
+        CLEAR_BIT(TIM1->INTFR, TIM_UIF);  // –°–±—Ä–æ—Å–∏–º —Ñ–ª–∞–≥ –ø—Ä–µ—Ä—ã–≤–∞–Ω–∏—è
     }
 }
 
 void RVMSIS_TIM1_PWM_CHANNEL1_init(void) {
-    /*ßØß—ß„ß‰ß‚ß‡ß€ß‹ß— ßﬂß‡ßÿß‹ß⁄ PA1 ß·ß‡ß’ ß∫ß™ßÆ*/
-    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_GPIOA); //ß£ß‹ß›ßßÈß⁄ßﬁ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ß÷ ß·ß‡ß‚ß‰ß— ß°
+    /*–ù–∞—Å—Ç—Ä–æ–π–∫–∞ –Ω–æ–∂–∫–∏ PA1 –ø–æ–¥ –®–ò–ú*/
+    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_GPIOA);  // –í–∫–ª—é—á–∏–º —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏–µ –ø–æ—Ä—Ç–∞ –ê
     MODIFY_REG(GPIOA->CFGLR, GPIO_CFGLR_CNF1, 0b10 << GPIO_CFGLR_CNF1_Pos);
     MODIFY_REG(GPIOA->CFGLR, GPIO_CFGLR_MODE1, 0b11 << GPIO_CFGLR_MODE1_Pos);
 
-    /*ßØß—ß„ß‰ß‚ß‡ß€ß‹ß— ßÍß⁄ßﬁ(ß¨ß—ßﬂß—ß› 1)*/
-    MODIFY_REG(TIM1->CHCTLR1, TIM_CC1S, 0b00 << TIM_CC1S_Pos); //CC1 channel is configured as output
-    CLEAR_BIT(TIM1->CHCTLR1, TIM_OC1FE); //Fast mode disable
-    SET_BIT(TIM1->CHCTLR1, TIM_OC1PE); //Preload enable
-    MODIFY_REG(TIM1->CHCTLR1, TIM_OC1M, 0b110 << TIM_OC1M_Pos); //PWM MODE 1
-    CLEAR_BIT(TIM1->CHCTLR1, TIM_OC1CE); //OC1Ref is not affected by the ETRF input
+    /*–ù–∞—Å—Ç—Ä–æ–π–∫–∞ —à–∏–º(–ö–∞–Ω–∞–ª 1)*/
+    MODIFY_REG(TIM1->CHCTLR1, TIM_CC1S, 0b00 << TIM_CC1S_Pos);   // CC1 channel is configured as output
+    CLEAR_BIT(TIM1->CHCTLR1, TIM_OC1FE);                         // Fast mode disable
+    SET_BIT(TIM1->CHCTLR1, TIM_OC1PE);                           // Preload enable
+    MODIFY_REG(TIM1->CHCTLR1, TIM_OC1M, 0b110 << TIM_OC1M_Pos);  // PWM MODE 1
+    CLEAR_BIT(TIM1->CHCTLR1, TIM_OC1CE);                         // OC1Ref is not affected by the ETRF input
 
-    /*ß©ß—ß·ßÂß„ß‹ ß∫ß™ßÆ*/
-    //15.4.9 TIMx capture/compare enable register (TIMx_CCER)
-    SET_BIT(TIM1->CCER, TIM_CC1E);//On - OC1 signal is output on the corresponding output pin.
-    CLEAR_BIT(TIM1->CCER, TIM_CC1P); //OC1 active high.
+    /*–ó–∞–ø—É—Å–∫ –®–ò–ú*/
+    // 15.4.9 TIMx capture/compare enable register (TIMx_CCER)
+    SET_BIT(TIM1->CCER, TIM_CC1E);    // On - OC1 signal is output on the corresponding output pin.
+    CLEAR_BIT(TIM1->CCER, TIM_CC1P);  // OC1 active high.
 
     TIM1->CH1CVR = 512;
 }
 
 void RVMSIS_TIM1_PWM_CHANNEL2_init(void) {
-    /*ßØß—ß„ß‰ß‚ß‡ß€ß‹ß— ßﬂß‡ßÿß‹ß⁄ PA1 ß·ß‡ß’ ß∫ß™ßÆ*/
-    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_GPIOA); //ß£ß‹ß›ßßÈß⁄ßﬁ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ß÷ ß·ß‡ß‚ß‰ß— ß°
+    /*–ù–∞—Å—Ç—Ä–æ–π–∫–∞ –Ω–æ–∂–∫–∏ PA1 –ø–æ–¥ –®–ò–ú*/
+    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_GPIOA);  // –í–∫–ª—é—á–∏–º —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏–µ –ø–æ—Ä—Ç–∞ –ê
     MODIFY_REG(GPIOA->CFGLR, GPIO_CFGLR_CNF1, 0b10 << GPIO_CFGLR_CNF1_Pos);
     MODIFY_REG(GPIOA->CFGLR, GPIO_CFGLR_MODE1, 0b11 << GPIO_CFGLR_MODE1_Pos);
 
-    /*ßØß—ß„ß‰ß‚ß‡ß€ß‹ß— ßÍß⁄ßﬁ(ß¨ß—ßﬂß—ß› 2)*/
-    MODIFY_REG(TIM1->CHCTLR1, TIM_CC2S, 0b00 << TIM_CC1S_Pos); //CC1 channel is configured as output
-    CLEAR_BIT(TIM1->CHCTLR1, TIM_OC2FE); //Fast mode disable
-    SET_BIT(TIM1->CHCTLR1, TIM_OC2PE); //Preload enable
-    MODIFY_REG(TIM1->CHCTLR1, TIM_OC2M, 0b110 << TIM_OC2M_Pos); //PWM MODE 1
-    CLEAR_BIT(TIM1->CHCTLR1, TIM_OC2CE); //OC1Ref is not affected by the ETRF input
+    /*–ù–∞—Å—Ç—Ä–æ–π–∫–∞ —à–∏–º(–ö–∞–Ω–∞–ª 2)*/
+    MODIFY_REG(TIM1->CHCTLR1, TIM_CC2S, 0b00 << TIM_CC1S_Pos);   // CC1 channel is configured as output
+    CLEAR_BIT(TIM1->CHCTLR1, TIM_OC2FE);                         // Fast mode disable
+    SET_BIT(TIM1->CHCTLR1, TIM_OC2PE);                           // Preload enable
+    MODIFY_REG(TIM1->CHCTLR1, TIM_OC2M, 0b110 << TIM_OC2M_Pos);  // PWM MODE 1
+    CLEAR_BIT(TIM1->CHCTLR1, TIM_OC2CE);                         // OC1Ref is not affected by the ETRF input
 
-    /*ß©ß—ß·ßÂß„ß‹ ß∫ß™ßÆ*/
-    //15.4.9 TIMx capture/compare enable register (TIMx_CCER)
-    SET_BIT(TIM1->CCER, TIM_CC2E);//On - OC1 signal is output on the corresponding output pin.
-    CLEAR_BIT(TIM1->CCER, TIM_CC2P); //OC1 active high.
+    /*–ó–∞–ø—É—Å–∫ –®–ò–ú*/
+    // 15.4.9 TIMx capture/compare enable register (TIMx_CCER)
+    SET_BIT(TIM1->CCER, TIM_CC2E);    // On - OC1 signal is output on the corresponding output pin.
+    CLEAR_BIT(TIM1->CCER, TIM_CC2P);  // OC1 active high.
 
     TIM1->CH2CVR = 512;
 }
 
 void RVMSIS_TIM2_init(void) {
-    /*ß£ß‹ß›ßßÈß⁄ßﬁ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ß÷ ß‰ß—ß€ßﬁß÷ß‚ß— (ß„ß‰ß‚ß—ßﬂß⁄ßËß— 48)*/
-    SET_BIT(RCC->APB1PCENR, RCC_APB1Periph_TIM2); //ß©ß—ß·ßÂß„ß‹ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ßÒ ß‰ß—ß€ßﬁß÷ß‚ß— 1
-    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_AFIO); //ß©ß—ß·ßÂß„ß‹ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ßÒ ß—ß›ßÓß‰ß÷ß‚ßﬂß—ß‰ß⁄ß”ßﬂßÌßÁ ßÊßÂßﬂß‹ßËß⁄ß€
+    /*–í–∫–ª—é—á–∏–º —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏–µ —Ç–∞–π–º–µ—Ä–∞ (—Å—Ç—Ä–∞–Ω–∏—Ü–∞ 48)*/
+    SET_BIT(RCC->APB1PCENR, RCC_APB1Periph_TIM2);  // –ó–∞–ø—É—Å–∫ —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏—è —Ç–∞–π–º–µ—Ä–∞ 1
+    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_AFIO);  // –ó–∞–ø—É—Å–∫ —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏—è –∞–ª—å—Ç–µ—Ä–Ω–∞—Ç–∏–≤–Ω—ã—Ö —Ñ—É–Ω–∫—Ü–∏–π
 
-    CLEAR_BIT(TIM2->CTLR1, TIM_UDIS); //ß§ß÷ßﬂß÷ß‚ß⁄ß‚ß‡ß”ß—ß‰ßÓ ß„ß‡ß“ßÌß‰ß⁄ß÷ Update
-    CLEAR_BIT(TIM2->CTLR1, TIM_URS); //ß§ß÷ßﬂß÷ß‚ß⁄ß‚ß‡ß”ß—ß‰ßÓ ß·ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ß÷
-    CLEAR_BIT(TIM2->CTLR1, TIM_OPM); //One pulse mode off(ß≥ßÈß÷ß‰ßÈß⁄ß‹ ßﬂß÷ ß‡ß„ß‰ß—ßﬂß—ß”ß›ß⁄ß”ß—ß÷ß‰ß„ßÒ ß·ß‚ß⁄ ß‡ß“ßﬂß‡ß”ß›ß÷ßﬂß⁄ß⁄)
-    CLEAR_BIT(TIM2->CTLR1, TIM_DIR); //ß≥ßÈß⁄ß‰ß—ß÷ßﬁ ß”ßﬂß⁄ßŸ
-    MODIFY_REG(TIM2->CTLR1, TIM_CMS, 0b00 << TIM_CMS_Pos); //ß£ßÌß‚ß—ß”ßﬂß⁄ß”ß—ßﬂß⁄ß÷ ß·ß‡ ß‹ß‚ß—ß
-    SET_BIT(TIM2->CTLR1, TIM_ARPE); //Auto-reload preload enable
-    MODIFY_REG(TIM2->CTLR1, TIM_CTLR1_CKD, 0b00 << TIM_CTLR1_CKD_Pos); //ß±ß‚ß÷ß’ß’ß÷ß›ß÷ßﬂß⁄ß÷ ß”ßÌß‹ß›ßßÈß÷ßﬂß‡
+    CLEAR_BIT(TIM2->CTLR1, TIM_UDIS);                                   // –ì–µ–Ω–µ—Ä–∏—Ä–æ–≤–∞—Ç—å —Å–æ–±—ã—Ç–∏–µ Update
+    CLEAR_BIT(TIM2->CTLR1, TIM_URS);                                    // –ì–µ–Ω–µ—Ä–∏—Ä–æ–≤–∞—Ç—å –ø—Ä–µ—Ä—ã–≤–∞–Ω–∏–µ
+    CLEAR_BIT(TIM2->CTLR1, TIM_OPM);                                    // One pulse mode off(–°—á–µ—Ç—á–∏–∫ –Ω–µ –æ—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ—Ç—Å—è –ø—Ä–∏ –æ–±–Ω–æ–≤–ª–µ–Ω–∏–∏)
+    CLEAR_BIT(TIM2->CTLR1, TIM_DIR);                                    // –°—á–∏—Ç–∞–µ–º –≤–Ω–∏–∑
+    MODIFY_REG(TIM2->CTLR1, TIM_CMS, 0b00 << TIM_CMS_Pos);              // –í—ã—Ä–∞–≤–Ω–∏–≤–∞–Ω–∏–µ –ø–æ –∫—Ä–∞—é
+    SET_BIT(TIM2->CTLR1, TIM_ARPE);                                     // Auto-reload preload enable
+    MODIFY_REG(TIM2->CTLR1, TIM_CTLR1_CKD, 0b00 << TIM_CTLR1_CKD_Pos);  // –ü—Ä–µ–¥–¥–µ–ª–µ–Ω–∏–µ –≤—ã–∫–ª—é—á–µ–Ω–æ
 
-    /*ßØß—ß„ß‰ß‚ß‡ß€ß‹ß— ß·ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ß€ (ß≥ß‰ß‚ß—ßﬂß⁄ßËß— 409)*/
-    SET_BIT(TIM2->DMAINTENR, TIM_UIE); //Update interrupt enable
+    /*–ù–∞—Å—Ç—Ä–æ–π–∫–∞ –ø—Ä–µ—Ä—ã–≤–∞–Ω–∏–π (–°—Ç—Ä–∞–Ω–∏—Ü–∞ 409)*/
+    SET_BIT(TIM2->DMAINTENR, TIM_UIE);  // Update interrupt enable
 
     TIM2->PSC = 48 - 1;
     TIM2->ATRLR = 1000 - 1;
 
-    /*ß•ß›ßÒ ß‚ß—ß“ß‡ß‰ßÌ ß∫ß™ßÆ*/
-    //MODIFY_REG(TIM1->BDTR, TIM_LOCK, 0b00 << TIM_LOCK_Pos);
-    //SET_BIT(TIM1->BDTR, TIM_AOE);
-    NVIC_EnableIRQ(TIM2_IRQn); //ß≤ß—ßŸß‚ß÷ßÍß⁄ß‰ßÓ ß·ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ßÒ ß·ß‡ ß‰ß—ß€ßﬁß÷ß‚ßÂ 3
+    /*–î–ª—è —Ä–∞–±–æ—Ç—ã –®–ò–ú*/
+    // MODIFY_REG(TIM1->BDTR, TIM_LOCK, 0b00 << TIM_LOCK_Pos);
+    // SET_BIT(TIM1->BDTR, TIM_AOE);
+    NVIC_EnableIRQ(TIM2_IRQn);  // –†–∞–∑—Ä–µ—à–∏—Ç—å –ø—Ä–µ—Ä—ã–≤–∞–Ω–∏—è –ø–æ —Ç–∞–π–º–µ—Ä—É 3
     NVIC_SetPriority(TIM2_IRQn, 2);
-    SET_BIT(TIM2->CTLR1, TIM_CEN); //ß©ß—ß·ßÂß„ß‹ ß‰ß—ß€ßﬁß÷ß‚ß—
+    SET_BIT(TIM2->CTLR1, TIM_CEN);  // –ó–∞–ø—É—Å–∫ —Ç–∞–π–º–µ—Ä–∞
 }
 
 __WEAK void TIM2_IRQHandler(void) {
     if (READ_BIT(TIM2->INTFR, TIM_UIF)) {
-        CLEAR_BIT(TIM2->INTFR, TIM_UIF); //ß≥ß“ß‚ß‡ß„ß⁄ßﬁ ßÊß›ß—ß‘ ß·ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ßÒ
+        CLEAR_BIT(TIM2->INTFR, TIM_UIF);  // –°–±—Ä–æ—Å–∏–º —Ñ–ª–∞–≥ –ø—Ä–µ—Ä—ã–≤–∞–Ω–∏—è
     }
 }
 
-/*================================= ßØß°ß≥ß¥ß≤ß∞ß´ß¨ß° ADC ============================================*/
+/*================================= –ù–ê–°–¢–†–û–ô–ö–ê ADC ============================================*/
 
 /**
  ***************************************************************************************
@@ -350,30 +350,32 @@ __WEAK void TIM2_IRQHandler(void) {
  ***************************************************************************************
  */
 
-volatile uint16_t ADC_RAW_Data[2] = { 0, }; //ßÆß—ß„ß„ß⁄ß”, ß‹ßÂß’ß— ß“ßÂß’ß÷ßﬁ ß‹ß⁄ß’ß—ß‰ßÓ ß’ß—ßﬂßﬂßÌß÷ ß„ ß°ß∏ß±
+volatile uint16_t ADC_RAW_Data[2] = {
+    0,
+};  // –ú–∞—Å—Å–∏–≤, –∫—É–¥–∞ –±—É–¥–µ–º –∫–∏–¥–∞—Ç—å –¥–∞–Ω–Ω—ã–µ —Å –ê–¶–ü
 
 void RVMSIS_ADC_DMA_init(void) {
-    //Chapter 11 Direct Memory Access Control (DMA)
-    SET_BIT(RCC->AHBPCENR, RCC_AHBPeriph_DMA1); //ß£ß‹ß›ßßÈß÷ßﬂß⁄ß÷ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ßÒ DMA1
-    DMA1_Channel1->PADDR = (uint32_t) &(ADC1->RDATAR); //ß©ß—ß’ß—ß÷ßﬁ ß—ß’ß‚ß÷ß„ ß·ß÷ß‚ß⁄ßÊß÷ß‚ß⁄ß€ßﬂß‡ß‘ß‡ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß—
-    DMA1_Channel1->MADDR = (uint32_t) ADC_RAW_Data; //ß©ß—ß’ß—ß÷ßﬁ ß—ß’ß‚ß÷ß„ ß” ß·ß—ßﬁßÒß‰ß⁄, ß‹ßÂß’ß— ß“ßÂß’ß÷ßﬁ ß‹ß⁄ß’ß—ß‰ßÓ ß’ß—ßﬂßﬂßÌß÷.
-    DMA1_Channel1->CNTR = 1; //ßØß—ß„ß‰ß‚ß‡ß⁄ßﬁ ß‹ß‡ß›ß⁄ßÈß÷ß„ß‰ß”ß‡ ß’ß—ßﬂßﬂßÌßÁ ß’ß›ßÒ ß·ß÷ß‚ß÷ß’ß—ßÈß⁄. ß±ß‡ß„ß›ß÷ ß‹ß—ßÿß’ß‡ß‘ß‡ ß·ß÷ß‚ß⁄ßÊß÷ß‚ß⁄ß€ßﬂß‡ß‘ß‡ ß„ß‡ß“ßÌß‰ß⁄ßÒ ßÔß‰ß‡ ßŸßﬂß—ßÈß÷ßﬂß⁄ß÷ ß“ßÂß’ß÷ß‰ ßÂßﬁß÷ßﬂßÓßÍß—ß‰ßÓß„ßÒ.
-    MODIFY_REG(DMA1_Channel1->CFGR, DMA_CFGR1_PL, 0b00 << DMA_CFGR1_PL_Pos); //ß©ß—ß’ß—ß’ß⁄ßﬁ ß·ß‚ß⁄ß‡ß‚ß⁄ß‰ß÷ß‰ ß‹ß—ßﬂß—ß›ß— ßﬂß— ß”ßÌß„ß‡ß‹ß⁄ß€
-    CLEAR_BIT(DMA1_Channel1->CFGR, DMA_CFGR1_DIR); //ßπß‰ß÷ßﬂß⁄ß÷ ß“ßÂß’ß÷ßﬁ ß‡ß„ßÂßÎß÷ß„ß‰ß”ß›ßÒß‰ßÓ ß„ ß·ß÷ß‚ß⁄ßÊß÷ß‚ß⁄ß⁄
-    SET_BIT(DMA1_Channel1->CFGR, DMA_CFGR1_CIRC); //ßØß—ß„ß‰ß‚ß‡ß⁄ßﬁ DMA ß” Circular mode
-    MODIFY_REG(DMA1_Channel1->CFGR, DMA_CFGR1_PSIZE, 0b01 << DMA_CFGR1_PSIZE_Pos); //ß≤ß—ßŸßﬁß÷ß‚ ß’ß—ßﬂßﬂßÌßÁ ß·ß÷ß‚ß⁄ßÊß÷ß‚ß⁄ß€ßﬂß‡ß‘ß‡ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß— 16 ß“ß⁄ß‰
-    MODIFY_REG(DMA1_Channel1->CFGR, DMA_CFGR1_MSIZE, 0b01 << DMA_CFGR1_MSIZE_Pos); //ß≤ß—ßŸßﬁß÷ß‚ ß’ß—ßﬂßﬂßÌßÁ ß” ß·ß—ßﬁßÒß‰ß⁄ 16 ß“ß⁄ß‰
-    SET_BIT(DMA1_Channel1->CFGR, DMA_CFGR1_TCIE); //ß£ß‹ß›ßßÈß⁄ßﬁ ß·ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ß÷ ß·ß‡ ß·ß‡ß›ßﬂß‡ß€ ß·ß÷ß‚ß÷ß’ß—ßÈß÷
-    CLEAR_BIT(DMA1_Channel1->CFGR, DMA_CFGR1_HTIE); //ß∞ß‰ß‹ß›ßßÈß⁄ßﬁ ß·ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ß÷ ß·ß‡ ß·ß‡ß›ß‡ß”ß⁄ßﬂßﬂß‡ß€ ß·ß÷ß‚ß÷ß’ß—ßÈß÷
-    SET_BIT(DMA1_Channel1->CFGR, DMA_CFGR1_TEIE); //ß£ß‹ß›ßßÈß⁄ßﬁ ß·ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ß÷ ß·ß‡ ß‡ßÍß⁄ß“ß‹ß÷ ß·ß÷ß‚ß÷ß’ß—ßÈß⁄.
-    SET_BIT(DMA1_Channel1->CFGR, DMA_CFGR1_MINC); //ß£ß‹ß›ßßÈß⁄ßﬁ ß⁄ßﬂß‹ß‚ß÷ßﬁß÷ßﬂß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ß÷ ß·ß—ßﬁßÒß‰ß⁄
-    SET_BIT(DMA1_Channel1->CFGR, DMA_CFGR1_EN); //DMA ON
+    // Chapter 11 Direct Memory Access Control (DMA)
+    SET_BIT(RCC->AHBPCENR, RCC_AHBPeriph_DMA1);                                     // –í–∫–ª—é—á–µ–Ω–∏–µ —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏—è DMA1
+    DMA1_Channel1->PADDR = (uint32_t)&(ADC1->RDATAR);                               // –ó–∞–¥–∞–µ–º –∞–¥—Ä–µ—Å –ø–µ—Ä–∏—Ñ–µ—Ä–∏–π–Ω–æ–≥–æ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–∞
+    DMA1_Channel1->MADDR = (uint32_t)ADC_RAW_Data;                                  // –ó–∞–¥–∞–µ–º –∞–¥—Ä–µ—Å –≤ –ø–∞–º—è—Ç–∏, –∫—É–¥–∞ –±—É–¥–µ–º –∫–∏–¥–∞—Ç—å –¥–∞–Ω–Ω—ã–µ.
+    DMA1_Channel1->CNTR = 1;                                                        // –ù–∞—Å—Ç—Ä–æ–∏–º –∫–æ–ª–∏—á–µ—Å—Ç–≤–æ –¥–∞–Ω–Ω—ã—Ö –¥–ª—è –ø–µ—Ä–µ–¥–∞—á–∏. –ü–æ—Å–ª–µ –∫–∞–∂–¥–æ–≥–æ –ø–µ—Ä–∏—Ñ–µ—Ä–∏–π–Ω–æ–≥–æ —Å–æ–±—ã—Ç–∏—è —ç—Ç–æ –∑–Ω–∞—á–µ–Ω–∏–µ –±—É–¥–µ—Ç —É–º–µ–Ω—å—à–∞—Ç—å—Å—è.
+    MODIFY_REG(DMA1_Channel1->CFGR, DMA_CFGR1_PL, 0b00 << DMA_CFGR1_PL_Pos);        // –ó–∞–¥–∞–¥–∏–º –ø—Ä–∏–æ—Ä–∏—Ç–µ—Ç –∫–∞–Ω–∞–ª–∞ –Ω–∞ –≤—ã—Å–æ–∫–∏–π
+    CLEAR_BIT(DMA1_Channel1->CFGR, DMA_CFGR1_DIR);                                  // –ß—Ç–µ–Ω–∏–µ –±—É–¥–µ–º –æ—Å—É—â–µ—Å—Ç–≤–ª—è—Ç—å —Å –ø–µ—Ä–∏—Ñ–µ—Ä–∏–∏
+    SET_BIT(DMA1_Channel1->CFGR, DMA_CFGR1_CIRC);                                   // –ù–∞—Å—Ç—Ä–æ–∏–º DMA –≤ Circular mode
+    MODIFY_REG(DMA1_Channel1->CFGR, DMA_CFGR1_PSIZE, 0b01 << DMA_CFGR1_PSIZE_Pos);  // –†–∞–∑–º–µ—Ä –¥–∞–Ω–Ω—ã—Ö –ø–µ—Ä–∏—Ñ–µ—Ä–∏–π–Ω–æ–≥–æ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–∞ 16 –±–∏—Ç
+    MODIFY_REG(DMA1_Channel1->CFGR, DMA_CFGR1_MSIZE, 0b01 << DMA_CFGR1_MSIZE_Pos);  // –†–∞–∑–º–µ—Ä –¥–∞–Ω–Ω—ã—Ö –≤ –ø–∞–º—è—Ç–∏ 16 –±–∏—Ç
+    SET_BIT(DMA1_Channel1->CFGR, DMA_CFGR1_TCIE);                                   // –í–∫–ª—é—á–∏–º –ø—Ä–µ—Ä—ã–≤–∞–Ω–∏–µ –ø–æ –ø–æ–ª–Ω–æ–π –ø–µ—Ä–µ–¥–∞—á–µ
+    CLEAR_BIT(DMA1_Channel1->CFGR, DMA_CFGR1_HTIE);                                 // –û—Ç–∫–ª—é—á–∏–º –ø—Ä–µ—Ä—ã–≤–∞–Ω–∏–µ –ø–æ –ø–æ–ª–æ–≤–∏–Ω–Ω–æ–π –ø–µ—Ä–µ–¥–∞—á–µ
+    SET_BIT(DMA1_Channel1->CFGR, DMA_CFGR1_TEIE);                                   // –í–∫–ª—é—á–∏–º –ø—Ä–µ—Ä—ã–≤–∞–Ω–∏–µ –ø–æ –æ—à–∏–±–∫–µ –ø–µ—Ä–µ–¥–∞—á–∏.
+    SET_BIT(DMA1_Channel1->CFGR, DMA_CFGR1_MINC);                                   // –í–∫–ª—é—á–∏–º –∏–Ω–∫—Ä–µ–º–µ–Ω—Ç–∏—Ä–æ–≤–∞–Ω–∏–µ –ø–∞–º—è—Ç–∏
+    SET_BIT(DMA1_Channel1->CFGR, DMA_CFGR1_EN);                                     // DMA ON
     NVIC_EnableIRQ(DMA1_Channel1_IRQn);
 
-    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_ADC1); //ß£ß‹ß›ßßÈß÷ßﬂß⁄ß÷ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ßÒ ADC1.
-    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_GPIOA); //ß£ß‹ß›ßßÈß÷ßﬂß⁄ß÷ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ßÒ ß·ß‡ß‚ß‰ß— ß°.
+    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_ADC1);   // –í–∫–ª—é—á–µ–Ω–∏–µ —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏—è ADC1.
+    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_GPIOA);  // –í–∫–ª—é—á–µ–Ω–∏–µ —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏—è –ø–æ—Ä—Ç–∞ –ê.
 
-    /*ßØß—ß„ß‰ß‚ß‡ß€ß‹ß— ßﬂß‡ßÿß‹ß⁄ PA1 ß⁄ PA2 ßﬂß— ß—ßﬂß—ß›ß‡ß‘ß‡ß”ßÌß€ ß”ßÁß‡ß’*/
+    /*–ù–∞—Å—Ç—Ä–æ–π–∫–∞ –Ω–æ–∂–∫–∏ PA1 –∏ PA2 –Ω–∞ –∞–Ω–∞–ª–æ–≥–æ–≤—ã–π –≤—Ö–æ–¥*/
     /*Pin PA1 - Analog*/
     MODIFY_REG(GPIOA->CFGLR, GPIO_CFGLR_CNF1, 0b00 << GPIO_CFGLR_CNF1_Pos);
     MODIFY_REG(GPIOA->CFGLR, GPIO_CFGLR_MODE1, 0b00 << GPIO_CFGLR_MODE1_Pos);
@@ -382,94 +384,90 @@ void RVMSIS_ADC_DMA_init(void) {
     MODIFY_REG(GPIOA->CFGLR, GPIO_CFGLR_CNF2, 0b00 << GPIO_CFGLR_CNF2_Pos);
     MODIFY_REG(GPIOA->CFGLR, GPIO_CFGLR_MODE2, 0b00 << GPIO_CFGLR_MODE2_Pos);
 
-    //ß±ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ß÷ ß·ß‡ ß°ß∏ß±: ß‚ß÷ß‘ßÂß›ßÒß‚ßﬂßÌß÷ ß‹ß—ßﬂß—ß›ßÌ (ß”ß‹ß›/ß”ßÌß‹ß›)
-    CLEAR_BIT(ADC1->CTLR1, ADC_EOCIE);//EOC interrupt enabled/disabled. An interrupt is generated when the EOC bit is set
+    // –ü—Ä–µ—Ä—ã–≤–∞–Ω–∏–µ –ø–æ –ê–¶–ü: —Ä–µ–≥—É–ª—è—Ä–Ω—ã–µ –∫–∞–Ω–∞–ª—ã (–≤–∫–ª/–≤—ã–∫–ª)
+    CLEAR_BIT(ADC1->CTLR1, ADC_EOCIE);  // EOC interrupt enabled/disabled. An interrupt is generated when the EOC bit is set
 
-    //ß±ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ß÷ ß·ß‡ ß°ß∏ß±: analog watchdog (ß”ß‹ß›/ß”ßÌß‹ß›)
-    CLEAR_BIT(ADC1->CTLR1, ADC_AWDIE);//Analog watchdog interrupt disabled
+    // –ü—Ä–µ—Ä—ã–≤–∞–Ω–∏–µ –ø–æ –ê–¶–ü: analog watchdog (–≤–∫–ª/–≤—ã–∫–ª)
+    CLEAR_BIT(ADC1->CTLR1, ADC_AWDIE);  // Analog watchdog interrupt disabled
 
-    //ß±ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ß÷ ß·ß‡ ß°ß∏ß±: ß⁄ßﬂßÿß÷ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂßﬂßÌß÷ ß‹ß—ßﬂß—ß›ßÌ (ß”ß‹ß›/ß”ßÌß‹ß›)
-    CLEAR_BIT(ADC1->CTLR1, ADC_JEOCIE);//JEOC interrupt disabled
+    // –ü—Ä–µ—Ä—ã–≤–∞–Ω–∏–µ –ø–æ –ê–¶–ü: –∏–Ω–∂–µ–∫—Ç–∏—Ä–æ–≤–∞–Ω–Ω—ã–µ –∫–∞–Ω–∞–ª—ã (–≤–∫–ª/–≤—ã–∫–ª)
+    CLEAR_BIT(ADC1->CTLR1, ADC_JEOCIE);  // JEOC interrupt disabled
 
-    SET_BIT(ADC1->CTLR1, ADC_SCAN); //Scan mode enabled
+    SET_BIT(ADC1->CTLR1, ADC_SCAN);  // Scan mode enabled
 
-    /* ß±ß‚ß⁄ßﬁß÷ßÈß—ßﬂß⁄ß÷:
-     * ß±ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ß÷ EOC ß⁄ß›ß⁄ JEOC ß‘ß÷ßﬂß÷ß‚ß⁄ß‚ßÂß÷ß‰ß„ßÒ ß‰ß‡ß›ßÓß‹ß‡ ß” ß‹ß‡ßﬂßËß÷ ß·ß‚ß÷ß‡ß“ß‚ß—ßŸß‡ß”ß—ßﬂß⁄ßÒ ß·ß‡ß„ß›ß÷ß’ßﬂß÷ß‘ß‡ ß‹ß—ßﬂß—ß›ß—,
-     * ß÷ß„ß›ß⁄ ßÂß„ß‰ß—ßﬂß‡ß”ß›ß÷ßﬂ ß„ß‡ß‡ß‰ß”ß÷ß‰ß„ß‰ß”ßÂßßÎß⁄ß€ ß“ß⁄ß‰ EOCIE ß⁄ß›ß⁄ JEOCIE.*/
+    /* –ü—Ä–∏–º–µ—á–∞–Ω–∏–µ:
+     * –ü—Ä–µ—Ä—ã–≤–∞–Ω–∏–µ EOC –∏–ª–∏ JEOC –≥–µ–Ω–µ—Ä–∏—Ä—É–µ—Ç—Å—è —Ç–æ–ª—å–∫–æ –≤ –∫–æ–Ω—Ü–µ –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏—è –ø–æ—Å–ª–µ–¥–Ω–µ–≥–æ –∫–∞–Ω–∞–ª–∞,
+     * –µ—Å–ª–∏ —É—Å—Ç–∞–Ω–æ–≤–ª–µ–Ω —Å–æ–æ—Ç–≤–µ—Ç—Å—Ç–≤—É—é—â–∏–π –±–∏—Ç EOCIE –∏–ª–∏ JEOCIE.*/
 
-    CLEAR_BIT(ADC1->CTLR1, ADC_AWDSGL); //Analog watchdog enabled on all channels
-    CLEAR_BIT(ADC1->CTLR1, ADC_JAUTO); //Automatic injected group conversion disabled
-    CLEAR_BIT(ADC1->CTLR1, ADC_DISCEN); //Discontinuous mode on regular channels disabled
-    CLEAR_BIT(ADC1->CTLR1, ADC_JDISCEN); //Discontinuous mode on injected channels disabled
-    //MODIFY_REG(ADC1->CTLR1, ADC_DUALMOD, 0b0110 << ADC_DUALMOD_Pos); //0110: Regular simultaneous mode only
-    CLEAR_BIT(ADC1->CTLR1, ADC_JAWDEN);//Analog watchdog disabled on injected channels
-    CLEAR_BIT(ADC1->CTLR1, ADC_AWDEN); //Analog watchdog disabled on regular channels
+    CLEAR_BIT(ADC1->CTLR1, ADC_AWDSGL);   // Analog watchdog enabled on all channels
+    CLEAR_BIT(ADC1->CTLR1, ADC_JAUTO);    // Automatic injected group conversion disabled
+    CLEAR_BIT(ADC1->CTLR1, ADC_DISCEN);   // Discontinuous mode on regular channels disabled
+    CLEAR_BIT(ADC1->CTLR1, ADC_JDISCEN);  // Discontinuous mode on injected channels disabled
+    // MODIFY_REG(ADC1->CTLR1, ADC_DUALMOD, 0b0110 << ADC_DUALMOD_Pos); //0110: Regular simultaneous mode only
+    CLEAR_BIT(ADC1->CTLR1, ADC_JAWDEN);  // Analog watchdog disabled on injected channels
+    CLEAR_BIT(ADC1->CTLR1, ADC_AWDEN);   // Analog watchdog disabled on regular channels
 
-    //Control register 2 CTLR2
-    SET_BIT(ADC1->CTLR2, ADC_ADON);//ß©ß—ß·ßÂß„ß‰ß⁄ß‰ßÓ ß°ß∏ß±
+    // Control register 2 CTLR2
+    SET_BIT(ADC1->CTLR2, ADC_ADON);  // –ó–∞–ø—É—Å—Ç–∏—Ç—å –ê–¶–ü
 
-    /* ß±ß‚ß⁄ßﬁß÷ßÈß—ßﬂß⁄ß÷:
-     * ß¶ß„ß›ß⁄ ß” ßÔß‰ß‡ß‰ ßÿß÷ ßﬁß‡ßﬁß÷ßﬂß‰ ß⁄ßŸßﬁß÷ßﬂßÒß÷ß‰ß„ßÒ ß‹ß—ß‹ß‡ß€-ß›ß⁄ß“ß‡ ß’ß‚ßÂß‘ß‡ß€ ß“ß⁄ß‰ ß” ßÔß‰ß‡ßﬁ ß‚ß÷ß‘ß⁄ß„ß‰ß‚ß÷,
-     * ß‹ß‚ß‡ßﬁß÷ ADON, ß‰ß‡ ß‹ß‡ßﬂß”ß÷ß‚ß„ß⁄ßÒ ßﬂß÷ ßŸß—ß·ßÂß„ß‹ß—ß÷ß‰ß„ßÒ.
-     * ßøß‰ß‡ ß„ß’ß÷ß›ß—ßﬂß‡ ß’ß›ßÒ ß·ß‚ß÷ß’ß‡ß‰ß”ß‚ß—ßÎß÷ßﬂß⁄ßÒ ß‡ßÍß⁄ß“ß‡ßÈßﬂß‡ß‘ß‡ ß·ß‚ß÷ß‡ß“ß‚ß—ßŸß‡ß”ß—ßﬂß⁄ßÒ.*/
+    /* –ü—Ä–∏–º–µ—á–∞–Ω–∏–µ:
+     * –ï—Å–ª–∏ –≤ —ç—Ç–æ—Ç –∂–µ –º–æ–º–µ–Ω—Ç –∏–∑–º–µ–Ω—è–µ—Ç—Å—è –∫–∞–∫–æ–π-–ª–∏–±–æ –¥—Ä—É–≥–æ–π –±–∏—Ç –≤ —ç—Ç–æ–º —Ä–µ–≥–∏—Å—Ç—Ä–µ,
+     * –∫—Ä–æ–º–µ ADON, —Ç–æ –∫–æ–Ω–≤–µ—Ä—Å–∏—è –Ω–µ –∑–∞–ø—É—Å–∫–∞–µ—Ç—Å—è.
+     * –≠—Ç–æ —Å–¥–µ–ª–∞–Ω–æ –¥–ª—è –ø—Ä–µ–¥–æ—Ç–≤—Ä–∞—â–µ–Ω–∏—è –æ—à–∏–±–æ—á–Ω–æ–≥–æ –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏—è.*/
 
-    SET_BIT(ADC1->CTLR2, ADC_CONT); //Continuous conversion mode(ßﬂß÷ß·ß‚ß÷ß‚ßÌß”ßﬂßÌß÷ ß·ß‚ß÷ß‡ß“ß‚ß—ßŸß‡ß”ß—ßﬂß⁄ßÒ)
-    SET_BIT(ADC1->CTLR2, ADC_CAL); //Enable calibration
-    /*ß±ß‚ß⁄ßﬁß÷ßÈß—ßﬂß⁄ß÷:
-     * ßøß‰ß‡ß‰ ß“ß⁄ß‰ ßÂß„ß‰ß—ßﬂß—ß”ß›ß⁄ß”ß—ß÷ß‰ß„ßÒ ß·ß‚ß‡ß‘ß‚ß—ßﬁßﬁß‡ß€ ß’ß›ßÒ ßŸß—ß·ßÂß„ß‹ß— ß‹ß—ß›ß⁄ß“ß‚ß‡ß”ß‹ß⁄.
-     * ß∞ßﬂ ß„ß“ß‚ß—ß„ßÌß”ß—ß÷ß‰ß„ßÒ ß—ß·ß·ß—ß‚ß—ß‰ßﬂß‡ ß·ß‡ß„ß›ß÷ ßŸß—ß”ß÷ß‚ßÍß÷ßﬂß⁄ßÒ ß‹ß—ß›ß⁄ß“ß‚ß‡ß”ß‹ß⁄.*/
+    SET_BIT(ADC1->CTLR2, ADC_CONT);  // Continuous conversion mode(–Ω–µ–ø—Ä–µ—Ä—ã–≤–Ω—ã–µ –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏—è)
+    SET_BIT(ADC1->CTLR2, ADC_CAL);   // Enable calibration
+    /*–ü—Ä–∏–º–µ—á–∞–Ω–∏–µ:
+     * –≠—Ç–æ—Ç –±–∏—Ç —É—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ—Ç—Å—è –ø—Ä–æ–≥—Ä–∞–º–º–æ–π –¥–ª—è –∑–∞–ø—É—Å–∫–∞ –∫–∞–ª–∏–±—Ä–æ–≤–∫–∏.
+     * –û–Ω —Å–±—Ä–∞—Å—ã–≤–∞–µ—Ç—Å—è –∞–ø–ø–∞—Ä–∞—Ç–Ω–æ –ø–æ—Å–ª–µ –∑–∞–≤–µ—Ä—à–µ–Ω–∏—è –∫–∞–ª–∏–±—Ä–æ–≤–∫–∏.*/
 
     while (READ_BIT(ADC1->CTLR2, ADC_CAL));
-    //ß±ß‡ß’ß‡ßÿß’ß÷ßﬁ ß‡ß‹ß‡ßﬂßÈß—ßﬂß⁄ßÒ ß‹ß—ß›ß⁄ß“ß‚ß‡ß”ß‹ß⁄
-    //Delay_ms(10);
+    // –ü–æ–¥–æ–∂–¥–µ–º –æ–∫–æ–Ω—á–∞–Ω–∏—è –∫–∞–ª–∏–±—Ä–æ–≤–∫–∏
+    // Delay_ms(10);
 
-    SET_BIT(ADC1->CTLR2, ADC_DMA);//DMA ß”ß‹ß›ßßÈß÷ßﬂ
-    CLEAR_BIT(ADC1->CTLR2, ADC_ALIGN); //ß£ßÌß‚ß—ß”ßﬂß⁄ß”ß—ßﬂß⁄ß÷ ß·ß‡ ß·ß‚ß—ß”ß‡ßﬁßÂ ß‹ß‚ß—ß
-    MODIFY_REG(ADC1->CTLR2, ADC_EXTSEL, 0b111 << ADC_EXTSEL_Pos); //ß©ß—ß·ßÂß„ß‹ß—ß‰ßÓ ß·ß‚ß÷ß‡ß“ß‚ß—ßŸß‡ß”ß—ßﬂß⁄ß÷ ß·ß‚ß‡ß‘ß‚ß—ßﬁßﬁßﬂß‡
-    CLEAR_BIT(ADC1->CTLR2, ADC_EXTTRIG); //Conversion on external event disabled
-    //SET_BIT(ADC1->CTLR2, ADC_SWSTART); //ßØß—ßÈß—ß‰ßÓ ß·ß‚ß÷ß‡ß“ß‚ß—ßŸß‡ß”ß—ßﬂß⁄ß÷
-    //SET_BIT(ADC1->CTLR2, ADC_TSVREFE);//Temperature sensor and VREFINT channel enabled
+    SET_BIT(ADC1->CTLR2, ADC_DMA);                                 // DMA –≤–∫–ª—é—á–µ–Ω
+    CLEAR_BIT(ADC1->CTLR2, ADC_ALIGN);                             // –í—ã—Ä–∞–≤–Ω–∏–≤–∞–Ω–∏–µ –ø–æ –ø—Ä–∞–≤–æ–º—É –∫—Ä–∞—é
+    MODIFY_REG(ADC1->CTLR2, ADC_EXTSEL, 0b111 << ADC_EXTSEL_Pos);  // –ó–∞–ø—É—Å–∫–∞—Ç—å –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏–µ –ø—Ä–æ–≥—Ä–∞–º–º–Ω–æ
+    CLEAR_BIT(ADC1->CTLR2, ADC_EXTTRIG);                           // Conversion on external event disabled
+    // SET_BIT(ADC1->CTLR2, ADC_SWSTART); //–ù–∞—á–∞—Ç—å –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏–µ
+    // SET_BIT(ADC1->CTLR2, ADC_TSVREFE);//Temperature sensor and VREFINT channel enabled
 
     // 12.3.5 ADCx Sample Time Configuration Register 2 (ADCx_SAMPTR2) (x=1/2)
-    MODIFY_REG(ADC1->SAMPTR2, ADC_SMP1, 0b111 << ADC_SMP1_Pos);//239.5 cycles
-    MODIFY_REG(ADC1->SAMPTR2, ADC_SMP0, 0b111 << ADC_SMP0_Pos);//239.5 cycles
-    //MODIFY_REG(ADC1->SAMPTR2, ADC_SMP2, 0b111 << ADC_SMP2_Pos);//239.5 cycles
-    //MODIFY_REG(ADC1->SAMPTR2, ADC_SMP1, 0b111 << ADC_SMP1_Pos); //239.5 cycles
-    //MODIFY_REG(ADC1->SAMPTR1, ADC_SMP17, 0b111 << ADC_SMP17_Pos); //239.5 cycles
+    MODIFY_REG(ADC1->SAMPTR2, ADC_SMP1, 0b111 << ADC_SMP1_Pos);  // 239.5 cycles
+    MODIFY_REG(ADC1->SAMPTR2, ADC_SMP0, 0b111 << ADC_SMP0_Pos);  // 239.5 cycles
+    // MODIFY_REG(ADC1->SAMPTR2, ADC_SMP2, 0b111 << ADC_SMP2_Pos);//239.5 cycles
+    // MODIFY_REG(ADC1->SAMPTR2, ADC_SMP1, 0b111 << ADC_SMP1_Pos); //239.5 cycles
+    // MODIFY_REG(ADC1->SAMPTR1, ADC_SMP17, 0b111 << ADC_SMP17_Pos); //239.5 cycles
 
-    //12.3.9 ADCx Regular Channel Sequence Register1 (ADCx_RSQR1) (x=1/2)
-    MODIFY_REG(ADC1->RSQR1, ADC_L, 0b0000 << ADC_L_Pos);//1 ß·ß‚ß÷ß‡ß“ß‚ß—ßŸß‡ß”ß—ßﬂß⁄ß÷
+    // 12.3.9 ADCx Regular Channel Sequence Register1 (ADCx_RSQR1) (x=1/2)
+    MODIFY_REG(ADC1->RSQR1, ADC_L, 0b0000 << ADC_L_Pos);  // 1 –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏–µ
 
-    //12.3.11 ADCx Regular Channel Sequence Register 3 (ADCx_RSQR3) (x=1/2)
+    // 12.3.11 ADCx Regular Channel Sequence Register 3 (ADCx_RSQR3) (x=1/2)
     MODIFY_REG(ADC1->RSQR3, ADC_SQ1, 0 << ADC_SQ1_Pos);
-    //MODIFY_REG(ADC1->RSQR3, ADC_SQ2, 0 << ADC_SQ2_Pos);
-    //MODIFY_REG(ADC1->RSQR3, ADC_SQ2, 1 << ADC_SQ2_Pos);
-    //NVIC_EnableIRQ(ADC1_2_IRQn); //ß≤ß—ßŸß‚ß÷ßÍß⁄ß‰ßÓ ß·ß‚ß÷ß‚ßÌß”ß—ßﬂß⁄ßÒ ß·ß‡ ß°ß∏ß±
+    // MODIFY_REG(ADC1->RSQR3, ADC_SQ2, 0 << ADC_SQ2_Pos);
+    // MODIFY_REG(ADC1->RSQR3, ADC_SQ2, 1 << ADC_SQ2_Pos);
+    // NVIC_EnableIRQ(ADC1_2_IRQn); //–†–∞–∑—Ä–µ—à–∏—Ç—å –ø—Ä–µ—Ä—ã–≤–∞–Ω–∏—è –ø–æ –ê–¶–ü
 
-    //SET_BIT(ADC1->CTLR2, ADC_SWSTART); //ßØß—ßÈß—ß‰ßÓ ß·ß‚ß÷ß‡ß“ß‚ß—ßŸß‡ß”ß—ßﬂß⁄ß÷. ßØß÷ ßﬂßÂßÿßﬂß‡ ßŸß—ß·ßÂß„ß‹ß—ß‰ßÓ, ß÷ß„ß›ß⁄ Continuous conversion mode(ßﬂß÷ß·ß‚ß÷ß‚ßÌß”ßﬂßÌß÷ ß·ß‚ß÷ß‡ß“ß‚ß—ßŸß‡ß”ß—ßﬂß⁄ßÒ) ß”ß‹ß›ßßÈß÷ßﬂ
-
+    // SET_BIT(ADC1->CTLR2, ADC_SWSTART); //–ù–∞—á–∞—Ç—å –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏–µ. –ù–µ –Ω—É–∂–Ω–æ –∑–∞–ø—É—Å–∫–∞—Ç—å, –µ—Å–ª–∏ Continuous conversion mode(–Ω–µ–ø—Ä–µ—Ä—ã–≤–Ω—ã–µ –ø—Ä–µ–æ–±—Ä–∞–∑–æ–≤–∞–Ω–∏—è) –≤–∫–ª—é—á–µ–Ω
 }
 
 __WEAK void ADC1_2_IRQHandler(void) {
     if (READ_BIT(ADC1->STATR, ADC_EOC)) {
-        ADC1->IDATAR1; //ßπß⁄ß‰ß—ß÷ßﬁ ß‹ß—ßﬂß—ß›, ßÈß‰ß‡ß“ ß„ß“ß‚ß‡ß„ß⁄ß‰ßÓ ßÊß›ß—ß‘
+        ADC1->IDATAR1;  // –ß–∏—Ç–∞–µ–º –∫–∞–Ω–∞–ª, —á—Ç–æ–± —Å–±—Ä–æ—Å–∏—Ç—å —Ñ–ª–∞–≥
     }
-
 }
 __WEAK void DMA1_Channel1_IRQHandler(void) {
     if (READ_BIT(DMA1->INTFR, DMA_TCIF1)) {
-        SET_BIT(DMA1->INTFCR, DMA_CGIF1); //ß≥ß“ß‚ß‡ß„ß⁄ßﬁ ß‘ß›ß‡ß“ß—ß›ßÓßﬂßÌß€ ßÊß›ß—ß‘.
-        /*ß©ß’ß÷ß„ßÓ ßﬁß‡ßÿßﬂß‡ ß·ß⁄ß„ß—ß‰ßÓ ß‹ß‡ß’*/
+        SET_BIT(DMA1->INTFCR, DMA_CGIF1);  // –°–±—Ä–æ—Å–∏–º –≥–ª–æ–±–∞–ª—å–Ω—ã–π —Ñ–ª–∞–≥.
+        /*–ó–¥–µ—Å—å –º–æ–∂–Ω–æ –ø–∏—Å–∞—Ç—å –∫–æ–¥*/
 
     } else if (READ_BIT(DMA1->INTFR, DMA_TEIF1)) {
-        /*ß©ß’ß÷ß„ßÓ ßﬁß‡ßÿßﬂß‡ ß„ß’ß÷ß›ß—ß‰ßÓ ß‹ß—ß‹ß‡ß€-ß‰ß‡ ß‡ß“ß‚ß—ß“ß‡ß‰ßÈß⁄ß‹ ß‡ßÍß⁄ß“ß‡ß‹*/
-        SET_BIT(DMA1->INTFCR, DMA_CGIF1); //ß≥ß“ß‚ß‡ß„ß⁄ßﬁ ß‘ß›ß‡ß“ß—ß›ßÓßﬂßÌß€ ßÊß›ß—ß‘.
+        /*–ó–¥–µ—Å—å –º–æ–∂–Ω–æ —Å–¥–µ–ª–∞—Ç—å –∫–∞–∫–æ–π-—Ç–æ –æ–±—Ä–∞–±–æ—Ç—á–∏–∫ –æ—à–∏–±–æ–∫*/
+        SET_BIT(DMA1->INTFCR, DMA_CGIF1);  // –°–±—Ä–æ—Å–∏–º –≥–ª–æ–±–∞–ª—å–Ω—ã–π —Ñ–ª–∞–≥.
     }
 }
 
-
-
-/*================================= ßØß°ß≥ß¥ß≤ß∞ß´ß¨ß° I2C ============================================*/
+/*================================= –ù–ê–°–¢–†–û–ô–ö–ê I2C ============================================*/
 
 /**
  ***************************************************************************************
@@ -478,259 +476,253 @@ __WEAK void DMA1_Channel1_IRQHandler(void) {
  */
 
 void RVMSIS_I2C_Reset(void) {
-    //ß≥ß“ß‚ß‡ß„ ßﬂß—ß„ß‰ß‚ß‡ß÷ß‹ I2C
-    //19.12.1 I2C Control Register (I2Cx_CTLR1) (x=1/2)
-    SET_BIT(I2C1->CTLR1, I2C_CTLR1_SWRST); //: I2C Peripheral not under reset
+    // –°–±—Ä–æ—Å –Ω–∞—Å—Ç—Ä–æ–µ–∫ I2C
+    // 19.12.1 I2C Control Register (I2Cx_CTLR1) (x=1/2)
+    SET_BIT(I2C1->CTLR1, I2C_CTLR1_SWRST);  //: I2C Peripheral not under reset
     while (READ_BIT(I2C1->CTLR1, I2C_CTLR1_SWRST) == 0);
-    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_SWRST); //: I2C Peripheral not under reset
+    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_SWRST);  //: I2C Peripheral not under reset
     while (READ_BIT(I2C1->CTLR1, I2C_CTLR1_SWRST));
-    /* ß±ß‚ß⁄ßﬁß÷ßÈß—ßﬂß⁄ß÷: ßøß‰ß‡ß‰ ß“ß⁄ß‰ ßﬁß‡ßÿßﬂß‡ ß⁄ß„ß·ß‡ß›ßÓßŸß‡ß”ß—ß‰ßÓ ß’ß›ßÒ ß·ß‡ß”ß‰ß‡ß‚ßﬂß‡ß€ ß⁄ßﬂß⁄ßËß⁄ß—ß›ß⁄ßŸß—ßËß⁄ß⁄
-     * ß·ß÷ß‚ß⁄ßÊß÷ß‚ß⁄ß€ßﬂß‡ß‘ß‡ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß— ß·ß‡ß„ß›ß÷ ß‡ßÍß⁄ß“ß‹ß⁄ ß⁄ß›ß⁄ ßŸß—ß“ß›ß‡ß‹ß⁄ß‚ß‡ß”ß—ßﬂßﬂß‡ß‘ß‡ ß„ß‡ß„ß‰ß‡ßÒßﬂß⁄ßÒ.
-     * ßØß—ß·ß‚ß⁄ßﬁß÷ß‚, ß÷ß„ß›ß⁄ ß“ß⁄ß‰ BUSY ßÂß„ß‰ß—ßﬂß‡ß”ß›ß÷ßﬂ ß⁄ ß‡ß„ß‰ß—ß÷ß‰ß„ßÒ ßŸß—ß“ß›ß‡ß‹ß⁄ß‚ß‡ß”ß—ßﬂßﬂßÌßﬁ ß⁄ßŸ-ßŸß— ß„ß“ß‡ßÒ ßﬂß— ßÍß⁄ßﬂß÷,
-     * ß“ß⁄ß‰ SWRST ßﬁß‡ßÿßﬂß‡ ß⁄ß„ß·ß‡ß›ßÓßŸß‡ß”ß—ß‰ßÓ ß’ß›ßÒ ß”ßÌßÁß‡ß’ß— ß⁄ßŸ ßÔß‰ß‡ß‘ß‡ ß„ß‡ß„ß‰ß‡ßÒßﬂß⁄ßÒ.*/
+    /* –ü—Ä–∏–º–µ—á–∞–Ω–∏–µ: –≠—Ç–æ—Ç –±–∏—Ç –º–æ–∂–Ω–æ –∏—Å–ø–æ–ª—å–∑–æ–≤–∞—Ç—å –¥–ª—è –ø–æ–≤—Ç–æ—Ä–Ω–æ–π –∏–Ω–∏—Ü–∏–∞–ª–∏–∑–∞—Ü–∏–∏
+     * –ø–µ—Ä–∏—Ñ–µ—Ä–∏–π–Ω–æ–≥–æ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–∞ –ø–æ—Å–ª–µ –æ—à–∏–±–∫–∏ –∏–ª–∏ –∑–∞–±–ª–æ–∫–∏—Ä–æ–≤–∞–Ω–Ω–æ–≥–æ —Å–æ—Å—Ç–æ—è–Ω–∏—è.
+     * –ù–∞–ø—Ä–∏–º–µ—Ä, –µ—Å–ª–∏ –±–∏—Ç BUSY —É—Å—Ç–∞–Ω–æ–≤–ª–µ–Ω –∏ –æ—Å—Ç–∞–µ—Ç—Å—è –∑–∞–±–ª–æ–∫–∏—Ä–æ–≤–∞–Ω–Ω—ã–º –∏–∑-–∑–∞ —Å–±–æ—è –Ω–∞ —à–∏–Ω–µ,
+     * –±–∏—Ç SWRST –º–æ–∂–Ω–æ –∏—Å–ø–æ–ª—å–∑–æ–≤–∞—Ç—å –¥–ª—è –≤—ã—Ö–æ–¥–∞ –∏–∑ —ç—Ç–æ–≥–æ —Å–æ—Å—Ç–æ—è–Ω–∏—è.*/
 }
 
 /**
  *************************************************************************************
- *  @breif ß∂ßÂßﬂß‹ßËß⁄ßÒ ß⁄ßﬂß⁄ßËß⁄ß—ß›ß⁄ßŸß—ßËß⁄ß⁄ ßÍß⁄ßﬂßÌ I2C1. Sm.
+ *  @breif –§—É–Ω–∫—Ü–∏—è –∏–Ω–∏—Ü–∏–∞–ª–∏–∑–∞—Ü–∏–∏ —à–∏–Ω—ã I2C1. Sm.
  *************************************************************************************
  */
 
 void RVMSIS_I2C1_Init(void) {
-    //ßØß—ß„ß‰ß‚ß‡ß€ß‹ß⁄ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ßÒ
-    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_GPIOC); //ß©ß—ß·ßÂß„ß‹ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ß÷ ß·ß‡ß‚ß‰ß— C
-    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_AFIO); //ß©ß—ß·ßÂß„ß‹ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ßÒ ß—ß›ßÓß‰ß÷ß‚ßﬂß—ß‰ß⁄ß”ßﬂßÌßÁ ßÊßÂßﬂß‹ßËß⁄ß€
-    SET_BIT(RCC->APB1PCENR, RCC_APB1Periph_I2C1); //ß©ß—ß·ßÂß„ß‹ ß‰ß—ß‹ß‰ß⁄ß‚ß‡ß”ß—ßﬂß⁄ßÒ I2C1
-    //SET_BIT(AFIO->PCFR1,AFIO_PCFR1_I2C1_REMAP); //ß£ß‹ß›ßßÈß⁄ßﬁ ß‚ß÷ßﬁß—ß·
+    // –ù–∞—Å—Ç—Ä–æ–π–∫–∏ —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏—è
+    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_GPIOC);  // –ó–∞–ø—É—Å–∫ —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏–µ –ø–æ—Ä—Ç–∞ C
+    SET_BIT(RCC->APB2PCENR, RCC_APB2Periph_AFIO);   // –ó–∞–ø—É—Å–∫ —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏—è –∞–ª—å—Ç–µ—Ä–Ω–∞—Ç–∏–≤–Ω—ã—Ö —Ñ—É–Ω–∫—Ü–∏–π
+    SET_BIT(RCC->APB1PCENR, RCC_APB1Periph_I2C1);   // –ó–∞–ø—É—Å–∫ —Ç–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏—è I2C1
+    // SET_BIT(AFIO->PCFR1,AFIO_PCFR1_I2C1_REMAP); //–í–∫–ª—é—á–∏–º —Ä–µ–º–∞–ø
 
-    //ßØß—ß„ß‰ß‚ß‡ß€ß‹ß⁄ ßﬂß‡ßÿß÷ß‹ SDA ß⁄ SCL
-    //PC1 SDA (I2C Data I/O) Alternate function open drain
-    MODIFY_REG(GPIOC->CFGLR, GPIO_CFGLR_CNF1, 0b11 << GPIO_CFGLR_CNF1_Pos);//Alternate function open drain
-    MODIFY_REG(GPIOC->CFGLR, GPIO_CFGLR_MODE1, 0b11 << GPIO_CFGLR_MODE1_Pos); //Maximum output speed 50 MHz
-    //PC2 SCL (I2C clock) Alternate function open drain
-    MODIFY_REG(GPIOC->CFGLR, GPIO_CFGLR_CNF2, 0b11 << GPIO_CFGLR_CNF2_Pos);//Alternate function open drain
-    MODIFY_REG(GPIOC->CFGLR, GPIO_CFGLR_MODE2, 0b11 << GPIO_CFGLR_MODE2_Pos); //Maximum output speed 50 MHz
+    // –ù–∞—Å—Ç—Ä–æ–π–∫–∏ –Ω–æ–∂–µ–∫ SDA –∏ SCL
+    // PC1 SDA (I2C Data I/O) Alternate function open drain
+    MODIFY_REG(GPIOC->CFGLR, GPIO_CFGLR_CNF1, 0b11 << GPIO_CFGLR_CNF1_Pos);    // Alternate function open drain
+    MODIFY_REG(GPIOC->CFGLR, GPIO_CFGLR_MODE1, 0b11 << GPIO_CFGLR_MODE1_Pos);  // Maximum output speed 50 MHz
+    // PC2 SCL (I2C clock) Alternate function open drain
+    MODIFY_REG(GPIOC->CFGLR, GPIO_CFGLR_CNF2, 0b11 << GPIO_CFGLR_CNF2_Pos);    // Alternate function open drain
+    MODIFY_REG(GPIOC->CFGLR, GPIO_CFGLR_MODE2, 0b11 << GPIO_CFGLR_MODE2_Pos);  // Maximum output speed 50 MHz
 
-    //19.12.1 I2C Control Register (I2Cx_CTLR1) (x=1/2)
+    // 19.12.1 I2C Control Register (I2Cx_CTLR1) (x=1/2)
     RVMSIS_I2C_Reset();
 
-    /*ßøß‰ß‡ ß”ß„ß÷ ß’ß›ßÒ ß⁄ßﬂß⁄ß‰ß— ßﬂß÷ ßﬂßÂßÿßﬂß‡. ß±ß‡ß„ß›ß÷ ß„ß“ß‚ß‡ß„ß— ß⁄ß‰ß—ß‹ ß“ßÂß’ß÷ß‰ ß” 0. */
-    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_ALERT); //Releases SMBA pin high.Alert Response Address Header followed by NACK
-    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_PEC); //No PEC transfer
-    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_POS); //ACK bit controls the (N)ACK of the current byte being received in the shift register
-    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_ACK); //No acknowledge returned
-    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_STOP); //No Stop generation
-    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_START); //No Start generation
-    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_NOSTRETCH); //Clock stretching enabled
-    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_ENGC); //General call disabled. Address 00h is NACKed.
-    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_ENPEC); //PEC calculation disabled
-    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_ENARP); //ARP disable
-    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_SMBTYPE); //SMBus Device
-    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_SMBUS); //I2C mode
+    /*–≠—Ç–æ –≤—Å–µ –¥–ª—è –∏–Ω–∏—Ç–∞ –Ω–µ –Ω—É–∂–Ω–æ. –ü–æ—Å–ª–µ —Å–±—Ä–æ—Å–∞ –∏—Ç–∞–∫ –±—É–¥–µ—Ç –≤ 0. */
+    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_ALERT);      // Releases SMBA pin high.Alert Response Address Header followed by NACK
+    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_PEC);        // No PEC transfer
+    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_POS);        // ACK bit controls the (N)ACK of the current byte being received in the shift register
+    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_ACK);        // No acknowledge returned
+    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_STOP);       // No Stop generation
+    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_START);      // No Start generation
+    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_NOSTRETCH);  // Clock stretching enabled
+    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_ENGC);       // General call disabled. Address 00h is NACKed.
+    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_ENPEC);      // PEC calculation disabled
+    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_ENARP);      // ARP disable
+    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_SMBTYPE);    // SMBus Device
+    CLEAR_BIT(I2C1->CTLR1, I2C_CTLR1_SMBUS);      // I2C mode
 
-    //19.12.2 I2C Control Register 2 (I2Cx_CTLR2) (x=1/2)
-    CLEAR_BIT(I2C1->CTLR2, I2C_CTLR2_LAST);//Next DMA EOT is not the last transfer
-    CLEAR_BIT(I2C1->CTLR2, I2C_CTLR2_DMAEN); //DMA requests disabled
-    CLEAR_BIT(I2C1->CTLR2, I2C_CTLR2_ITBUFEN); //TxE = 1 or RxNE = 1 does not generate any interrupt.
-    CLEAR_BIT(I2C1->CTLR2, I2C_CTLR2_ITEVTEN); //Event interrupt disabled
-    CLEAR_BIT(I2C1->CTLR2, I2C_CTLR2_ITERREN); //Error interrupt disabled
-    MODIFY_REG(I2C1->CTLR2, I2C_CTLR2_FREQ, 36 << I2C_CTLR2_FREQ_Pos); //f PCLK1 = 36 ßÆß‘ßË
+    // 19.12.2 I2C Control Register 2 (I2Cx_CTLR2) (x=1/2)
+    CLEAR_BIT(I2C1->CTLR2, I2C_CTLR2_LAST);                             // Next DMA EOT is not the last transfer
+    CLEAR_BIT(I2C1->CTLR2, I2C_CTLR2_DMAEN);                            // DMA requests disabled
+    CLEAR_BIT(I2C1->CTLR2, I2C_CTLR2_ITBUFEN);                          // TxE = 1 or RxNE = 1 does not generate any interrupt.
+    CLEAR_BIT(I2C1->CTLR2, I2C_CTLR2_ITEVTEN);                          // Event interrupt disabled
+    CLEAR_BIT(I2C1->CTLR2, I2C_CTLR2_ITERREN);                          // Error interrupt disabled
+    MODIFY_REG(I2C1->CTLR2, I2C_CTLR2_FREQ, 36 << I2C_CTLR2_FREQ_Pos);  // f PCLK1 = 36 –ú–≥—Ü
 
-    //19.12.3 I2C Address Register 1 (I2Cx_OADDR1) (x=1/2)
+    // 19.12.3 I2C Address Register 1 (I2Cx_OADDR1) (x=1/2)
     I2C1->OADDR1 = 0;
-    //19.12.4 I2C Address Register2 (I2Cx_OADDR2) (x=1/2)
+    // 19.12.4 I2C Address Register2 (I2Cx_OADDR2) (x=1/2)
     I2C1->OADDR2 = 0;
 
-    //19.12.8 I2C Clock Register (I2Cx_CKCFGR) (x=1/2)
-    CLEAR_BIT(I2C1->CKCFGR, I2C_CKCFGR_FS);//Standard mode I2C
-    //SET_BIT(I2C1->CKCFGR, I2C_CKCFGR_FS); //Fast mode I2C
+    // 19.12.8 I2C Clock Register (I2Cx_CKCFGR) (x=1/2)
+    CLEAR_BIT(I2C1->CKCFGR, I2C_CKCFGR_FS);  // Standard mode I2C
+    // SET_BIT(I2C1->CKCFGR, I2C_CKCFGR_FS); //Fast mode I2C
 
-    CLEAR_BIT(I2C1->CKCFGR, I2C_CKCFGR_DUTY);//Fm mode tlow/thigh = 2
-    //SET_BIT(I2C1->CCR, I2C_CCR_DUTY); //Fm mode tlow/thigh = 16/9 (see CCR)
+    CLEAR_BIT(I2C1->CKCFGR, I2C_CKCFGR_DUTY);  // Fm mode tlow/thigh = 2
+    // SET_BIT(I2C1->CCR, I2C_CCR_DUTY); //Fm mode tlow/thigh = 16/9 (see CCR)
 
-    //ß≤ß—ß„ßÈß÷ß‰ CCR. ß≥ßﬁß‡ß‰ß‚ß⁄ ß·ß‚ß⁄ßﬁß÷ß‚ßÌ ß‚ß—ß„ßÈß÷ß‰ß—
-    MODIFY_REG(I2C1->CKCFGR, I2C_CKCFGR_CCR, 180 << I2C_CKCFGR_CCR_Pos);//ß’ß›ßÒ Sm mode
-    //MODIFY_REG(I2C1->CKCFGR, I2C_CKCFGR_CCR, 30 << I2C_CKCFGR_CCR_Pos); //ß’ß›ßÒ Fm mode. DUTY 0.
-    //MODIFY_REG(I2C1->CKCFGR, I2C_CKCFGR_CCR, 4 << I2C_CKCFGR_CCR_Pos); //ß’ß›ßÒ Fm mode. DUTY 1.
+    // –†–∞—Å—á–µ—Ç CCR. –°–º–æ—Ç—Ä–∏ –ø—Ä–∏–º–µ—Ä—ã —Ä–∞—Å—á–µ—Ç–∞
+    MODIFY_REG(I2C1->CKCFGR, I2C_CKCFGR_CCR, 180 << I2C_CKCFGR_CCR_Pos);  // –¥–ª—è Sm mode
+    // MODIFY_REG(I2C1->CKCFGR, I2C_CKCFGR_CCR, 30 << I2C_CKCFGR_CCR_Pos); //–¥–ª—è Fm mode. DUTY 0.
+    // MODIFY_REG(I2C1->CKCFGR, I2C_CKCFGR_CCR, 4 << I2C_CKCFGR_CCR_Pos); //–¥–ª—è Fm mode. DUTY 1.
 
-    //19.12.9 I2C Rise Time Register (I2Cx_RTR) (x=1/2)
-    //MODIFY_REG(I2C1->RTR, I2C_RTR_TRISE, 37 << I2C_RTR_TRISE_Pos);//ß’ß›ßÒ Sm mode
-    //MODIFY_REG(I2C1->RTR, I2C_RTR_TRISE, 12 << I2C_RTR_TRISE_Pos); //ß’ß›ßÒ Fm mode
+    // 19.12.9 I2C Rise Time Register (I2Cx_RTR) (x=1/2)
+    // MODIFY_REG(I2C1->RTR, I2C_RTR_TRISE, 37 << I2C_RTR_TRISE_Pos);//–¥–ª—è Sm mode
+    // MODIFY_REG(I2C1->RTR, I2C_RTR_TRISE, 12 << I2C_RTR_TRISE_Pos); //–¥–ª—è Fm mode
 
-    SET_BIT(I2C1->CTLR1, I2C_CTLR1_PE); //I2C1 enable
+    SET_BIT(I2C1->CTLR1, I2C_CTLR1_PE);  // I2C1 enable
 }
 
 /**
  *************************************************************************************
- *  @breif ß∂ßÂßﬂß‹ßËß⁄ßÒ ß„ß‹ß—ßﬂß⁄ß‚ß‡ß”ß—ßﬂß⁄ßÒ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß— ß·ß‡ ßŸß—ß’ß—ßﬂßﬂß‡ßﬁßÂ 7-ß“ß⁄ß‰ßﬂß‡ßﬁßÂ ß—ß’ß‚ß÷ß„ßÂ
- *  @param  *I2C - ßÍß⁄ßﬂß— I2C
- *  @param  Adress_Device - ß°ß’ß‚ß÷ß„ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß—
- *  @retval  ß£ß‡ßŸß”ß‚ß—ßÎß—ß÷ß‰ ß„ß‰ß—ß‰ßÂß„ true - ß÷ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ß·ß‡ ßŸß—ß’ß—ßﬂßﬂß‡ßﬁßÂ ß—ß’ß‚ß÷ß„ßÂ ß‡ß‰ß‡ßŸß”ß—ß›ß‡ß„ßÓ,
- *           false - ß÷ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ß·ß‡ ßŸß—ß’ß—ßﬂßﬂß‡ßﬁßÂ ß—ß’ß‚ß÷ß„ßÂ ßﬂß÷ ß‡ß‰ß”ß÷ßÈß—ß÷ß‰
+ *  @breif –§—É–Ω–∫—Ü–∏—è —Å–∫–∞–Ω–∏—Ä–æ–≤–∞–Ω–∏—è —É—Å—Ç—Ä–æ–π—Å—Ç–≤–∞ –ø–æ –∑–∞–¥–∞–Ω–Ω–æ–º—É 7-–±–∏—Ç–Ω–æ–º—É –∞–¥—Ä–µ—Å—É
+ *  @param  *I2C - —à–∏–Ω–∞ I2C
+ *  @param  Adress_Device - –ê–¥—Ä–µ—Å —É—Å—Ç—Ä–æ–π—Å—Ç–≤–∞
+ *  @retval  –í–æ–∑–≤—Ä–∞—â–∞–µ—Ç —Å—Ç–∞—Ç—É—Å true - –µ—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –ø–æ –∑–∞–¥–∞–Ω–Ω–æ–º—É –∞–¥—Ä–µ—Å—É –æ—Ç–æ–∑–≤–∞–ª–æ—Å—å,
+ *           false - –µ—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –ø–æ –∑–∞–¥–∞–Ω–Ω–æ–º—É –∞–¥—Ä–µ—Å—É –Ω–µ –æ—Ç–≤–µ—á–∞–µ—Ç
  *************************************************************************************
  */
 bool RVMSIS_I2C_Adress_Device_Scan(I2C_TypeDef* I2C, uint8_t Adress_Device, uint32_t Timeout_ms) {
-
-    /*-------------------ß±ß‚ß‡ß”ß÷ß‚ß‹ß— ßŸß—ßﬂßÒß‰ß‡ß„ß‰ß⁄ ßÍß⁄ßﬂßÌ-------------------*/
+    /*-------------------–ü—Ä–æ–≤–µ—Ä–∫–∞ –∑–∞–Ω—è—Ç–æ—Å—Ç–∏ —à–∏–Ω—ã-------------------*/
     if (READ_BIT(I2C->STAR2, I2C_STAR2_BUSY)) {
-        //ß¶ß„ß›ß⁄ ßÍß⁄ßﬂß— ßŸß—ßﬂßÒß‰ß—
+        // –ï—Å–ª–∏ —à–∏–Ω–∞ –∑–∞–Ω—è—Ç–∞
 
         if ((READ_BIT(GPIOC->INDR, GPIO_INDR_IDR1)) && (READ_BIT(GPIOC->INDR, GPIO_INDR_IDR2))) {
-            //ß¶ß„ß›ß⁄ ß›ß⁄ßﬂß⁄ßÒ ßﬂß— ß„ß—ßﬁß‡ßﬁ ß’ß÷ß›ß÷ ß„ß”ß‡ß“ß‡ß’ßﬂß—, ß— BUSY ß”ß⁄ß„ß⁄ß‰
-            RVMSIS_I2C_Reset(); //ß‚ß÷ß„ß÷ß‰
-            RVMSIS_I2C1_Init(); //ß·ß‡ß”ß‰ß‡ß‚ßﬂß—ßÒ ß⁄ßﬂß⁄ßËß⁄ß—ß›ß⁄ßŸß—ßËß⁄ßÒ
+            // –ï—Å–ª–∏ –ª–∏–Ω–∏—è –Ω–∞ —Å–∞–º–æ–º –¥–µ–ª–µ —Å–≤–æ–±–æ–¥–Ω–∞, –∞ BUSY –≤–∏—Å–∏—Ç
+            RVMSIS_I2C_Reset();  // —Ä–µ—Å–µ—Ç
+            RVMSIS_I2C1_Init();  // –ø–æ–≤—Ç–æ—Ä–Ω–∞—è –∏–Ω–∏—Ü–∏–∞–ª–∏–∑–∞—Ü–∏—è
         }
 
         if (READ_BIT(I2C->STAR2, I2C_STAR2_MSL)) {
-            //ß¶ß„ß›ß⁄ ß„ß‰ß‡ß⁄ß‰ ß„ß‰ß—ß‰ßÂß„, ßÈß‰ß‡ ßﬁßÌ ß” ßﬁß—ß„ß‰ß÷ß‚ß÷
-            SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP); //ß∞ß‰ß·ß‚ß—ß”ß⁄ßﬁ ß„ß⁄ß‘ßﬂß—ß› STOP
+            // –ï—Å–ª–∏ —Å—Ç–æ–∏—Ç —Å—Ç–∞—Ç—É—Å, —á—Ç–æ –º—ã –≤ –º–∞—Å—Ç–µ—Ä–µ
+            SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Ç–ø—Ä–∞–≤–∏–º —Å–∏–≥–Ω–∞–ª STOP
         }
 
         if (I2C->CTLR1 != 1) {
-            //ß¶ß„ß›ß⁄ ß” CR1 ßÈß‰ß‡-ß‰ß‡ ß›ß⁄ßÍßﬂß÷ß÷, ß‰ß‡ ß·ß÷ß‚ß÷ßŸß—ß‘ß‚ßÂßŸß⁄ßﬁ I2C
+            // –ï—Å–ª–∏ –≤ CR1 —á—Ç–æ-—Ç–æ –ª–∏—à–Ω–µ–µ, —Ç–æ –ø–µ—Ä–µ–∑–∞–≥—Ä—É–∑–∏–º I2C
             CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_PE);
             SET_BIT(I2C->CTLR1, I2C_CTLR1_PE);
         }
 
         return false;
     }
-    /*-------------------ß±ß‚ß‡ß”ß÷ß‚ß‹ß— ßŸß—ßﬂßÒß‰ß‡ß„ß‰ß⁄ ßÍß⁄ßﬂßÌ-------------------*/
+    /*-------------------–ü—Ä–æ–≤–µ—Ä–∫–∞ –∑–∞–Ω—è—Ç–æ—Å—Ç–∏ —à–∏–Ω—ã-------------------*/
 
-    CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_POS); //ß¢ß⁄ß‰ ACK ßÂß·ß‚ß—ß”ß›ßÒß÷ß‰ (N)ACK ß‰ß÷ß‹ßÂßÎß÷ß‘ß‡ ß“ß—ß€ß‰ß—, ß·ß‚ß⁄ßﬂß⁄ßﬁß—ß÷ßﬁß‡ß‘ß‡ ß” ß„ß’ß”ß⁄ß‘ß‡ß”ß‡ßﬁ ß‚ß÷ß‘ß⁄ß„ß‰ß‚ß÷.
-    SET_BIT(I2C->CTLR1, I2C_CTLR1_START); //ß∞ß‰ß·ß‚ß—ß”ß›ßÒß÷ßﬁ ß„ß⁄ß‘ßﬂß—ß› START
+    CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_POS);  // –ë–∏—Ç ACK —É–ø—Ä–∞–≤–ª—è–µ—Ç (N)ACK —Ç–µ–∫—É—â–µ–≥–æ –±–∞–π—Ç–∞, –ø—Ä–∏–Ω–∏–º–∞–µ–º–æ–≥–æ –≤ —Å–¥–≤–∏–≥–æ–≤–æ–º —Ä–µ–≥–∏—Å—Ç—Ä–µ.
+    SET_BIT(I2C->CTLR1, I2C_CTLR1_START);  // –û—Ç–ø—Ä–∞–≤–ª—è–µ–º —Å–∏–≥–Ω–∞–ª START
 
     Timeout_counter_ms = Timeout_ms;
     while (READ_BIT(I2C->STAR1, I2C_STAR1_SB) == 0) {
-        //ß∞ßÿß⁄ß’ß—ß÷ßﬁ ß’ß‡ ßﬁß‡ßﬁß÷ßﬂß‰ß—, ß·ß‡ß‹ß— ßﬂß÷ ß„ß‚ß—ß“ß‡ß‰ß—ß÷ß‰ Start condition generated
+        // –û–∂–∏–¥–∞–µ–º –¥–æ –º–æ–º–µ–Ω—Ç–∞, –ø–æ–∫–∞ –Ω–µ —Å—Ä–∞–±–æ—Ç–∞–µ—Ç Start condition generated
 
         if (!Timeout_counter_ms) {
             return false;
         }
-
     }
-    //ß£ßØß™ßÆß°ßØß™ß¶!
-    /* ß¢ß⁄ß‰ I2C_SR1_SB ß‡ßÈß⁄ßÎß—ß÷ß‰ß„ßÒ ß·ß‚ß‡ß‘ß‚ß—ßﬁßﬁßﬂß‡ ß·ßÂß‰ß÷ßﬁ ßÈß‰ß÷ßﬂß⁄ßÒ ß‚ß÷ß‘ß⁄ß„ß‰ß‚ß— SR1 ß„ ß·ß‡ß„ß›ß÷ß’ßÂßßÎß÷ß€ ßŸß—ß·ß⁄ß„ßÓß ß’ß—ßﬂßﬂßÌßÁ ß” ß‚ß÷ß‘ß⁄ß„ß‰ß‚ DR ß⁄ß›ß⁄ ß‹ß‡ß‘ß’ß— PE=0*/
+    // –í–ù–ò–ú–ê–ù–ò–ï!
+    /* –ë–∏—Ç I2C_SR1_SB –æ—á–∏—â–∞–µ—Ç—Å—è –ø—Ä–æ–≥—Ä–∞–º–º–Ω–æ –ø—É—Ç–µ–º —á—Ç–µ–Ω–∏—è —Ä–µ–≥–∏—Å—Ç—Ä–∞ SR1 —Å –ø–æ—Å–ª–µ–¥—É—é—â–µ–π –∑–∞–ø–∏—Å—å—é –¥–∞–Ω–Ω—ã—Ö –≤ —Ä–µ–≥–∏—Å—Ç—Ä DR –∏–ª–∏ –∫–æ–≥–¥–∞ PE=0*/
     I2C->STAR1;
-    I2C->DATAR = (Adress_Device << 1); //ß°ß’ß‚ß÷ß„ + Write
+    I2C->DATAR = (Adress_Device << 1);  // –ê–¥—Ä–µ—Å + Write
 
     Timeout_counter_ms = Timeout_ms;
     while ((READ_BIT(I2C->STAR1, I2C_STAR1_AF) == 0) && (READ_BIT(I2C->STAR1, I2C_STAR1_ADDR) == 0)) {
-        //ß®ß’ß÷ßﬁ, ß·ß‡ß‹ß— ß—ß’ß‚ß÷ß„ ß‡ß‰ßŸß‡ß”ß÷ß‰ß„ßÒ
+        // –ñ–¥–µ–º, –ø–æ–∫–∞ –∞–¥—Ä–µ—Å –æ—Ç–∑–æ–≤–µ—Ç—Å—è
 
         if (!Timeout_counter_ms) {
             return false;
         }
-
     }
 
     if (READ_BIT(I2C->STAR1, I2C_STAR1_ADDR)) {
-        //ß¶ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ß‡ß‰ß‡ßŸß”ß—ß›ß‡ß„ßÓ
-        SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP); //ß∞ß‰ß·ß‚ß—ß”ß›ßÒß÷ßﬁ ß„ß⁄ß‘ßﬂß—ß› STOP
-        /*ß≥ß“ß‚ß‡ß„ ß“ß⁄ß‰ß— ADDR ß·ß‚ß‡ß⁄ßŸß”ß‡ß’ß⁄ß‰ß„ßÒ ßÈß‰ß÷ßﬂß⁄ß÷ßﬁ SR1, ß— ß·ß‡ß‰ß‡ßﬁ SR2*/
+        // –ï—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –æ—Ç–æ–∑–≤–∞–ª–æ—Å—å
+        SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Ç–ø—Ä–∞–≤–ª—è–µ–º —Å–∏–≥–Ω–∞–ª STOP
+        /*–°–±—Ä–æ—Å –±–∏—Ç–∞ ADDR –ø—Ä–æ–∏–∑–≤–æ–¥–∏—Ç—Å—è —á—Ç–µ–Ω–∏–µ–º SR1, –∞ –ø–æ—Ç–æ–º SR2*/
         I2C->STAR1;
         I2C->STAR2;
         return true;
     } else {
-        //ß¶ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ßﬂß÷ ß‡ß‰ß‡ßŸß”ß—ß›ß‡ß„ßÓ, ß·ß‚ß⁄ß›ß÷ß‰ß⁄ß‰ 1 ß” I2C_SR1_AF
-        SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP); //ß∞ß‰ß·ß‚ß—ß”ß›ßÒß÷ßﬁ ß„ß⁄ß‘ßﬂß—ß› STOP
-        CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF); //ß≥ß“ß‚ß—ß„ßÌß”ß—ß÷ßﬁ ß“ß⁄ß‰ AF
+        // –ï—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –Ω–µ –æ—Ç–æ–∑–≤–∞–ª–æ—Å—å, –ø—Ä–∏–ª–µ—Ç–∏—Ç 1 –≤ I2C_SR1_AF
+        SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Ç–ø—Ä–∞–≤–ª—è–µ–º —Å–∏–≥–Ω–∞–ª STOP
+        CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF);  // –°–±—Ä–∞—Å—ã–≤–∞–µ–º –±–∏—Ç AF
         return false;
     }
 }
 
 /**
  **************************************************************************************************
- *  @breif ß∂ßÂßﬂß‹ßËß⁄ßÒ ß·ß÷ß‚ß÷ß’ß—ßÈß⁄ ß’ß—ßﬂßﬂßÌßÁ ß·ß‡ I2C
- *  @param  *I2C - ßÍß⁄ßﬂß— I2C
- *  @param  Adress_Device - ß°ß’ß‚ß÷ß„ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß—
- *  @param  *data - ß•ß—ßﬂßﬂßÌß÷, ß‹ß‡ß‰ß‡ß‚ßÌß÷ ß“ßÂß’ß÷ßﬁ ß‡ß‰ß·ß‚ß—ß”ß›ßÒß‰ßÓ
- *  @param  Size_data - ß≤ß—ßŸßﬁß÷ß‚, ß„ß‹ß‡ß›ßÓß‹ß‡ ß“ß—ß€ß‰ ß“ßÂß’ß÷ßﬁ ß‡ß‰ß·ß‚ß—ß”ß›ßÒß‰ßÓ.
- *  @retval  ß£ß‡ßŸß”ß‚ß—ßÎß—ß÷ß‰ ß„ß‰ß—ß‰ßÂß„ ß‡ß‰ß·ß‚ß—ß”ß‹ß⁄ ß’ß—ßﬂßﬂßÌßÁ. True - ßµß„ß·ß÷ßÍßﬂß‡. False - ß∞ßÍß⁄ß“ß‹ß—.
+ *  @breif –§—É–Ω–∫—Ü–∏—è –ø–µ—Ä–µ–¥–∞—á–∏ –¥–∞–Ω–Ω—ã—Ö –ø–æ I2C
+ *  @param  *I2C - —à–∏–Ω–∞ I2C
+ *  @param  Adress_Device - –ê–¥—Ä–µ—Å —É—Å—Ç—Ä–æ–π—Å—Ç–≤–∞
+ *  @param  *data - –î–∞–Ω–Ω—ã–µ, –∫–æ—Ç–æ—Ä—ã–µ –±—É–¥–µ–º –æ—Ç–ø—Ä–∞–≤–ª—è—Ç—å
+ *  @param  Size_data - –†–∞–∑–º–µ—Ä, —Å–∫–æ–ª—å–∫–æ –±–∞–π—Ç –±—É–¥–µ–º –æ—Ç–ø—Ä–∞–≤–ª—è—Ç—å.
+ *  @retval  –í–æ–∑–≤—Ä–∞—â–∞–µ—Ç —Å—Ç–∞—Ç—É—Å –æ—Ç–ø—Ä–∞–≤–∫–∏ –¥–∞–Ω–Ω—ã—Ö. True - –£—Å–ø–µ—à–Ω–æ. False - –û—à–∏–±–∫–∞.
  **************************************************************************************************
  */
 bool RVMSIS_I2C_Data_Transmit(I2C_TypeDef* I2C, uint8_t Adress_Device, uint8_t* data, uint16_t Size_data, uint32_t Timeout_ms) {
-
-    /*-------------------ß±ß‚ß‡ß”ß÷ß‚ß‹ß— ßŸß—ßﬂßÒß‰ß‡ß„ß‰ß⁄ ßÍß⁄ßﬂßÌ-------------------*/
+    /*-------------------–ü—Ä–æ–≤–µ—Ä–∫–∞ –∑–∞–Ω—è—Ç–æ—Å—Ç–∏ —à–∏–Ω—ã-------------------*/
     if (READ_BIT(I2C->STAR2, I2C_STAR2_BUSY)) {
-        //ß¶ß„ß›ß⁄ ßÍß⁄ßﬂß— ßŸß—ßﬂßÒß‰ß—
+        // –ï—Å–ª–∏ —à–∏–Ω–∞ –∑–∞–Ω—è—Ç–∞
 
         if ((READ_BIT(GPIOC->INDR, GPIO_INDR_IDR1)) && (READ_BIT(GPIOC->INDR, GPIO_INDR_IDR2))) {
-            //ß¶ß„ß›ß⁄ ß›ß⁄ßﬂß⁄ßÒ ßﬂß— ß„ß—ßﬁß‡ßﬁ ß’ß÷ß›ß÷ ß„ß”ß‡ß“ß‡ß’ßﬂß—, ß— BUSY ß”ß⁄ß„ß⁄ß‰
-            RVMSIS_I2C_Reset(); //ß‚ß÷ß„ß÷ß‰
-            RVMSIS_I2C1_Init(); //ß·ß‡ß”ß‰ß‡ß‚ßﬂß—ßÒ ß⁄ßﬂß⁄ßËß⁄ß—ß›ß⁄ßŸß—ßËß⁄ßÒ
+            // –ï—Å–ª–∏ –ª–∏–Ω–∏—è –Ω–∞ —Å–∞–º–æ–º –¥–µ–ª–µ —Å–≤–æ–±–æ–¥–Ω–∞, –∞ BUSY –≤–∏—Å–∏—Ç
+            RVMSIS_I2C_Reset();  // —Ä–µ—Å–µ—Ç
+            RVMSIS_I2C1_Init();  // –ø–æ–≤—Ç–æ—Ä–Ω–∞—è –∏–Ω–∏—Ü–∏–∞–ª–∏–∑–∞—Ü–∏—è
         }
 
         if (READ_BIT(I2C->STAR2, I2C_STAR2_MSL)) {
-            //ß¶ß„ß›ß⁄ ß„ß‰ß‡ß⁄ß‰ ß„ß‰ß—ß‰ßÂß„, ßÈß‰ß‡ ßﬁßÌ ß” ßﬁß—ß„ß‰ß÷ß‚ß÷
-            SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP); //ß∞ß‰ß·ß‚ß—ß”ß⁄ßﬁ ß„ß⁄ß‘ßﬂß—ß› STOP
+            // –ï—Å–ª–∏ —Å—Ç–æ–∏—Ç —Å—Ç–∞—Ç—É—Å, —á—Ç–æ –º—ã –≤ –º–∞—Å—Ç–µ—Ä–µ
+            SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Ç–ø—Ä–∞–≤–∏–º —Å–∏–≥–Ω–∞–ª STOP
         }
 
         if (I2C->CTLR1 != 1) {
-            //ß¶ß„ß›ß⁄ ß” CR1 ßÈß‰ß‡-ß‰ß‡ ß›ß⁄ßÍßﬂß÷ß÷, ß‰ß‡ ß·ß÷ß‚ß÷ßŸß—ß‘ß‚ßÂßŸß⁄ßﬁ I2C
+            // –ï—Å–ª–∏ –≤ CR1 —á—Ç–æ-—Ç–æ –ª–∏—à–Ω–µ–µ, —Ç–æ –ø–µ—Ä–µ–∑–∞–≥—Ä—É–∑–∏–º I2C
             CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_PE);
             SET_BIT(I2C->CTLR1, I2C_CTLR1_PE);
         }
 
         return false;
     }
-    /*-------------------ß±ß‚ß‡ß”ß÷ß‚ß‹ß— ßŸß—ßﬂßÒß‰ß‡ß„ß‰ß⁄ ßÍß⁄ßﬂßÌ-------------------*/
+    /*-------------------–ü—Ä–æ–≤–µ—Ä–∫–∞ –∑–∞–Ω—è—Ç–æ—Å—Ç–∏ —à–∏–Ω—ã-------------------*/
 
-    CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_POS); //ß¢ß⁄ß‰ ACK ßÂß·ß‚ß—ß”ß›ßÒß÷ß‰ (N)ACK ß‰ß÷ß‹ßÂßÎß÷ß‘ß‡ ß“ß—ß€ß‰ß—, ß·ß‚ß⁄ßﬂß⁄ßﬁß—ß÷ßﬁß‡ß‘ß‡ ß” ß„ß’ß”ß⁄ß‘ß‡ß”ß‡ßﬁ ß‚ß÷ß‘ß⁄ß„ß‰ß‚ß÷.
-    SET_BIT(I2C->CTLR1, I2C_CTLR1_START); //ß≥ß‰ß—ß‚ß‰ßÂß÷ßﬁ.
+    CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_POS);  // –ë–∏—Ç ACK —É–ø—Ä–∞–≤–ª—è–µ—Ç (N)ACK —Ç–µ–∫—É—â–µ–≥–æ –±–∞–π—Ç–∞, –ø—Ä–∏–Ω–∏–º–∞–µ–º–æ–≥–æ –≤ —Å–¥–≤–∏–≥–æ–≤–æ–º —Ä–µ–≥–∏—Å—Ç—Ä–µ.
+    SET_BIT(I2C->CTLR1, I2C_CTLR1_START);  // –°—Ç–∞—Ä—Ç—É–µ–º.
 
     Timeout_counter_ms = Timeout_ms;
     while (READ_BIT(I2C->STAR1, I2C_STAR1_SB) == 0) {
-        //ß∞ßÿß⁄ß’ß—ß÷ßﬁ ß’ß‡ ßﬁß‡ßﬁß÷ßﬂß‰ß—, ß·ß‡ß‹ß— ßﬂß÷ ß„ß‚ß—ß“ß‡ß‰ß—ß÷ß‰ Start condition generated
+        // –û–∂–∏–¥–∞–µ–º –¥–æ –º–æ–º–µ–Ω—Ç–∞, –ø–æ–∫–∞ –Ω–µ —Å—Ä–∞–±–æ—Ç–∞–µ—Ç Start condition generated
 
         if (!Timeout_counter_ms) {
             return false;
         }
-
     }
-    //ß£ßØß™ßÆß°ßØß™ß¶!
-    /* ß¢ß⁄ß‰ I2C_SR1_SB ß‡ßÈß⁄ßÎß—ß÷ß‰ß„ßÒ ß·ß‚ß‡ß‘ß‚ß—ßﬁßﬁßﬂß‡ ß·ßÂß‰ß÷ßﬁ ßÈß‰ß÷ßﬂß⁄ßÒ ß‚ß÷ß‘ß⁄ß„ß‰ß‚ß— SR1 ß„ ß·ß‡ß„ß›ß÷ß’ßÂßßÎß÷ß€ ßŸß—ß·ß⁄ß„ßÓß ß” ß‚ß÷ß‘ß⁄ß„ß‰ß‚ DR ß⁄ß›ß⁄ ß‹ß‡ß‘ß’ß— PE=0*/
+    // –í–ù–ò–ú–ê–ù–ò–ï!
+    /* –ë–∏—Ç I2C_SR1_SB –æ—á–∏—â–∞–µ—Ç—Å—è –ø—Ä–æ–≥—Ä–∞–º–º–Ω–æ –ø—É—Ç–µ–º —á—Ç–µ–Ω–∏—è —Ä–µ–≥–∏—Å—Ç—Ä–∞ SR1 —Å –ø–æ—Å–ª–µ–¥—É—é—â–µ–π –∑–∞–ø–∏—Å—å—é –≤ —Ä–µ–≥–∏—Å—Ç—Ä DR –∏–ª–∏ –∫–æ–≥–¥–∞ PE=0*/
     I2C->STAR1;
-    I2C->DATAR = (Adress_Device << 1); //ß°ß’ß‚ß÷ß„ + Write
+    I2C->DATAR = (Adress_Device << 1);  // –ê–¥—Ä–µ—Å + Write
 
     Timeout_counter_ms = Timeout_ms;
     while ((READ_BIT(I2C->STAR1, I2C_STAR1_AF) == 0) && (READ_BIT(I2C->STAR1, I2C_STAR1_ADDR) == 0)) {
-        //ß®ß’ß÷ßﬁ, ß·ß‡ß‹ß— ß—ß’ß‚ß÷ß„ ß‡ß‰ßŸß‡ß”ß÷ß‰ß„ßÒ
+        // –ñ–¥–µ–º, –ø–æ–∫–∞ –∞–¥—Ä–µ—Å –æ—Ç–∑–æ–≤–µ—Ç—Å—è
 
         if (!Timeout_counter_ms) {
             return false;
         }
-
     }
 
     if (READ_BIT(I2C->STAR1, I2C_STAR1_ADDR)) {
-        //ß¶ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ß‡ß‰ß‡ßŸß”ß—ß›ß‡ß„ßÓ, ß„ß“ß‚ß‡ß„ß⁄ßﬁ ß“ß⁄ß‰ ADDR
-        /*ß≥ß“ß‚ß‡ß„ ß“ß⁄ß‰ß— ADDR ß·ß‚ß‡ß⁄ßŸß”ß‡ß’ß⁄ß‰ß„ßÒ ßÈß‰ß÷ßﬂß⁄ß÷ßﬁ SR1, ß— ß·ß‡ß‰ß‡ßﬁ SR2*/
+        // –ï—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –æ—Ç–æ–∑–≤–∞–ª–æ—Å—å, —Å–±—Ä–æ—Å–∏–º –±–∏—Ç ADDR
+        /*–°–±—Ä–æ—Å –±–∏—Ç–∞ ADDR –ø—Ä–æ–∏–∑–≤–æ–¥–∏—Ç—Å—è —á—Ç–µ–Ω–∏–µ–º SR1, –∞ –ø–æ—Ç–æ–º SR2*/
         I2C->STAR1;
         I2C->STAR2;
 
-        /*ß∞ß‰ß·ß‚ß—ß”ß⁄ßﬁ ß’ß—ßﬂßﬂßÌß÷*/
+        /*–û—Ç–ø—Ä–∞–≤–∏–º –¥–∞–Ω–Ω—ã–µ*/
         for (uint16_t i = 0; i < Size_data; i++) {
-            I2C->DATAR = *(data + i); //ß©ß—ß·ß⁄ß„ßÓ ß“ß—ß€ß‰ß—
+            I2C->DATAR = *(data + i);  // –ó–∞–ø–∏—Å—å –±–∞–π—Ç–∞
             while (READ_BIT(I2C->STAR1, I2C_STAR1_TXE) == 0) {
-                //ß®ß’ß÷ßﬁ, ß·ß‡ß‹ß— ß’ß—ßﬂßﬂßÌß÷ ßŸß—ß‘ß‚ßÂßŸßÒß‰ß„ßÒ ß” ß‚ß÷ß‘ß⁄ß„ß‰ß‚ ß„ß’ß”ß⁄ß‘ß—.
+                // –ñ–¥–µ–º, –ø–æ–∫–∞ –¥–∞–Ω–Ω—ã–µ –∑–∞–≥—Ä—É–∑—è—Ç—Å—è –≤ —Ä–µ–≥–∏—Å—Ç—Ä —Å–¥–≤–∏–≥–∞.
 
                 if ((READ_BIT(I2C->STAR1, I2C_STAR1_AF) == 1)) {
-                    //ß¶ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ßﬂß÷ ß‡ß‰ß‡ßŸß”ß—ß›ß‡ß„ßÓ, ß·ß‚ß⁄ß›ß÷ß‰ß⁄ß‰ 1 ß” I2C_SR1_AF
-                    SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);//ß∞ß„ß‰ß—ßﬂß—ß”ß›ß⁄ß”ß—ß÷ßﬁ
-                    CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF);//ß≥ß“ß‚ß—ß„ßÌß”ß—ß÷ßﬁ ß“ß⁄ß‰ AF
+                    // –ï—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –Ω–µ –æ—Ç–æ–∑–≤–∞–ª–æ—Å—å, –ø—Ä–∏–ª–µ—Ç–∏—Ç 1 –≤ I2C_SR1_AF
+                    SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ–º
+                    CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF);  // –°–±—Ä–∞—Å—ã–≤–∞–µ–º –±–∏—Ç AF
                     return false;
                 }
             }
         }
 
-        SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP); //ß∞ß„ß‰ß—ßﬂß—ß”ß›ß⁄ß”ß—ß÷ßﬁ
+        SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ–º
 
         return true;
 
     } else {
-        //ß¶ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ßﬂß÷ ß‡ß‰ß‡ßŸß”ß—ß›ß‡ß„ßÓ, ß·ß‚ß⁄ß›ß÷ß‰ß⁄ß‰ 1 ß” I2C_SR1_AF
-        SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP); //ß∞ß„ß‰ß—ßﬂß—ß”ß›ß⁄ß”ß—ß÷ßﬁ
-        CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF); //ß≥ß“ß‚ß—ß„ßÌß”ß—ß÷ßﬁ ß“ß⁄ß‰ AF
+        // –ï—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –Ω–µ –æ—Ç–æ–∑–≤–∞–ª–æ—Å—å, –ø—Ä–∏–ª–µ—Ç–∏—Ç 1 –≤ I2C_SR1_AF
+        SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ–º
+        CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF);  // –°–±—Ä–∞—Å—ã–≤–∞–µ–º –±–∏—Ç AF
 
         return false;
     }
@@ -738,222 +730,215 @@ bool RVMSIS_I2C_Data_Transmit(I2C_TypeDef* I2C, uint8_t Adress_Device, uint8_t* 
 
 /**
  **************************************************************************************************
- *  @breif ß∂ßÂßﬂß‹ßËß⁄ßÒ ß·ß‚ß⁄ß÷ßﬁß— ß’ß—ßﬂßﬂßÌßÁ ß·ß‡ I2C
- *  @param  *I2C - ßÍß⁄ßﬂß— I2C
- *  @param  Adress_Device - ß°ß’ß‚ß÷ß„ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß—
- *  @param  *data - ß¨ßÂß’ß— ß“ßÂß’ß÷ßﬁ ßŸß—ß·ß⁄ß„ßÌß”ß—ß‰ßÓ ß·ß‚ß⁄ßﬂßÒß‰ßÌß÷ ß’ß—ßﬂßﬂßÌß÷
- *  @param  Size_data - ß≤ß—ßŸßﬁß÷ß‚, ß„ß‹ß‡ß›ßÓß‹ß‡ ß“ß—ß€ß‰ ß“ßÂß’ß÷ßﬁ ß·ß‚ß⁄ßﬂß⁄ßﬁß—ß‰ßÓ.
- *  @retval  ß£ß‡ßŸß”ß‚ß—ßÎß—ß÷ß‰ ß„ß‰ß—ß‰ßÂß„ ß·ß‚ß⁄ß÷ßﬁß— ß’ß—ßﬂßﬂßÌßÁ. True - ßµß„ß·ß÷ßÍßﬂß‡. False - ß∞ßÍß⁄ß“ß‹ß—.
+ *  @breif –§—É–Ω–∫—Ü–∏—è –ø—Ä–∏–µ–º–∞ –¥–∞–Ω–Ω—ã—Ö –ø–æ I2C
+ *  @param  *I2C - —à–∏–Ω–∞ I2C
+ *  @param  Adress_Device - –ê–¥—Ä–µ—Å —É—Å—Ç—Ä–æ–π—Å—Ç–≤–∞
+ *  @param  *data - –ö—É–¥–∞ –±—É–¥–µ–º –∑–∞–ø–∏—Å—ã–≤–∞—Ç—å –ø—Ä–∏–Ω—è—Ç—ã–µ –¥–∞–Ω–Ω—ã–µ
+ *  @param  Size_data - –†–∞–∑–º–µ—Ä, —Å–∫–æ–ª—å–∫–æ –±–∞–π—Ç –±—É–¥–µ–º –ø—Ä–∏–Ω–∏–º–∞—Ç—å.
+ *  @retval  –í–æ–∑–≤—Ä–∞—â–∞–µ—Ç —Å—Ç–∞—Ç—É—Å –ø—Ä–∏–µ–º–∞ –¥–∞–Ω–Ω—ã—Ö. True - –£—Å–ø–µ—à–Ω–æ. False - –û—à–∏–±–∫–∞.
  **************************************************************************************************
  */
 bool RVMSIS_I2C_Data_Receive(I2C_TypeDef* I2C, uint8_t Adress_Device, uint8_t* data, uint16_t Size_data, uint32_t Timeout_ms) {
-
-    /*-------------------ß±ß‚ß‡ß”ß÷ß‚ß‹ß— ßŸß—ßﬂßÒß‰ß‡ß„ß‰ß⁄ ßÍß⁄ßﬂßÌ-------------------*/
+    /*-------------------–ü—Ä–æ–≤–µ—Ä–∫–∞ –∑–∞–Ω—è—Ç–æ—Å—Ç–∏ —à–∏–Ω—ã-------------------*/
     if (READ_BIT(I2C->STAR2, I2C_STAR2_BUSY)) {
-        //ß¶ß„ß›ß⁄ ßÍß⁄ßﬂß— ßŸß—ßﬂßÒß‰ß—
+        // –ï—Å–ª–∏ —à–∏–Ω–∞ –∑–∞–Ω—è—Ç–∞
 
         if ((READ_BIT(GPIOC->INDR, GPIO_INDR_IDR1)) && (READ_BIT(GPIOC->INDR, GPIO_INDR_IDR2))) {
-            //ß¶ß„ß›ß⁄ ß›ß⁄ßﬂß⁄ßÒ ßﬂß— ß„ß—ßﬁß‡ßﬁ ß’ß÷ß›ß÷ ß„ß”ß‡ß“ß‡ß’ßﬂß—, ß— BUSY ß”ß⁄ß„ß⁄ß‰
-            RVMSIS_I2C_Reset(); //ß‚ß÷ß„ß÷ß‰
-            RVMSIS_I2C1_Init(); //ß·ß‡ß”ß‰ß‡ß‚ßﬂß—ßÒ ß⁄ßﬂß⁄ßËß⁄ß—ß›ß⁄ßŸß—ßËß⁄ßÒ
+            // –ï—Å–ª–∏ –ª–∏–Ω–∏—è –Ω–∞ —Å–∞–º–æ–º –¥–µ–ª–µ —Å–≤–æ–±–æ–¥–Ω–∞, –∞ BUSY –≤–∏—Å–∏—Ç
+            RVMSIS_I2C_Reset();  // —Ä–µ—Å–µ—Ç
+            RVMSIS_I2C1_Init();  // –ø–æ–≤—Ç–æ—Ä–Ω–∞—è –∏–Ω–∏—Ü–∏–∞–ª–∏–∑–∞—Ü–∏—è
         }
 
         if (READ_BIT(I2C->STAR2, I2C_STAR2_MSL)) {
-            //ß¶ß„ß›ß⁄ ß„ß‰ß‡ß⁄ß‰ ß„ß‰ß—ß‰ßÂß„, ßÈß‰ß‡ ßﬁßÌ ß” ßﬁß—ß„ß‰ß÷ß‚ß÷
-            SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP); //ß∞ß‰ß·ß‚ß—ß”ß⁄ßﬁ ß„ß⁄ß‘ßﬂß—ß› STOP
+            // –ï—Å–ª–∏ —Å—Ç–æ–∏—Ç —Å—Ç–∞—Ç—É—Å, —á—Ç–æ –º—ã –≤ –º–∞—Å—Ç–µ—Ä–µ
+            SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Ç–ø—Ä–∞–≤–∏–º —Å–∏–≥–Ω–∞–ª STOP
         }
 
         if (I2C->CTLR1 != 1) {
-            //ß¶ß„ß›ß⁄ ß” CR1 ßÈß‰ß‡-ß‰ß‡ ß›ß⁄ßÍßﬂß÷ß÷, ß‰ß‡ ß·ß÷ß‚ß÷ßŸß—ß‘ß‚ßÂßŸß⁄ßﬁ I2C
+            // –ï—Å–ª–∏ –≤ CR1 —á—Ç–æ-—Ç–æ –ª–∏—à–Ω–µ–µ, —Ç–æ –ø–µ—Ä–µ–∑–∞–≥—Ä—É–∑–∏–º I2C
             CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_PE);
             SET_BIT(I2C->CTLR1, I2C_CTLR1_PE);
         }
 
         return false;
     }
-    /*-------------------ß±ß‚ß‡ß”ß÷ß‚ß‹ß— ßŸß—ßﬂßÒß‰ß‡ß„ß‰ß⁄ ßÍß⁄ßﬂßÌ-------------------*/
+    /*-------------------–ü—Ä–æ–≤–µ—Ä–∫–∞ –∑–∞–Ω—è—Ç–æ—Å—Ç–∏ —à–∏–Ω—ã-------------------*/
 
-    CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_POS); //ß¢ß⁄ß‰ ACK ßÂß·ß‚ß—ß”ß›ßÒß÷ß‰ (N)ACK ß‰ß÷ß‹ßÂßÎß÷ß‘ß‡ ß“ß—ß€ß‰ß—, ß·ß‚ß⁄ßﬂß⁄ßﬁß—ß÷ßﬁß‡ß‘ß‡ ß” ß„ß’ß”ß⁄ß‘ß‡ß”ß‡ßﬁ ß‚ß÷ß‘ß⁄ß„ß‰ß‚ß÷.
-    SET_BIT(I2C->CTLR1, I2C_CTLR1_START); //ß≥ß‰ß—ß‚ß‰ßÂß÷ßﬁ.
+    CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_POS);  // –ë–∏—Ç ACK —É–ø—Ä–∞–≤–ª—è–µ—Ç (N)ACK —Ç–µ–∫—É—â–µ–≥–æ –±–∞–π—Ç–∞, –ø—Ä–∏–Ω–∏–º–∞–µ–º–æ–≥–æ –≤ —Å–¥–≤–∏–≥–æ–≤–æ–º —Ä–µ–≥–∏—Å—Ç—Ä–µ.
+    SET_BIT(I2C->CTLR1, I2C_CTLR1_START);  // –°—Ç–∞—Ä—Ç—É–µ–º.
 
     Timeout_counter_ms = Timeout_ms;
     while (READ_BIT(I2C->STAR1, I2C_STAR1_SB) == 0) {
-        //ß∞ßÿß⁄ß’ß—ß÷ßﬁ ß’ß‡ ßﬁß‡ßﬁß÷ßﬂß‰ß—, ß·ß‡ß‹ß— ßﬂß÷ ß„ß‚ß—ß“ß‡ß‰ß—ß÷ß‰ Start condition generated
+        // –û–∂–∏–¥–∞–µ–º –¥–æ –º–æ–º–µ–Ω—Ç–∞, –ø–æ–∫–∞ –Ω–µ —Å—Ä–∞–±–æ—Ç–∞–µ—Ç Start condition generated
 
         if (!Timeout_counter_ms) {
             return false;
         }
-
     }
-    //ß£ßØß™ßÆß°ßØß™ß¶!
-    /* ß¢ß⁄ß‰ I2C_SR1_SB ß‡ßÈß⁄ßÎß—ß÷ß‰ß„ßÒ ß·ß‚ß‡ß‘ß‚ß—ßﬁßﬁßﬂß‡ ß·ßÂß‰ß÷ßﬁ ßÈß‰ß÷ßﬂß⁄ßÒ ß‚ß÷ß‘ß⁄ß„ß‰ß‚ß— SR1 ß„ ß·ß‡ß„ß›ß÷ß’ßÂßßÎß÷ß€ ßŸß—ß·ß⁄ß„ßÓß ß” ß‚ß÷ß‘ß⁄ß„ß‰ß‚ DR ß⁄ß›ß⁄ ß‹ß‡ß‘ß’ß— PE=0*/
+    // –í–ù–ò–ú–ê–ù–ò–ï!
+    /* –ë–∏—Ç I2C_SR1_SB –æ—á–∏—â–∞–µ—Ç—Å—è –ø—Ä–æ–≥—Ä–∞–º–º–Ω–æ –ø—É—Ç–µ–º —á—Ç–µ–Ω–∏—è —Ä–µ–≥–∏—Å—Ç—Ä–∞ SR1 —Å –ø–æ—Å–ª–µ–¥—É—é—â–µ–π –∑–∞–ø–∏—Å—å—é –≤ —Ä–µ–≥–∏—Å—Ç—Ä DR –∏–ª–∏ –∫–æ–≥–¥–∞ PE=0*/
     I2C->STAR1;
-    I2C->DATAR = (Adress_Device << 1 | 1); //ß°ß’ß‚ß÷ß„ + ß‹ß‡ßﬁß—ßﬂß’ß— Read
+    I2C->DATAR = (Adress_Device << 1 | 1);  // –ê–¥—Ä–µ—Å + –∫–æ–º–∞–Ω–¥–∞ Read
 
     Timeout_counter_ms = Timeout_ms;
     while ((READ_BIT(I2C->STAR1, I2C_STAR1_AF) == 0) && (READ_BIT(I2C->STAR1, I2C_STAR1_ADDR) == 0)) {
-        //ß®ß’ß÷ßﬁ, ß·ß‡ß‹ß— ß—ß’ß‚ß÷ß„ ß‡ß‰ßŸß‡ß”ß÷ß‰ß„ßÒ
+        // –ñ–¥–µ–º, –ø–æ–∫–∞ –∞–¥—Ä–µ—Å –æ—Ç–∑–æ–≤–µ—Ç—Å—è
 
         if (!Timeout_counter_ms) {
             return false;
         }
-
     }
 
     if (READ_BIT(I2C->STAR1, I2C_STAR1_ADDR)) {
-        //ß¶ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ß‡ß‰ß‡ßŸß”ß—ß›ß‡ß„ßÓ, ß„ß“ß‚ß‡ß„ß⁄ßﬁ ß“ß⁄ß‰ ADDR
-        /*ß≥ß“ß‚ß‡ß„ ß“ß⁄ß‰ß— ADDR ß·ß‚ß‡ß⁄ßŸß”ß‡ß’ß⁄ß‰ß„ßÒ ßÈß‰ß÷ßﬂß⁄ß÷ßﬁ SR1, ß— ß·ß‡ß‰ß‡ßﬁ SR2*/
+        // –ï—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –æ—Ç–æ–∑–≤–∞–ª–æ—Å—å, —Å–±—Ä–æ—Å–∏–º –±–∏—Ç ADDR
+        /*–°–±—Ä–æ—Å –±–∏—Ç–∞ ADDR –ø—Ä–æ–∏–∑–≤–æ–¥–∏—Ç—Å—è —á—Ç–µ–Ω–∏–µ–º SR1, –∞ –ø–æ—Ç–æ–º SR2*/
         I2C->STAR1;
         I2C->STAR2;
 
-        /*ß±ß‚ß‡ßÈß‰ß÷ßﬁ ß’ß—ßﬂßﬂßÌß÷*/
+        /*–ü—Ä–æ—á—Ç–µ–º –¥–∞–Ω–Ω—ã–µ*/
         for (uint16_t i = 0; i < Size_data; i++) {
             if (i < Size_data - 1) {
-                SET_BIT(I2C->CTLR1, I2C_CTLR1_ACK); //ß¶ß„ß›ß⁄ ßﬁßÌ ßÁß‡ß‰ß⁄ßﬁ ß·ß‚ß⁄ßﬂßÒß‰ßÓ ß„ß›ß÷ß’ßÂßßÎß⁄ß€ ß“ß—ß€ß‰, ß‰ß‡ ß‡ß‰ß·ß‚ß—ß”ß›ßÒß÷ßﬁ ACK
+                SET_BIT(I2C->CTLR1, I2C_CTLR1_ACK);  // –ï—Å–ª–∏ –º—ã —Ö–æ—Ç–∏–º –ø—Ä–∏–Ω—è—Ç—å —Å–ª–µ–¥—É—é—â–∏–π –±–∞–π—Ç, —Ç–æ –æ—Ç–ø—Ä–∞–≤–ª—è–µ–º ACK
 
                 Timeout_counter_ms = Timeout_ms;
                 while (READ_BIT(I2C->STAR1, I2C_STAR1_RXNE) == 0) {
-                    //ß∞ßÿß⁄ß’ß—ß÷ßﬁ, ß·ß‡ß‹ß— ß” ß„ß’ß”ß⁄ß‘ß‡ß”ß‡ßﬁ ß‚ß÷ß‘ß⁄ß„ß‰ß‚ß÷ ß·ß‡ßÒß”ßÒß‰ß„ßÒ ß’ß—ßﬂßﬂßÌß÷
+                    // –û–∂–∏–¥–∞–µ–º, –ø–æ–∫–∞ –≤ —Å–¥–≤–∏–≥–æ–≤–æ–º —Ä–µ–≥–∏—Å—Ç—Ä–µ –ø–æ—è–≤—è—Ç—Å—è –¥–∞–Ω–Ω—ã–µ
                     if (!Timeout_counter_ms) {
                         return false;
                     }
                 }
 
-                *(data + i) = I2C->DATAR; //ßπß‰ß÷ßﬂß⁄ß÷ ß“ß—ß€ß‰ß—
+                *(data + i) = I2C->DATAR;  // –ß—Ç–µ–Ω–∏–µ –±–∞–π—Ç–∞
             } else {
-                CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_ACK); //ß¶ß„ß›ß⁄ ßﬁßÌ ßŸßﬂß—ß÷ßﬁ, ßÈß‰ß‡ ß„ß›ß÷ß’ßÂßßÎß⁄ß€ ß·ß‚ß⁄ßﬂßÒß‰ßÌß€ ß“ß—ß€ß‰ ß“ßÂß’ß÷ß‰ ß·ß‡ß„ß›ß÷ß’ßﬂß⁄ßﬁ, ß‰ß‡ ß‡ß‰ß·ß‚ß—ß”ß⁄ßﬁ NACK
+                CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_ACK);  // –ï—Å–ª–∏ –º—ã –∑–Ω–∞–µ–º, —á—Ç–æ —Å–ª–µ–¥—É—é—â–∏–π –ø—Ä–∏–Ω—è—Ç—ã–π –±–∞–π—Ç –±—É–¥–µ—Ç –ø–æ—Å–ª–µ–¥–Ω–∏–º, —Ç–æ –æ—Ç–ø—Ä–∞–≤–∏–º NACK
 
-                SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP); //ß∞ß„ß‰ß—ßﬂß—ß”ß›ß⁄ß”ß—ß÷ßﬁ
+                SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ–º
                 Timeout_counter_ms = Timeout_ms;
                 while (READ_BIT(I2C->STAR1, I2C_STAR1_RXNE) == 0) {
-                    //ß∞ßÿß⁄ß’ß—ß÷ßﬁ, ß·ß‡ß‹ß— ß” ß„ß’ß”ß⁄ß‘ß‡ß”ß‡ßﬁ ß‚ß÷ß‘ß⁄ß„ß‰ß‚ß÷ ß·ß‡ßÒß”ßÒß‰ß„ßÒ ß’ß—ßﬂßﬂßÌß÷
+                    // –û–∂–∏–¥–∞–µ–º, –ø–æ–∫–∞ –≤ —Å–¥–≤–∏–≥–æ–≤–æ–º —Ä–µ–≥–∏—Å—Ç—Ä–µ –ø–æ—è–≤—è—Ç—Å—è –¥–∞–Ω–Ω—ã–µ
                     if (!Timeout_counter_ms) {
                         return false;
                     }
                 }
-                *(data + i) = I2C->DATAR; //ßπß‰ß÷ßﬂß⁄ß÷ ß“ß—ß€ß‰ß—
+                *(data + i) = I2C->DATAR;  // –ß—Ç–µ–Ω–∏–µ –±–∞–π—Ç–∞
             }
         }
         return true;
 
     } else {
-        //ß¶ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ßﬂß÷ ß‡ß‰ß‡ßŸß”ß—ß›ß‡ß„ßÓ, ß·ß‚ß⁄ß›ß÷ß‰ß⁄ß‰ 1 ß” I2C_SR1_AF
-        SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP); //ß∞ß„ß‰ß—ßﬂß—ß”ß›ß⁄ß”ß—ß÷ßﬁ
-        CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF); //ß≥ß“ß‚ß—ß„ßÌß”ß—ß÷ßﬁ ß“ß⁄ß‰ AF
+        // –ï—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –Ω–µ –æ—Ç–æ–∑–≤–∞–ª–æ—Å—å, –ø—Ä–∏–ª–µ—Ç–∏—Ç 1 –≤ I2C_SR1_AF
+        SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ–º
+        CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF);  // –°–±—Ä–∞—Å—ã–≤–∞–µ–º –±–∏—Ç AF
         return false;
     }
-
 }
 
 /**
  **************************************************************************************************
- *  @breif ß∂ßÂßﬂß‹ßËß⁄ßÒ ßŸß—ß·ß⁄ß„ß⁄ ß” ß·ß—ßﬁßÒß‰ßÓ ß·ß‡ ßÂß‹ß—ßŸß—ßﬂßﬂß‡ßﬁßÂ ß—ß’ß‚ß÷ß„ßÂ
- *  @param  *I2C - ßÍß⁄ßﬂß— I2C
- *  @param  Adress_Device - ß°ß’ß‚ß÷ß„ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß—
- *  @param  Adress_data - ß°ß’ß‚ß÷ß„ ß” ß·ß—ßﬁßÒß‰ß⁄, ß‹ßÂß’ß— ß“ßÂß’ß÷ßﬁ ßŸß—ß·ß⁄ß„ßÌß”ß—ß‰ßÓ ß’ß—ßﬂßﬂßÌß÷
- *  @param  Size_adress - ß≤ß—ßŸßﬁß÷ß‚ ß—ß’ß‚ß÷ß„ß— ß” ß“ß—ß€ß‰ß—ßÁ. ß±ß‚ß⁄ßﬁß÷ß‚: 1 - 8 ß“ß⁄ß‰ßﬂßÌß€ ß—ß’ß‚ß÷ß„. 2 - 16 ß“ß⁄ß‰ßﬂßÌß€ ß—ß’ß‚ß÷ß„.
- *  @param  *data - ß•ß—ßﬂßﬂßÌß÷, ß‹ß‡ß‰ß‡ß‚ßÌß÷ ß“ßÂß’ß÷ßﬁ ßŸß—ß·ß⁄ß„ßÌß”ß—ß‰ßÓ
- *  @param  Size_data - ß≤ß—ßŸßﬁß÷ß‚, ß„ß‹ß‡ß›ßÓß‹ß‡ ß“ß—ß€ß‰ ß“ßÂß’ß÷ßﬁ ßŸß—ß·ß⁄ß„ßÌß”ß—ß‰ßÓ.
- *  @retval  ß£ß‡ßŸß”ß‚ß—ßÎß—ß÷ß‰ ß„ß‰ß—ß‰ßÂß„ ßŸß—ß·ß⁄ß„ß⁄. True - ßµß„ß·ß÷ßÍßﬂß‡. False - ß∞ßÍß⁄ß“ß‹ß—.
+ *  @breif –§—É–Ω–∫—Ü–∏—è –∑–∞–ø–∏—Å–∏ –≤ –ø–∞–º—è—Ç—å –ø–æ —É–∫–∞–∑–∞–Ω–Ω–æ–º—É –∞–¥—Ä–µ—Å—É
+ *  @param  *I2C - —à–∏–Ω–∞ I2C
+ *  @param  Adress_Device - –ê–¥—Ä–µ—Å —É—Å—Ç—Ä–æ–π—Å—Ç–≤–∞
+ *  @param  Adress_data - –ê–¥—Ä–µ—Å –≤ –ø–∞–º—è—Ç–∏, –∫—É–¥–∞ –±—É–¥–µ–º –∑–∞–ø–∏—Å—ã–≤–∞—Ç—å –¥–∞–Ω–Ω—ã–µ
+ *  @param  Size_adress - –†–∞–∑–º–µ—Ä –∞–¥—Ä–µ—Å–∞ –≤ –±–∞–π—Ç–∞—Ö. –ü—Ä–∏–º–µ—Ä: 1 - 8 –±–∏—Ç–Ω—ã–π –∞–¥—Ä–µ—Å. 2 - 16 –±–∏—Ç–Ω—ã–π –∞–¥—Ä–µ—Å.
+ *  @param  *data - –î–∞–Ω–Ω—ã–µ, –∫–æ—Ç–æ—Ä—ã–µ –±—É–¥–µ–º –∑–∞–ø–∏—Å—ã–≤–∞—Ç—å
+ *  @param  Size_data - –†–∞–∑–º–µ—Ä, —Å–∫–æ–ª—å–∫–æ –±–∞–π—Ç –±—É–¥–µ–º –∑–∞–ø–∏—Å—ã–≤–∞—Ç—å.
+ *  @retval  –í–æ–∑–≤—Ä–∞—â–∞–µ—Ç —Å—Ç–∞—Ç—É—Å –∑–∞–ø–∏—Å–∏. True - –£—Å–ø–µ—à–Ω–æ. False - –û—à–∏–±–∫–∞.
  **************************************************************************************************
  */
 bool RVMSIS_I2C_MemWrite(I2C_TypeDef* I2C, uint8_t Adress_Device, uint16_t Adress_data, uint8_t Size_adress, uint8_t* data, uint16_t Size_data, uint32_t Timeout_ms) {
-
-    /*-------------------ß±ß‚ß‡ß”ß÷ß‚ß‹ß— ßŸß—ßﬂßÒß‰ß‡ß„ß‰ß⁄ ßÍß⁄ßﬂßÌ-------------------*/
+    /*-------------------–ü—Ä–æ–≤–µ—Ä–∫–∞ –∑–∞–Ω—è—Ç–æ—Å—Ç–∏ —à–∏–Ω—ã-------------------*/
     if (READ_BIT(I2C->STAR2, I2C_STAR2_BUSY)) {
-        //ß¶ß„ß›ß⁄ ßÍß⁄ßﬂß— ßŸß—ßﬂßÒß‰ß—
+        // –ï—Å–ª–∏ —à–∏–Ω–∞ –∑–∞–Ω—è—Ç–∞
 
         if ((READ_BIT(GPIOC->INDR, GPIO_INDR_IDR1)) && (READ_BIT(GPIOC->INDR, GPIO_INDR_IDR2))) {
-            //ß¶ß„ß›ß⁄ ß›ß⁄ßﬂß⁄ßÒ ßﬂß— ß„ß—ßﬁß‡ßﬁ ß’ß÷ß›ß÷ ß„ß”ß‡ß“ß‡ß’ßﬂß—, ß— BUSY ß”ß⁄ß„ß⁄ß‰
-            RVMSIS_I2C_Reset(); //ß‚ß÷ß„ß÷ß‰
-            RVMSIS_I2C1_Init(); //ß·ß‡ß”ß‰ß‡ß‚ßﬂß—ßÒ ß⁄ßﬂß⁄ßËß⁄ß—ß›ß⁄ßŸß—ßËß⁄ßÒ
+            // –ï—Å–ª–∏ –ª–∏–Ω–∏—è –Ω–∞ —Å–∞–º–æ–º –¥–µ–ª–µ —Å–≤–æ–±–æ–¥–Ω–∞, –∞ BUSY –≤–∏—Å–∏—Ç
+            RVMSIS_I2C_Reset();  // —Ä–µ—Å–µ—Ç
+            RVMSIS_I2C1_Init();  // –ø–æ–≤—Ç–æ—Ä–Ω–∞—è –∏–Ω–∏—Ü–∏–∞–ª–∏–∑–∞—Ü–∏—è
         }
 
         if (READ_BIT(I2C->STAR2, I2C_STAR2_MSL)) {
-            //ß¶ß„ß›ß⁄ ß„ß‰ß‡ß⁄ß‰ ß„ß‰ß—ß‰ßÂß„, ßÈß‰ß‡ ßﬁßÌ ß” ßﬁß—ß„ß‰ß÷ß‚ß÷
-            SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP); //ß∞ß‰ß·ß‚ß—ß”ß⁄ßﬁ ß„ß⁄ß‘ßﬂß—ß› STOP
+            // –ï—Å–ª–∏ —Å—Ç–æ–∏—Ç —Å—Ç–∞—Ç—É—Å, —á—Ç–æ –º—ã –≤ –º–∞—Å—Ç–µ—Ä–µ
+            SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Ç–ø—Ä–∞–≤–∏–º —Å–∏–≥–Ω–∞–ª STOP
         }
 
         if (I2C->CTLR1 != 1) {
-            //ß¶ß„ß›ß⁄ ß” CR1 ßÈß‰ß‡-ß‰ß‡ ß›ß⁄ßÍßﬂß÷ß÷, ß‰ß‡ ß·ß÷ß‚ß÷ßŸß—ß‘ß‚ßÂßŸß⁄ßﬁ I2C
+            // –ï—Å–ª–∏ –≤ CR1 —á—Ç–æ-—Ç–æ –ª–∏—à–Ω–µ–µ, —Ç–æ –ø–µ—Ä–µ–∑–∞–≥—Ä—É–∑–∏–º I2C
             CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_PE);
             SET_BIT(I2C->CTLR1, I2C_CTLR1_PE);
         }
 
         return false;
     }
-    /*-------------------ß±ß‚ß‡ß”ß÷ß‚ß‹ß— ßŸß—ßﬂßÒß‰ß‡ß„ß‰ß⁄ ßÍß⁄ßﬂßÌ-------------------*/
+    /*-------------------–ü—Ä–æ–≤–µ—Ä–∫–∞ –∑–∞–Ω—è—Ç–æ—Å—Ç–∏ —à–∏–Ω—ã-------------------*/
 
-    CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_POS); //ß¢ß⁄ß‰ ACK ßÂß·ß‚ß—ß”ß›ßÒß÷ß‰ (N)ACK ß‰ß÷ß‹ßÂßÎß÷ß‘ß‡ ß“ß—ß€ß‰ß—, ß·ß‚ß⁄ßﬂß⁄ßﬁß—ß÷ßﬁß‡ß‘ß‡ ß” ß„ß’ß”ß⁄ß‘ß‡ß”ß‡ßﬁ ß‚ß÷ß‘ß⁄ß„ß‰ß‚ß÷.
-    SET_BIT(I2C->CTLR1, I2C_CTLR1_START); //ß≥ß‰ß—ß‚ß‰ßÂß÷ßﬁ.
+    CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_POS);  // –ë–∏—Ç ACK —É–ø—Ä–∞–≤–ª—è–µ—Ç (N)ACK —Ç–µ–∫—É—â–µ–≥–æ –±–∞–π—Ç–∞, –ø—Ä–∏–Ω–∏–º–∞–µ–º–æ–≥–æ –≤ —Å–¥–≤–∏–≥–æ–≤–æ–º —Ä–µ–≥–∏—Å—Ç—Ä–µ.
+    SET_BIT(I2C->CTLR1, I2C_CTLR1_START);  // –°—Ç–∞—Ä—Ç—É–µ–º.
 
     Timeout_counter_ms = Timeout_ms;
     while (READ_BIT(I2C->STAR1, I2C_STAR1_SB) == 0) {
-        //ß∞ßÿß⁄ß’ß—ß÷ßﬁ ß’ß‡ ßﬁß‡ßﬁß÷ßﬂß‰ß—, ß·ß‡ß‹ß— ßﬂß÷ ß„ß‚ß—ß“ß‡ß‰ß—ß÷ß‰ Start condition generated
+        // –û–∂–∏–¥–∞–µ–º –¥–æ –º–æ–º–µ–Ω—Ç–∞, –ø–æ–∫–∞ –Ω–µ —Å—Ä–∞–±–æ—Ç–∞–µ—Ç Start condition generated
 
         if (!Timeout_counter_ms) {
             return false;
         }
-
     }
-    //ß£ßØß™ßÆß°ßØß™ß¶!
-    /* ß¢ß⁄ß‰ I2C_SR1_SB ß‡ßÈß⁄ßÎß—ß÷ß‰ß„ßÒ ß·ß‚ß‡ß‘ß‚ß—ßﬁßﬁßﬂß‡ ß·ßÂß‰ß÷ßﬁ ßÈß‰ß÷ßﬂß⁄ßÒ ß‚ß÷ß‘ß⁄ß„ß‰ß‚ß— SR1 ß„ ß·ß‡ß„ß›ß÷ß’ßÂßßÎß÷ß€ ßŸß—ß·ß⁄ß„ßÓß ß” ß‚ß÷ß‘ß⁄ß„ß‰ß‚ DR ß⁄ß›ß⁄ ß‹ß‡ß‘ß’ß— PE=0*/
+    // –í–ù–ò–ú–ê–ù–ò–ï!
+    /* –ë–∏—Ç I2C_SR1_SB –æ—á–∏—â–∞–µ—Ç—Å—è –ø—Ä–æ–≥—Ä–∞–º–º–Ω–æ –ø—É—Ç–µ–º —á—Ç–µ–Ω–∏—è —Ä–µ–≥–∏—Å—Ç—Ä–∞ SR1 —Å –ø–æ—Å–ª–µ–¥—É—é—â–µ–π –∑–∞–ø–∏—Å—å—é –≤ —Ä–µ–≥–∏—Å—Ç—Ä DR –∏–ª–∏ –∫–æ–≥–¥–∞ PE=0*/
     I2C->STAR1;
-    I2C->DATAR = (Adress_Device << 1); //ß°ß’ß‚ß÷ß„ + Write
+    I2C->DATAR = (Adress_Device << 1);  // –ê–¥—Ä–µ—Å + Write
 
     Timeout_counter_ms = Timeout_ms;
     while ((READ_BIT(I2C->STAR1, I2C_STAR1_AF) == 0) && (READ_BIT(I2C->STAR1, I2C_STAR1_ADDR) == 0)) {
-        //ß®ß’ß÷ßﬁ, ß·ß‡ß‹ß— ß—ß’ß‚ß÷ß„ ß‡ß‰ßŸß‡ß”ß÷ß‰ß„ßÒ
+        // –ñ–¥–µ–º, –ø–æ–∫–∞ –∞–¥—Ä–µ—Å –æ—Ç–∑–æ–≤–µ—Ç—Å—è
 
         if (!Timeout_counter_ms) {
             return false;
         }
-
     }
     if (READ_BIT(I2C->STAR1, I2C_STAR1_ADDR)) {
-        //ß¶ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ß‡ß‰ß‡ßŸß”ß—ß›ß‡ß„ßÓ, ß„ß“ß‚ß‡ß„ß⁄ßﬁ ß“ß⁄ß‰ ADDR
-        /*ß≥ß“ß‚ß‡ß„ ß“ß⁄ß‰ß— ADDR ß·ß‚ß‡ß⁄ßŸß”ß‡ß’ß⁄ß‰ß„ßÒ ßÈß‰ß÷ßﬂß⁄ß÷ßﬁ SR1, ß— ß·ß‡ß‰ß‡ßﬁ SR2*/
+        // –ï—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –æ—Ç–æ–∑–≤–∞–ª–æ—Å—å, —Å–±—Ä–æ—Å–∏–º –±–∏—Ç ADDR
+        /*–°–±—Ä–æ—Å –±–∏—Ç–∞ ADDR –ø—Ä–æ–∏–∑–≤–æ–¥–∏—Ç—Å—è —á—Ç–µ–Ω–∏–µ–º SR1, –∞ –ø–æ—Ç–æ–º SR2*/
         I2C->STAR1;
         I2C->STAR2;
 
-        /*ß∞ß‰ß·ß‚ß—ß”ß⁄ßﬁ ß—ß’ß‚ß÷ß„ ß·ß—ßﬁßÒß‰ß⁄*/
+        /*–û—Ç–ø—Ä–∞–≤–∏–º –∞–¥—Ä–µ—Å –ø–∞–º—è—Ç–∏*/
         for (uint16_t i = 0; i < Size_adress; i++) {
-            I2C->DATAR = *((uint8_t*) &Adress_data + (Size_adress - 1 - i)); //ß©ß—ß·ß⁄ß„ßÓ ß“ß—ß€ß‰ß—
+            I2C->DATAR = *((uint8_t*)&Adress_data + (Size_adress - 1 - i));  // –ó–∞–ø–∏—Å—å –±–∞–π—Ç–∞
             while (READ_BIT(I2C->STAR1, I2C_STAR1_TXE) == 0) {
-                //ß®ß’ß÷ßﬁ, ß·ß‡ß‹ß— ß’ß—ßﬂßﬂßÌß÷ ßŸß—ß‘ß‚ßÂßŸßÒß‰ß„ßÒ ß” ß‚ß÷ß‘ß⁄ß„ß‰ß‚ ß„ß’ß”ß⁄ß‘ß—.
+                // –ñ–¥–µ–º, –ø–æ–∫–∞ –¥–∞–Ω–Ω—ã–µ –∑–∞–≥—Ä—É–∑—è—Ç—Å—è –≤ —Ä–µ–≥–∏—Å—Ç—Ä —Å–¥–≤–∏–≥–∞.
 
                 if ((READ_BIT(I2C->STAR1, I2C_STAR1_AF) == 1)) {
-                    //ß¶ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ßﬂß÷ ß‡ß‰ß‡ßŸß”ß—ß›ß‡ß„ßÓ, ß·ß‚ß⁄ß›ß÷ß‰ß⁄ß‰ 1 ß” I2C_SR1_AF
-                    SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);//ß∞ß„ß‰ß—ßﬂß—ß”ß›ß⁄ß”ß—ß÷ßﬁ
-                    CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF);//ß≥ß“ß‚ß—ß„ßÌß”ß—ß÷ßﬁ ß“ß⁄ß‰ AF
+                    // –ï—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –Ω–µ –æ—Ç–æ–∑–≤–∞–ª–æ—Å—å, –ø—Ä–∏–ª–µ—Ç–∏—Ç 1 –≤ I2C_SR1_AF
+                    SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ–º
+                    CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF);  // –°–±—Ä–∞—Å—ã–≤–∞–µ–º –±–∏—Ç AF
                     return false;
                 }
             }
         }
 
-        /*ß¢ßÂß’ß÷ßﬁ ßŸß—ß·ß⁄ß„ßÌß”ß—ß‰ßÓ ß’ß—ßﬂßﬂßÌß÷ ß” ßÒßÈß÷ß€ß‹ßÂ ß·ß—ßﬁßÒß‰ß⁄, ßﬂß—ßÈß⁄ßﬂß—ßÒ ß„ ßÂß‹ß—ßŸß—ßﬂßﬂß‡ß‘ß‡ ß—ß’ß‚ß÷ß„ß—*/
+        /*–ë—É–¥–µ–º –∑–∞–ø–∏—Å—ã–≤–∞—Ç—å –¥–∞–Ω–Ω—ã–µ –≤ —è—á–µ–π–∫—É –ø–∞–º—è—Ç–∏, –Ω–∞—á–∏–Ω–∞—è —Å —É–∫–∞–∑–∞–Ω–Ω–æ–≥–æ –∞–¥—Ä–µ—Å–∞*/
         for (uint16_t i = 0; i < Size_data; i++) {
-            I2C->DATAR = *(data + i); //ß©ß—ß·ß⁄ß„ßÓ ß“ß—ß€ß‰ß—
+            I2C->DATAR = *(data + i);  // –ó–∞–ø–∏—Å—å –±–∞–π—Ç–∞
             while (READ_BIT(I2C->STAR1, I2C_STAR1_TXE) == 0) {
-                //ß®ß’ß÷ßﬁ, ß·ß‡ß‹ß— ß’ß—ßﬂßﬂßÌß÷ ßŸß—ß‘ß‚ßÂßŸßÒß‰ß„ßÒ ß” ß‚ß÷ß‘ß⁄ß„ß‰ß‚ ß„ß’ß”ß⁄ß‘ß—.
+                // –ñ–¥–µ–º, –ø–æ–∫–∞ –¥–∞–Ω–Ω—ã–µ –∑–∞–≥—Ä—É–∑—è—Ç—Å—è –≤ —Ä–µ–≥–∏—Å—Ç—Ä —Å–¥–≤–∏–≥–∞.
 
                 if ((READ_BIT(I2C->STAR1, I2C_STAR1_AF) == 1)) {
-                    //ß¶ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ßﬂß÷ ß‡ß‰ß‡ßŸß”ß—ß›ß‡ß„ßÓ, ß·ß‚ß⁄ß›ß÷ß‰ß⁄ß‰ 1 ß” I2C_SR1_AF
-                    SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);//ß∞ß„ß‰ß—ßﬂß—ß”ß›ß⁄ß”ß—ß÷ßﬁ
-                    CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF);//ß≥ß“ß‚ß—ß„ßÌß”ß—ß÷ßﬁ ß“ß⁄ß‰ AF
+                    // –ï—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –Ω–µ –æ—Ç–æ–∑–≤–∞–ª–æ—Å—å, –ø—Ä–∏–ª–µ—Ç–∏—Ç 1 –≤ I2C_SR1_AF
+                    SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ–º
+                    CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF);  // –°–±—Ä–∞—Å—ã–≤–∞–µ–º –±–∏—Ç AF
                     return false;
                 }
             }
         }
 
-        SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP); //ß∞ß„ß‰ß—ßﬂß—ß”ß›ß⁄ß”ß—ß÷ßﬁ
+        SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ–º
 
         return true;
 
     } else {
-        //ß¶ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ßﬂß÷ ß‡ß‰ß‡ßŸß”ß—ß›ß‡ß„ßÓ, ß·ß‚ß⁄ß›ß÷ß‰ß⁄ß‰ 1 ß” I2C_SR1_AF
-        SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP); //ß∞ß„ß‰ß—ßﬂß—ß”ß›ß⁄ß”ß—ß÷ßﬁ
-        CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF); //ß≥ß“ß‚ß—ß„ßÌß”ß—ß÷ßﬁ ß“ß⁄ß‰ AF
+        // –ï—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –Ω–µ –æ—Ç–æ–∑–≤–∞–ª–æ—Å—å, –ø—Ä–∏–ª–µ—Ç–∏—Ç 1 –≤ I2C_SR1_AF
+        SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ–º
+        CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF);  // –°–±—Ä–∞—Å—ã–≤–∞–µ–º –±–∏—Ç AF
 
         return false;
     }
@@ -961,154 +946,147 @@ bool RVMSIS_I2C_MemWrite(I2C_TypeDef* I2C, uint8_t Adress_Device, uint16_t Adres
 
 /**
  **************************************************************************************************
- *  @breif ß∂ßÂßﬂß‹ßËß⁄ßÒ ßÈß‰ß÷ßﬂß⁄ßÒ ß⁄ßŸ ß·ß—ßﬁßÒß‰ß⁄ ß·ß‡ ßÂß‹ß—ßŸß—ßﬂßﬂß‡ßﬁßÂ ß—ß’ß‚ß÷ß„ßÂ
- *  @param  *I2C - ßÍß⁄ßﬂß— I2C
- *  @param  Adress_Device - ß°ß’ß‚ß÷ß„ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß—
- *  @param  Adress_data - ß°ß’ß‚ß÷ß„ ß” ß·ß—ßﬁßÒß‰ß⁄, ß‡ß‰ß‹ßÂß’ß— ß“ßÂß’ß÷ßﬁ ß„ßÈß⁄ß‰ßÌß”ß—ß‰ßÓ ß’ß—ßﬂßﬂßÌß÷
- *  @param  Size_adress - ß≤ß—ßŸßﬁß÷ß‚ ß—ß’ß‚ß÷ß„ß— ß” ß“ß—ß€ß‰ß—ßÁ. ß±ß‚ß⁄ßﬁß÷ß‚: 1 - 8 ß“ß⁄ß‰ßﬂßÌß€ ß—ß’ß‚ß÷ß„. 2 - 16 ß“ß⁄ß‰ßﬂßÌß€ ß—ß’ß‚ß÷ß„.
- *  @param  *data - ß•ß—ßﬂßﬂßÌß÷, ß” ß‹ß‡ß‰ß‡ß‚ßÌß÷ ß“ßÂß’ß÷ßﬁ ßŸß—ß·ß⁄ß„ßÌß”ß—ß‰ßÓ ß„ßÈß⁄ß‰ß—ßﬂßﬂßÂß ß⁄ßﬂßÊß‡ß‚ßﬁß—ßËß⁄ß.
- *  @param  Size_data - ß≤ß—ßŸßﬁß÷ß‚, ß„ß‹ß‡ß›ßÓß‹ß‡ ß“ß—ß€ß‰ ß“ßÂß’ß÷ßﬁ ß„ßÈß⁄ß‰ßÌß”ß—ß‰ßÓ.
- *  @retval  ß£ß‡ßŸß”ß‚ß—ßÎß—ß÷ß‰ ß„ß‰ß—ß‰ßÂß„ ß„ßÈß⁄ß‰ßÌß”ß—ßﬂß⁄ßÒ. True - ßµß„ß·ß÷ßÍßﬂß‡. False - ß∞ßÍß⁄ß“ß‹ß—.
+ *  @breif –§—É–Ω–∫—Ü–∏—è —á—Ç–µ–Ω–∏—è –∏–∑ –ø–∞–º—è—Ç–∏ –ø–æ —É–∫–∞–∑–∞–Ω–Ω–æ–º—É –∞–¥—Ä–µ—Å—É
+ *  @param  *I2C - —à–∏–Ω–∞ I2C
+ *  @param  Adress_Device - –ê–¥—Ä–µ—Å —É—Å—Ç—Ä–æ–π—Å—Ç–≤–∞
+ *  @param  Adress_data - –ê–¥—Ä–µ—Å –≤ –ø–∞–º—è—Ç–∏, –æ—Ç–∫—É–¥–∞ –±—É–¥–µ–º —Å—á–∏—Ç—ã–≤–∞—Ç—å –¥–∞–Ω–Ω—ã–µ
+ *  @param  Size_adress - –†–∞–∑–º–µ—Ä –∞–¥—Ä–µ—Å–∞ –≤ –±–∞–π—Ç–∞—Ö. –ü—Ä–∏–º–µ—Ä: 1 - 8 –±–∏—Ç–Ω—ã–π –∞–¥—Ä–µ—Å. 2 - 16 –±–∏—Ç–Ω—ã–π –∞–¥—Ä–µ—Å.
+ *  @param  *data - –î–∞–Ω–Ω—ã–µ, –≤ –∫–æ—Ç–æ—Ä—ã–µ –±—É–¥–µ–º –∑–∞–ø–∏—Å—ã–≤–∞—Ç—å —Å—á–∏—Ç–∞–Ω–Ω—É—é –∏–Ω—Ñ–æ—Ä–º–∞—Ü–∏—é.
+ *  @param  Size_data - –†–∞–∑–º–µ—Ä, —Å–∫–æ–ª—å–∫–æ –±–∞–π—Ç –±—É–¥–µ–º —Å—á–∏—Ç—ã–≤–∞—Ç—å.
+ *  @retval  –í–æ–∑–≤—Ä–∞—â–∞–µ—Ç —Å—Ç–∞—Ç—É—Å —Å—á–∏—Ç—ã–≤–∞–Ω–∏—è. True - –£—Å–ø–µ—à–Ω–æ. False - –û—à–∏–±–∫–∞.
  **************************************************************************************************
  */
 bool RVMSIS_I2C_MemRead(I2C_TypeDef* I2C, uint8_t Adress_Device, uint16_t Adress_data, uint8_t Size_adress, uint8_t* data, uint16_t Size_data, uint32_t Timeout_ms) {
-
-    /*-------------------ß±ß‚ß‡ß”ß÷ß‚ß‹ß— ßŸß—ßﬂßÒß‰ß‡ß„ß‰ß⁄ ßÍß⁄ßﬂßÌ-------------------*/
+    /*-------------------–ü—Ä–æ–≤–µ—Ä–∫–∞ –∑–∞–Ω—è—Ç–æ—Å—Ç–∏ —à–∏–Ω—ã-------------------*/
     if (READ_BIT(I2C->STAR2, I2C_STAR2_BUSY)) {
-        //ß¶ß„ß›ß⁄ ßÍß⁄ßﬂß— ßŸß—ßﬂßÒß‰ß—
+        // –ï—Å–ª–∏ —à–∏–Ω–∞ –∑–∞–Ω—è—Ç–∞
 
         if ((READ_BIT(GPIOC->INDR, GPIO_INDR_IDR1)) && (READ_BIT(GPIOC->INDR, GPIO_INDR_IDR2))) {
-            //ß¶ß„ß›ß⁄ ß›ß⁄ßﬂß⁄ßÒ ßﬂß— ß„ß—ßﬁß‡ßﬁ ß’ß÷ß›ß÷ ß„ß”ß‡ß“ß‡ß’ßﬂß—, ß— BUSY ß”ß⁄ß„ß⁄ß‰
-            RVMSIS_I2C_Reset(); //ß‚ß÷ß„ß÷ß‰
-            RVMSIS_I2C1_Init(); //ß·ß‡ß”ß‰ß‡ß‚ßﬂß—ßÒ ß⁄ßﬂß⁄ßËß⁄ß—ß›ß⁄ßŸß—ßËß⁄ßÒ
+            // –ï—Å–ª–∏ –ª–∏–Ω–∏—è –Ω–∞ —Å–∞–º–æ–º –¥–µ–ª–µ —Å–≤–æ–±–æ–¥–Ω–∞, –∞ BUSY –≤–∏—Å–∏—Ç
+            RVMSIS_I2C_Reset();  // —Ä–µ—Å–µ—Ç
+            RVMSIS_I2C1_Init();  // –ø–æ–≤—Ç–æ—Ä–Ω–∞—è –∏–Ω–∏—Ü–∏–∞–ª–∏–∑–∞—Ü–∏—è
         }
 
         if (READ_BIT(I2C->STAR2, I2C_STAR2_MSL)) {
-            //ß¶ß„ß›ß⁄ ß„ß‰ß‡ß⁄ß‰ ß„ß‰ß—ß‰ßÂß„, ßÈß‰ß‡ ßﬁßÌ ß” ßﬁß—ß„ß‰ß÷ß‚ß÷
-            SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP); //ß∞ß‰ß·ß‚ß—ß”ß⁄ßﬁ ß„ß⁄ß‘ßﬂß—ß› STOP
+            // –ï—Å–ª–∏ —Å—Ç–æ–∏—Ç —Å—Ç–∞—Ç—É—Å, —á—Ç–æ –º—ã –≤ –º–∞—Å—Ç–µ—Ä–µ
+            SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Ç–ø—Ä–∞–≤–∏–º —Å–∏–≥–Ω–∞–ª STOP
         }
 
         if (I2C->CTLR1 != 1) {
-            //ß¶ß„ß›ß⁄ ß” CR1 ßÈß‰ß‡-ß‰ß‡ ß›ß⁄ßÍßﬂß÷ß÷, ß‰ß‡ ß·ß÷ß‚ß÷ßŸß—ß‘ß‚ßÂßŸß⁄ßﬁ I2C
+            // –ï—Å–ª–∏ –≤ CR1 —á—Ç–æ-—Ç–æ –ª–∏—à–Ω–µ–µ, —Ç–æ –ø–µ—Ä–µ–∑–∞–≥—Ä—É–∑–∏–º I2C
             CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_PE);
             SET_BIT(I2C->CTLR1, I2C_CTLR1_PE);
         }
 
         return false;
     }
-    /*-------------------ß±ß‚ß‡ß”ß÷ß‚ß‹ß— ßŸß—ßﬂßÒß‰ß‡ß„ß‰ß⁄ ßÍß⁄ßﬂßÌ-------------------*/
+    /*-------------------–ü—Ä–æ–≤–µ—Ä–∫–∞ –∑–∞–Ω—è—Ç–æ—Å—Ç–∏ —à–∏–Ω—ã-------------------*/
 
-    CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_POS); //ß¢ß⁄ß‰ ACK ßÂß·ß‚ß—ß”ß›ßÒß÷ß‰ (N)ACK ß‰ß÷ß‹ßÂßÎß÷ß‘ß‡ ß“ß—ß€ß‰ß—, ß·ß‚ß⁄ßﬂß⁄ßﬁß—ß÷ßﬁß‡ß‘ß‡ ß” ß„ß’ß”ß⁄ß‘ß‡ß”ß‡ßﬁ ß‚ß÷ß‘ß⁄ß„ß‰ß‚ß÷.
-    SET_BIT(I2C->CTLR1, I2C_CTLR1_START); //ß≥ß‰ß—ß‚ß‰ßÂß÷ßﬁ.
+    CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_POS);  // –ë–∏—Ç ACK —É–ø—Ä–∞–≤–ª—è–µ—Ç (N)ACK —Ç–µ–∫—É—â–µ–≥–æ –±–∞–π—Ç–∞, –ø—Ä–∏–Ω–∏–º–∞–µ–º–æ–≥–æ –≤ —Å–¥–≤–∏–≥–æ–≤–æ–º —Ä–µ–≥–∏—Å—Ç—Ä–µ.
+    SET_BIT(I2C->CTLR1, I2C_CTLR1_START);  // –°—Ç–∞—Ä—Ç—É–µ–º.
 
     Timeout_counter_ms = Timeout_ms;
     while (READ_BIT(I2C->STAR1, I2C_STAR1_SB) == 0) {
-        //ß∞ßÿß⁄ß’ß—ß÷ßﬁ ß’ß‡ ßﬁß‡ßﬁß÷ßﬂß‰ß—, ß·ß‡ß‹ß— ßﬂß÷ ß„ß‚ß—ß“ß‡ß‰ß—ß÷ß‰ Start condition generated
+        // –û–∂–∏–¥–∞–µ–º –¥–æ –º–æ–º–µ–Ω—Ç–∞, –ø–æ–∫–∞ –Ω–µ —Å—Ä–∞–±–æ—Ç–∞–µ—Ç Start condition generated
 
         if (!Timeout_counter_ms) {
             return false;
         }
-
     }
-    //ß£ßØß™ßÆß°ßØß™ß¶!
-    /* ß¢ß⁄ß‰ I2C_SR1_SB ß‡ßÈß⁄ßÎß—ß÷ß‰ß„ßÒ ß·ß‚ß‡ß‘ß‚ß—ßﬁßﬁßﬂß‡ ß·ßÂß‰ß÷ßﬁ ßÈß‰ß÷ßﬂß⁄ßÒ ß‚ß÷ß‘ß⁄ß„ß‰ß‚ß— SR1 ß„ ß·ß‡ß„ß›ß÷ß’ßÂßßÎß÷ß€ ßŸß—ß·ß⁄ß„ßÓß ß” ß‚ß÷ß‘ß⁄ß„ß‰ß‚ DR ß⁄ß›ß⁄ ß‹ß‡ß‘ß’ß— PE=0*/
+    // –í–ù–ò–ú–ê–ù–ò–ï!
+    /* –ë–∏—Ç I2C_SR1_SB –æ—á–∏—â–∞–µ—Ç—Å—è –ø—Ä–æ–≥—Ä–∞–º–º–Ω–æ –ø—É—Ç–µ–º —á—Ç–µ–Ω–∏—è —Ä–µ–≥–∏—Å—Ç—Ä–∞ SR1 —Å –ø–æ—Å–ª–µ–¥—É—é—â–µ–π –∑–∞–ø–∏—Å—å—é –≤ —Ä–µ–≥–∏—Å—Ç—Ä DR –∏–ª–∏ –∫–æ–≥–¥–∞ PE=0*/
     I2C->STAR1;
-    I2C->DATAR = (Adress_Device << 1); //ß°ß’ß‚ß÷ß„ + ß‹ß‡ßﬁß—ßﬂß’ß— Write
+    I2C->DATAR = (Adress_Device << 1);  // –ê–¥—Ä–µ—Å + –∫–æ–º–∞–Ω–¥–∞ Write
 
     Timeout_counter_ms = Timeout_ms;
     while ((READ_BIT(I2C->STAR1, I2C_STAR1_AF) == 0) && (READ_BIT(I2C->STAR1, I2C_STAR1_ADDR) == 0)) {
-        //ß®ß’ß÷ßﬁ, ß·ß‡ß‹ß— ß—ß’ß‚ß÷ß„ ß‡ß‰ßŸß‡ß”ß÷ß‰ß„ßÒ
+        // –ñ–¥–µ–º, –ø–æ–∫–∞ –∞–¥—Ä–µ—Å –æ—Ç–∑–æ–≤–µ—Ç—Å—è
 
         if (!Timeout_counter_ms) {
             return false;
         }
-
     }
 
     if (READ_BIT(I2C->STAR1, I2C_STAR1_ADDR)) {
-        //ß¶ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ß‡ß‰ß‡ßŸß”ß—ß›ß‡ß„ßÓ, ß„ß“ß‚ß‡ß„ß⁄ßﬁ ß“ß⁄ß‰ ADDR
-        /*ß≥ß“ß‚ß‡ß„ ß“ß⁄ß‰ß— ADDR ß·ß‚ß‡ß⁄ßŸß”ß‡ß’ß⁄ß‰ß„ßÒ ßÈß‰ß÷ßﬂß⁄ß÷ßﬁ SR1, ß— ß·ß‡ß‰ß‡ßﬁ SR2*/
+        // –ï—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –æ—Ç–æ–∑–≤–∞–ª–æ—Å—å, —Å–±—Ä–æ—Å–∏–º –±–∏—Ç ADDR
+        /*–°–±—Ä–æ—Å –±–∏—Ç–∞ ADDR –ø—Ä–æ–∏–∑–≤–æ–¥–∏—Ç—Å—è —á—Ç–µ–Ω–∏–µ–º SR1, –∞ –ø–æ—Ç–æ–º SR2*/
         I2C->STAR1;
         I2C->STAR2;
 
-        /*ß∞ß‰ß·ß‚ß—ß”ß⁄ßﬁ ß—ß’ß‚ß÷ß„ ß·ß—ßﬁßÒß‰ß⁄*/
+        /*–û—Ç–ø—Ä–∞–≤–∏–º –∞–¥—Ä–µ—Å –ø–∞–º—è—Ç–∏*/
         for (uint16_t i = 0; i < Size_adress; i++) {
-            I2C->DATAR = *((uint8_t*) &Adress_data + (Size_adress - 1 - i)); //ß©ß—ß·ß⁄ß„ßÓ ß“ß—ß€ß‰ß—
+            I2C->DATAR = *((uint8_t*)&Adress_data + (Size_adress - 1 - i));  // –ó–∞–ø–∏—Å—å –±–∞–π—Ç–∞
             while (READ_BIT(I2C->STAR1, I2C_STAR1_TXE) == 0) {
-                //ß®ß’ß÷ßﬁ, ß·ß‡ß‹ß— ß’ß—ßﬂßﬂßÌß÷ ßŸß—ß‘ß‚ßÂßŸßÒß‰ß„ßÒ ß” ß‚ß÷ß‘ß⁄ß„ß‰ß‚ ß„ß’ß”ß⁄ß‘ß—.
+                // –ñ–¥–µ–º, –ø–æ–∫–∞ –¥–∞–Ω–Ω—ã–µ –∑–∞–≥—Ä—É–∑—è—Ç—Å—è –≤ —Ä–µ–≥–∏—Å—Ç—Ä —Å–¥–≤–∏–≥–∞.
 
                 if ((READ_BIT(I2C->STAR1, I2C_STAR1_AF) == 1)) {
-                    //ß¶ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ßﬂß÷ ß‡ß‰ß‡ßŸß”ß—ß›ß‡ß„ßÓ, ß·ß‚ß⁄ß›ß÷ß‰ß⁄ß‰ 1 ß” I2C_SR1_AF
-                    SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);//ß∞ß„ß‰ß—ßﬂß—ß”ß›ß⁄ß”ß—ß÷ßﬁ
-                    CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF);//ß≥ß“ß‚ß—ß„ßÌß”ß—ß÷ßﬁ ß“ß⁄ß‰ AF
+                    // –ï—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –Ω–µ –æ—Ç–æ–∑–≤–∞–ª–æ—Å—å, –ø—Ä–∏–ª–µ—Ç–∏—Ç 1 –≤ I2C_SR1_AF
+                    SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ–º
+                    CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF);  // –°–±—Ä–∞—Å—ã–≤–∞–µ–º –±–∏—Ç AF
                     return false;
                 }
             }
         }
 
-        //ß±ß‡ß”ß‰ß‡ß‚ßﬂßÌß€ ß„ß‰ß—ß‚ß‰
-        SET_BIT(I2C->CTLR1, I2C_CTLR1_START); //ß≥ß‰ß—ß‚ß‰ßÂß÷ßﬁ.
+        // –ü–æ–≤—Ç–æ—Ä–Ω—ã–π —Å—Ç–∞—Ä—Ç
+        SET_BIT(I2C->CTLR1, I2C_CTLR1_START);  // –°—Ç–∞—Ä—Ç—É–µ–º.
 
         Timeout_counter_ms = Timeout_ms;
         while (READ_BIT(I2C->STAR1, I2C_STAR1_SB) == 0) {
-            //ß∞ßÿß⁄ß’ß—ß÷ßﬁ ß’ß‡ ßﬁß‡ßﬁß÷ßﬂß‰ß—, ß·ß‡ß‹ß— ßﬂß÷ ß„ß‚ß—ß“ß‡ß‰ß—ß÷ß‰ Start condition generated
+            // –û–∂–∏–¥–∞–µ–º –¥–æ –º–æ–º–µ–Ω—Ç–∞, –ø–æ–∫–∞ –Ω–µ —Å—Ä–∞–±–æ—Ç–∞–µ—Ç Start condition generated
 
             if (!Timeout_counter_ms) {
                 return false;
             }
-
         }
-        //ß£ßØß™ßÆß°ßØß™ß¶!
-        /* ß¢ß⁄ß‰ I2C_SR1_SB ß‡ßÈß⁄ßÎß—ß÷ß‰ß„ßÒ ß·ß‚ß‡ß‘ß‚ß—ßﬁßﬁßﬂß‡ ß·ßÂß‰ß÷ßﬁ ßÈß‰ß÷ßﬂß⁄ßÒ ß‚ß÷ß‘ß⁄ß„ß‰ß‚ß— SR1 ß„ ß·ß‡ß„ß›ß÷ß’ßÂßßÎß÷ß€ ßŸß—ß·ß⁄ß„ßÓß ß” ß‚ß÷ß‘ß⁄ß„ß‰ß‚ DR ß⁄ß›ß⁄ ß‹ß‡ß‘ß’ß— PE=0*/
+        // –í–ù–ò–ú–ê–ù–ò–ï!
+        /* –ë–∏—Ç I2C_SR1_SB –æ—á–∏—â–∞–µ—Ç—Å—è –ø—Ä–æ–≥—Ä–∞–º–º–Ω–æ –ø—É—Ç–µ–º —á—Ç–µ–Ω–∏—è —Ä–µ–≥–∏—Å—Ç—Ä–∞ SR1 —Å –ø–æ—Å–ª–µ–¥—É—é—â–µ–π –∑–∞–ø–∏—Å—å—é –≤ —Ä–µ–≥–∏—Å—Ç—Ä DR –∏–ª–∏ –∫–æ–≥–¥–∞ PE=0*/
         I2C->STAR1;
-        I2C->DATAR = (Adress_Device << 1 | 1); //ß°ß’ß‚ß÷ß„ + ß‹ß‡ßﬁß—ßﬂß’ß— Read
+        I2C->DATAR = (Adress_Device << 1 | 1);  // –ê–¥—Ä–µ—Å + –∫–æ–º–∞–Ω–¥–∞ Read
 
         Timeout_counter_ms = Timeout_ms;
         while ((READ_BIT(I2C->STAR1, I2C_STAR1_AF) == 0) && (READ_BIT(I2C->STAR1, I2C_STAR1_ADDR) == 0)) {
-            //ß®ß’ß÷ßﬁ, ß·ß‡ß‹ß— ß—ß’ß‚ß÷ß„ ß‡ß‰ßŸß‡ß”ß÷ß‰ß„ßÒ
+            // –ñ–¥–µ–º, –ø–æ–∫–∞ –∞–¥—Ä–µ—Å –æ—Ç–∑–æ–≤–µ—Ç—Å—è
 
             if (!Timeout_counter_ms) {
                 return false;
             }
-
         }
 
         if (READ_BIT(I2C->STAR1, I2C_STAR1_ADDR)) {
-            //ß¶ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ß‡ß‰ß‡ßŸß”ß—ß›ß‡ß„ßÓ, ß„ß“ß‚ß‡ß„ß⁄ßﬁ ß“ß⁄ß‰ ADDR
-            /*ß≥ß“ß‚ß‡ß„ ß“ß⁄ß‰ß— ADDR ß·ß‚ß‡ß⁄ßŸß”ß‡ß’ß⁄ß‰ß„ßÒ ßÈß‰ß÷ßﬂß⁄ß÷ßﬁ SR1, ß— ß·ß‡ß‰ß‡ßﬁ SR2*/
+            // –ï—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –æ—Ç–æ–∑–≤–∞–ª–æ—Å—å, —Å–±—Ä–æ—Å–∏–º –±–∏—Ç ADDR
+            /*–°–±—Ä–æ—Å –±–∏—Ç–∞ ADDR –ø—Ä–æ–∏–∑–≤–æ–¥–∏—Ç—Å—è —á—Ç–µ–Ω–∏–µ–º SR1, –∞ –ø–æ—Ç–æ–º SR2*/
             I2C->STAR1;
             I2C->STAR2;
 
-            /*ß±ß‚ß‡ßÈß‰ß÷ßﬁ ß’ß—ßﬂßﬂßÌß÷, ßﬂß—ßÈß⁄ßﬂß—ßÒ ß„ ßÂß‹ß—ßŸß—ßﬂßﬂß‡ß‘ß‡ ß—ß’ß‚ß÷ß„ß—*/
+            /*–ü—Ä–æ—á—Ç–µ–º –¥–∞–Ω–Ω—ã–µ, –Ω–∞—á–∏–Ω–∞—è —Å —É–∫–∞–∑–∞–Ω–Ω–æ–≥–æ –∞–¥—Ä–µ—Å–∞*/
             for (uint16_t i = 0; i < Size_data; i++) {
                 if (i < Size_data - 1) {
-                    SET_BIT(I2C->CTLR1, I2C_CTLR1_ACK); //ß¶ß„ß›ß⁄ ßﬁßÌ ßÁß‡ß‰ß⁄ßﬁ ß·ß‚ß⁄ßﬂßÒß‰ßÓ ß„ß›ß÷ß’ßÂßßÎß⁄ß€ ß“ß—ß€ß‰, ß‰ß‡ ß‡ß‰ß·ß‚ß—ß”ß›ßÒß÷ßﬁ ACK
+                    SET_BIT(I2C->CTLR1, I2C_CTLR1_ACK);  // –ï—Å–ª–∏ –º—ã —Ö–æ—Ç–∏–º –ø—Ä–∏–Ω—è—Ç—å —Å–ª–µ–¥—É—é—â–∏–π –±–∞–π—Ç, —Ç–æ –æ—Ç–ø—Ä–∞–≤–ª—è–µ–º ACK
                     while (READ_BIT(I2C->STAR1, I2C_STAR1_RXNE) == 0);
-                    *(data + i) = I2C->DATAR; //ßπß‰ß÷ßﬂß⁄ß÷ ß“ß—ß€ß‰ß—
+                    *(data + i) = I2C->DATAR;  // –ß—Ç–µ–Ω–∏–µ –±–∞–π—Ç–∞
                 } else {
-                    CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_ACK); //ß¶ß„ß›ß⁄ ßﬁßÌ ßŸßﬂß—ß÷ßﬁ, ßÈß‰ß‡ ß„ß›ß÷ß’ßÂßßÎß⁄ß€ ß·ß‚ß⁄ßﬂßÒß‰ßÌß€ ß“ß—ß€ß‰ ß“ßÂß’ß÷ß‰ ß·ß‡ß„ß›ß÷ß’ßﬂß⁄ßﬁ, ß‰ß‡ ß‡ß‰ß·ß‚ß—ß”ß⁄ßﬁ NACK
+                    CLEAR_BIT(I2C->CTLR1, I2C_CTLR1_ACK);  // –ï—Å–ª–∏ –º—ã –∑–Ω–∞–µ–º, —á—Ç–æ —Å–ª–µ–¥—É—é—â–∏–π –ø—Ä–∏–Ω—è—Ç—ã–π –±–∞–π—Ç –±—É–¥–µ—Ç –ø–æ—Å–ª–µ–¥–Ω–∏–º, —Ç–æ –æ—Ç–ø—Ä–∞–≤–∏–º NACK
 
-                    SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP); //ß∞ß„ß‰ß—ßﬂß—ß”ß›ß⁄ß”ß—ß÷ßﬁ
+                    SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ–º
                     while (READ_BIT(I2C->STAR1, I2C_STAR1_RXNE) == 0);
-                    //ß±ß‡ß’ß‡ßÿß’ß÷ßﬁ, ß·ß‡ß‹ß— ß„ß’ß”ß⁄ß‘ß‡ß”ßÌß€ ß‚ß÷ß‘ß⁄ß„ß‰ß‚ ß·ß‡ß·ß‡ß›ßﬂß⁄ß‰ß„ßÒ ßﬂß‡ß”ßÌßﬁ ß“ß—ß€ß‰ß‡ßﬁ ß’ß—ßﬂßﬂßÌßÁ
-                    *(data + i) = I2C->DATAR; //ßπß‰ß÷ßﬂß⁄ß÷ ß“ß—ß€ß‰ß—
+                    // –ü–æ–¥–æ–∂–¥–µ–º, –ø–æ–∫–∞ —Å–¥–≤–∏–≥–æ–≤—ã–π —Ä–µ–≥–∏—Å—Ç—Ä –ø–æ–ø–æ–ª–Ω–∏—Ç—Å—è –Ω–æ–≤—ã–º –±–∞–π—Ç–æ–º –¥–∞–Ω–Ω—ã—Ö
+                    *(data + i) = I2C->DATAR;  // –ß—Ç–µ–Ω–∏–µ –±–∞–π—Ç–∞
                 }
             }
             return true;
 
         } else {
-            //ß¶ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ßﬂß÷ ß‡ß‰ß‡ßŸß”ß—ß›ß‡ß„ßÓ, ß·ß‚ß⁄ß›ß÷ß‰ß⁄ß‰ 1 ß” I2C_SR1_AF
-            SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP); //ß∞ß„ß‰ß—ßﬂß—ß”ß›ß⁄ß”ß—ß÷ßﬁ
-            CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF); //ß≥ß“ß‚ß—ß„ßÌß”ß—ß÷ßﬁ ß“ß⁄ß‰ AF
+            // –ï—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –Ω–µ –æ—Ç–æ–∑–≤–∞–ª–æ—Å—å, –ø—Ä–∏–ª–µ—Ç–∏—Ç 1 –≤ I2C_SR1_AF
+            SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ–º
+            CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF);  // –°–±—Ä–∞—Å—ã–≤–∞–µ–º –±–∏—Ç AF
             return false;
         }
 
     } else {
-        //ß¶ß„ß›ß⁄ ßÂß„ß‰ß‚ß‡ß€ß„ß‰ß”ß‡ ßﬂß÷ ß‡ß‰ß‡ßŸß”ß—ß›ß‡ß„ßÓ, ß·ß‚ß⁄ß›ß÷ß‰ß⁄ß‰ 1 ß” I2C_SR1_AF
-        SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP); //ß∞ß„ß‰ß—ßﬂß—ß”ß›ß⁄ß”ß—ß÷ßﬁ
-        CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF); //ß≥ß“ß‚ß—ß„ßÌß”ß—ß÷ßﬁ ß“ß⁄ß‰ AF
+        // –ï—Å–ª–∏ —É—Å—Ç—Ä–æ–π—Å—Ç–≤–æ –Ω–µ –æ—Ç–æ–∑–≤–∞–ª–æ—Å—å, –ø—Ä–∏–ª–µ—Ç–∏—Ç 1 –≤ I2C_SR1_AF
+        SET_BIT(I2C->CTLR1, I2C_CTLR1_STOP);  // –û—Å—Ç–∞–Ω–∞–≤–ª–∏–≤–∞–µ–º
+        CLEAR_BIT(I2C->STAR1, I2C_STAR1_AF);  // –°–±—Ä–∞—Å—ã–≤–∞–µ–º –±–∏—Ç AF
         return false;
     }
 }
-
-
