@@ -19,11 +19,10 @@
 
 #define USART_MAX_LEN_RX_BUFFER                20
 
-//§³§ä§â§å§Ü§ä§å§â§Ñ §á§à USART
 struct USART_name {
-    uint8_t rx_buffer[USART_MAX_LEN_RX_BUFFER]; //§¢§å§æ§Ö§â §á§à§Õ §Ó§ç§à§Õ§ñ§ë§Ú§Ö §Õ§Ñ§ß§ß§í§Ö
-    uint16_t rx_counter; //§³§é§Ö§ä§é§Ú§Ü §á§â§Ú§ç§à§Õ§ñ§ë§Ú§ç §Õ§Ñ§ß§ß§í§ç §ä§Ú§á§Ñ uint8_t §á§à USART
-    uint16_t rx_len; //§¬§à§Ý§Ú§é§Ö§ã§ä§Ó§à §á§â§Ú§ß§ñ§ä§í§ç §Ò§Ñ§Û§ä §á§à§ã§Ý§Ö §ã§â§Ñ§Ò§à§ä§Ü§Ú §æ§Ý§Ñ§Ô§Ñ IDLE
+    uint8_t rx_buffer[USART_MAX_LEN_RX_BUFFER]; 
+    uint16_t rx_counter; 
+    uint16_t rx_len;
 };
 
 //GPIO Configuration mode
@@ -56,7 +55,7 @@ void RVMSIS_SysTick_Timer_init(void);
 void Delay_ms(uint32_t Milliseconds);
 void RVMSIS_PC13_OUTPUT_Push_Pull_init(void);
 void RVMSIS_Blink_PC13(uint32_t ms);
-void RVMSIS_GPIO_init(GPIO_TypeDef *GPIO, uint8_t GPIO_Pin, uint8_t Configuration_mode, uint8_t Type, uint8_t Speed); //§¬§à§ß§æ§Ú§Ô§å§â§Ñ§è§Ú§ñ GPIO
+void RVMSIS_GPIO_init(GPIO_TypeDef *GPIO, uint8_t GPIO_Pin, uint8_t Configuration_mode, uint8_t Type, uint8_t Speed); //ï¿½ï¿½ï¿½ï¿½ß§ï¿½Ú§Ô§ï¿½ï¿½Ñ§ï¿½Ú§ï¿½ GPIO
 void RVMSIS_PA8_MCO_init(void);
 void RVMSIS_EXTI0_init(void);
 void RVMSIS_TIM3_init(void);
