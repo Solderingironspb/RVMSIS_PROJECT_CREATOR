@@ -1,4 +1,4 @@
-﻿{
+{
     "version": "0.2.0",
     "configurations": [
         {
@@ -16,7 +16,7 @@
             "configFiles": ["C:/dev_tools/CH32_tools/OpenOCD/bin/wch-riscv.cfg"], //Данную строку можно обновить через Makefile:Update JSON files (Experimental)
             "svdFile": "C:/dev_tools/CH32_tools/WCH_svd/RISC-V/CH32V003/NoneOS/CH32V003xx.svd", //Данную строку можно обновить через Makefile:Update JSON files (Experimental)
             "liveWatch": {
-                "enabled": false //Использовать LiveWatch
+                "enabled": true //Использовать LiveWatch
             },
             "preLaunchTask": "Run All Tasks", //Соберем проект перед отладкой
             "runToEntryPoint": "main", //Поставим точку останова в main

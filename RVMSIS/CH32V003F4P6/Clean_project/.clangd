@@ -1,0 +1,26 @@
+CompileFlags:
+  Compiler: C:/dev_tools/CH32_tools/RISC-V_Embedded_GCC12/riscv-none-elf
+  Add:
+    - -isystem
+    - C:/dev_tools/CH32_tools/RISC-V_Embedded_GCC12/riscv-none-elf/include
+    - -isystem
+    - C:/dev_tools/CH32_tools/RISC-V_Embedded_GCC12/riscv-none-elf/include/sys
+    - "--target=riscv32-unknown-elf" 
+    - -D__GNUC__
+    - -Wno-unknown-pragmas 
+    - -include
+    - stdint.h
+    - -include 
+    - Drivers/Inc/ch32v00x.h
+    - -ferror-limit=0
+  Remove:
+    - "-G*"
+    - "-mabi=*"
+    - "-march=rv32ecxw" 
+
+Diagnostics:
+  UnusedIncludes: None
+  Suppress:
+    - pp_including_mainfile_in_preamble
+    - unused-includes
+   
