@@ -1,4 +1,4 @@
-﻿{
+{
     "configurations": [
         {
             "name": "Clean_project", //Данную строку можно обновить через Makefile:Update JSON files (Experimental)
@@ -8,6 +8,8 @@
             "compilerPath": "C:/dev_tools/CH32_tools/RISC-V_Embedded_GCC12/bin/riscv-none-elf-gcc.exe", //Данную строку можно обновить через Makefile:Update JSON files (Experimental)
             "compilerArgs": ["-march=rv32ecxw", "-mabi=ilp32e", "-msmall-data-limit=0", "-msave-restore", "-g3", "-O0", "-std=gnu11", "-ICore/Inc/", "-IDrivers/Inc/", "-fmessage-length=0", "-ffunction-sections", "-fdata-sections", "-fno-common", "-Wunused", "-Wuninitialized", "-MMD", "-MP", "-MF"], //Данную строку можно обновить через Makefile:Update JSON files (Experimental)
             "cStandard": "c11" //Стандартно C11
+            ,
+            "compileCommands": "${workspaceFolder}/compile_commands.json"
         }
     ],
     "version": 4
