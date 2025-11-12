@@ -16,60 +16,58 @@
  *
  */
 #include "main.h"
-#include "stdio.h"
-#include "usb_lib.h"
-#include "usb_desc.h"
 #include "hw_config.h"
-#include "usb_pwr.h"
+#include "stdio.h"
+#include "usb_desc.h"
+#include "usb_lib.h"
 #include "usb_prop.h"
+#include "usb_pwr.h"
 #include "usbd_compatibility_hid.h"
 
-extern uint8_t USBD_ENDPx_DataUp(uint8_t endp, uint8_t *pbuf, uint16_t len);
+
+extern uint8_t USBD_ENDPx_DataUp(uint8_t endp, uint8_t* pbuf, uint16_t len);
 
 /*Структура нашего геймпада. В точности повторяет HID Report Descriptor*/
 typedef struct
     __attribute__((packed)) {
-        int8_t x;
-        int8_t y;
-        int8_t z;
-        int8_t rx;
-        int8_t ry;
-        int8_t rz;
-        uint8_t hat_switch;
-        uint16_t buttons;
-    } USB_Custom_HID_Gamepad;
+    int8_t x;
+    int8_t y;
+    int8_t z;
+    int8_t rx;
+    int8_t ry;
+    int8_t rz;
+    uint8_t hat_switch;
+    uint16_t buttons;
+} USB_Custom_HID_Gamepad;
 
-    USB_Custom_HID_Gamepad Gamepad_data;
+USB_Custom_HID_Gamepad Gamepad_data;
 
-    int main(void) {
-        RVMSIS_Debug_init(); //Настройка дебага
-        RVMSIS_RCC_SystemClock_144MHz(); //Настройка системной частоты
-        RVMSIS_SysTick_Timer_init(); //Настройка системного таймера
-#ifdef DEBUG_USE
-        RVMSIS_USART3_Init();
-#endif
-        RVMSIS_GPIO_init(GPIOC, 13, GPIO_GENERAL_PURPOSE_OUTPUT, GPIO_OUTPUT_PUSH_PULL, GPIO_SPEED_50_MHZ);
-        GPIOC->BSHR = GPIO_BSHR_BS13; //Т.к. диод на отладочной плате имеет инвертированное включение, чтоб его выключить - нужно отправить SET.
+int main(void) {
+    RVMSIS_Debug_init();              // Настройка дебага
+    RVMSIS_RCC_SystemClock_144MHz();  // Настройка системной частоты
+    RVMSIS_SysTick_Timer_init();      // Настройка системного таймера
+    RVMSIS_GPIO_init(GPIOC, 13, GPIO_GENERAL_PURPOSE_OUTPUT, GPIO_OUTPUT_PUSH_PULL, GPIO_SPEED_50_MHZ);
+    GPIOC->BSHR = GPIO_BSHR_BS13;  // Т.к. диод на отладочной плате имеет инвертированное включение, чтоб его выключить - нужно отправить SET.
 
-        Set_USBConfig();
-        USB_Init();
-        USB_Interrupts_Config();
+    Set_USBConfig();
+    USB_Init();
+    USB_Interrupts_Config();
 
-        while(1) {
-            if( bDeviceState == CONFIGURED ) {
-                GPIOC->BSHR = GPIO_BSHR_BR13; //Если диод загорится - устройство USB сконфигурировалось
-                Gamepad_data.x++;
-                Gamepad_data.y++;
-                Gamepad_data.z++;
-                Gamepad_data.rx++;
-                Gamepad_data.ry++;
-                Gamepad_data.rz++;
-                Gamepad_data.hat_switch++;
-                Gamepad_data.buttons++;
-                if (Gamepad_data.buttons > 0x7FF) {
-                    Gamepad_data.buttons = 0;
-                }
-                USBD_ENDPx_DataUp( ENDP2, (uint8_t*)&Gamepad_data, sizeof (Gamepad_data)); //Отправим в буфер значения кнопок геймпада.
+    while (1) {
+        if (bDeviceState == CONFIGURED) {
+            GPIOC->BSHR = GPIO_BSHR_BR13;  // Если диод загорится - устройство USB сконфигурировалось
+            Gamepad_data.x++;
+            Gamepad_data.y++;
+            Gamepad_data.z++;
+            Gamepad_data.rx++;
+            Gamepad_data.ry++;
+            Gamepad_data.rz++;
+            Gamepad_data.hat_switch++;
+            Gamepad_data.buttons++;
+            if (Gamepad_data.buttons > 0x7FF) {
+                Gamepad_data.buttons = 0;
             }
+            USBD_ENDPx_DataUp(ENDP2, (uint8_t*)&Gamepad_data, sizeof(Gamepad_data));  // Отправим в буфер значения кнопок геймпада.
         }
     }
+}

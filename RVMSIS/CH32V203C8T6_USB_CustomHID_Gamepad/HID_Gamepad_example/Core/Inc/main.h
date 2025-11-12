@@ -10,6 +10,6 @@
 extern "C" {
 #endif
 
-#define DEBUG_USE   //§ª§ã§á§à§Ý§î§Ù§à§Ó§Ñ§ä§î DEBUG §á§à USART
+//#define DEBUG_USE   
 
 #endif /* INC_MAIN_H_ */
