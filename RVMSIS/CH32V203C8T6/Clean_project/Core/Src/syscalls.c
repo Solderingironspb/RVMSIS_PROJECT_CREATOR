@@ -2,7 +2,7 @@
 #include "string.h"
 #include "stdio.h"
 
-#define DEBUG_USE_USART_NUM             3 //������ݧ�٧�ӧѧ�� USART3 �էݧ� ���ݧѧէܧ�
+#define DEBUG_USE_USART_NUM             3 //Использовать USART3 для вывода информации через printf
 
 #define PRINT(format, ...)    printf(format, ##__VA_ARGS__)
 
