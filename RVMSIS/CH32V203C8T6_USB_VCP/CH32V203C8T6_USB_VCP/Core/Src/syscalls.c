@@ -2,7 +2,7 @@
 #include "string.h"
 #include "stdio.h"
 
-#define DEBUG_USE_USART_NUM             3 //§ª§ã§á§à§Ý§î§Ù§à§Ó§Ñ§ä§î USART3 §Õ§Ý§ñ §à§ä§Ý§Ñ§Õ§Ü§Ú
+#define DEBUG_USE_USART_NUM             3 
 
 #define PRINT(format, ...)    printf(format, ##__VA_ARGS__)
 

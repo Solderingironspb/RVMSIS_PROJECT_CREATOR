@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "Clean_project", //Данную строку можно обновить через Makefile:Update JSON files (Experimental)
+            "includePath": ["${workspaceFolder}/Drivers/inc//**", "${workspaceFolder}/Core/Inc//**", "${workspaceFolder}/USB_DEVICE/Inc//**"], //Данную строку можно обновить через Makefile:Update JSON files (Experimental)
+            "defines": [], //Данную строку можно обновить через Makefile:Update JSON files (Experimental)
+            "intelliSenseMode": "gcc-arm", //Стандартно "gcc-arm"
+            "compilerPath": "C:/dev_tools/CH32_tools/RISC-V_Embedded_GCC12/bin/riscv-none-elf-gcc.exe", //Данную строку можно обновить через Makefile:Update JSON files (Experimental)
+            "compilerArgs": ["-march=rv32imacxw", "-mabi=ilp32", "-msmall-data-limit=8", "-msave-restore", "-g3", "-O0", "-std=gnu11", "-IDrivers/inc/", "-ICore/Inc/", "-IUSB_DEVICE/Inc/", "-fmessage-length=0", "-ffunction-sections", "-fdata-sections", "-fno-common", "-Wunused", "-Wuninitialized", "-MMD", "-MP", "-MF"], //Данную строку можно обновить через Makefile:Update JSON files (Experimental)
+            "cStandard": "c11" //Стандартно C11
+            ,
+            "compileCommands": "${workspaceFolder}/compile_commands.json"
+        }
+    ],
+    "version": 4
+}
