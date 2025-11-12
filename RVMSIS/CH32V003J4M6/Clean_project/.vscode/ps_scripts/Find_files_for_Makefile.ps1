@@ -1,9 +1,29 @@
-Write-Host "Find files for Makefile v1.0" -ForegroundColor White
+#   Find files for Makefile v1.1
+#   Автор: Волков Олег
+#   Дата создания скрипта: 05.10.2025
+#   ВАЖНО: Работает под PowerShell (Core, 7+)
+#   Для установки в Windows откройте powershell и введите: winget install Microsoft.Powershell 
+#   Для установки в Linux откройте konsole (на примере Debian 13) и введите: sudo snap install powershell --classic
+#   GitHub: https://github.com/Solderingironspb
+#   Группа Вконтакте: https://vk.com/solderingiron.stm32
+#   YouTube: https://www.youtube.com/channel/UCzZKTNVpcMSALU57G1THoVw
+#   RuTube: https://rutube.ru/channel/36234184/
+#   Яндекс Дзен: https://dzen.ru/id/622208eed2eb4c6d0cd16749
+
+Write-Host "Find files for Makefile v1.1" -ForegroundColor White
 Write-Host "Autor: Volkov Oleg" -ForegroundColor White
 Write-Host ""
 
-## Укажите путь к директории, в которой нужно искать файлы
-$directoryPath = $PSScriptRoot
+# Укажите путь к директории, в которой нужно искать файлы
+$directoryPath = (Get-Item (Join-Path $PSScriptRoot "..\..")).FullName
+
+# Проверка существования директории
+if (Test-Path $directoryPath) {
+    Write-Host "Поиск файлов в директории: $directoryPath"
+    # Дальнейший код для поиска файлов
+} else {
+    Write-Host "Директория не найдена: $directoryPath" -ForegroundColor Red
+}
 
 # Находим все файлы с расширением .c в указанной директории и её поддиректориях
 $cFiles = Get-ChildItem -Path $directoryPath -Recurse -Filter *.c
@@ -109,4 +129,5 @@ foreach ($file in $ldFiles) {
     }
 }
 
-Write-Host ""
+#Write-Host ""
+#Read-Host
