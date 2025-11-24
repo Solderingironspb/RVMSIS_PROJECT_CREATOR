@@ -1,9 +1,17 @@
 @echo off
+net session >nul 2>&1
+if %errorLevel% neq 0 (
+    echo Running a script as an administrator...
+    PowerShell -Command "Start-Process cmd -ArgumentList '/c %0' -Verb RunAs"
+    exit /b
+)
+
 echo CH32V003A4M6: new project for RVMSIS	
-cd C:\RVMSIS\CH32V003A4M6
+set "SCRIPT_DIR=%~dp0"
+cd /d "%SCRIPT_DIR%"
 set /p name="Enter project name:"
 md %name%
 xcopy /y /o /e /d "Clean_project" %name%
 cd %name%
-Powershell.exe -executionpolicy remotesigned -File "C:\RVMSIS\CH32V003A4M6\script.ps1" %name%
-explorer.exe C:\RVMSIS\CH32V003A4M6
+Powershell.exe -executionpolicy bypass -File "%SCRIPT_DIR%\script.ps1" %name%
+explorer.exe "%SCRIPT_DIR%"
