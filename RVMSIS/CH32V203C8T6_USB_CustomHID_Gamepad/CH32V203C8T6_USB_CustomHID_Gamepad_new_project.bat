@@ -11,7 +11,7 @@ set "SCRIPT_DIR=%~dp0"
 cd /d "%SCRIPT_DIR%"
 set /p name="Enter project name:"
 md %name%
-xcopy /y /o /e /d "Clean_project" %name%
+xcopy /y /o /e /d "HID_Gamepad_example" %name%
 cd %name%
 Powershell.exe -executionpolicy bypass -File "%SCRIPT_DIR%\script.ps1" %name%
 explorer.exe "%SCRIPT_DIR%"

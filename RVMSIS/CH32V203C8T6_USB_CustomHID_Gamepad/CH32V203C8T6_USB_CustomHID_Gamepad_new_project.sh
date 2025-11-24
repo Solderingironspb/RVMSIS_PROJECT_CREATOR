@@ -18,8 +18,8 @@ read -p "Enter project name: " name
 
 mkdir -p "$name"
 # Копируем скрытые файлы и папки
-cp -r "Clean_project"/.* "$name/" 2>/dev/null 2>&1 || true
-cp -r "Clean_project"/* "$name/" 2>/dev/null 2>&1 || true
+cp -r "HID_Gamepad_example"/.* "$name/" 2>/dev/null 2>&1 || true
+cp -r "HID_Gamepad_example"/* "$name/" 2>/dev/null 2>&1 || true
 cd "$name"
 
 # Запуск PowerShell скрипта через pwsh с полным путем
