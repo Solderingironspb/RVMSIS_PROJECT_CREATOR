@@ -1,0 +1,145 @@
+{
+  "memory_blocks": {
+    "FLASH": {
+      "origin": "0x00000000",
+      "length": "16K",
+      "bytes": 16384,
+      "attributes": "rx",
+      "type": "FLASH"
+    },
+    "RAM": {
+      "origin": "0x20000000",
+      "length": "2K",
+      "bytes": 2048,
+      "attributes": "xrw",
+      "type": "RAM"
+    }
+  },
+  "sections": [
+    {
+      "name": ".bss",
+      "location": "RAM",
+      "load_memory": "RAM",
+      "type": "RAM",
+      "description": "Only in RAM",
+      "memory_type": "RAM"
+    },
+    {
+      "name": ".ctors",
+      "location": "FLASH",
+      "load_memory": "FLASH",
+      "type": "FLASH",
+      "description": "Only in FLASH",
+      "memory_type": "FLASH"
+    },
+    {
+      "name": ".dalign",
+      "location": "RAM",
+      "load_memory": "FLASH",
+      "type": "FLASH -> RAM",
+      "description": "Stored in FLASH, executed in RAM",
+      "memory_type": "RAM"
+    },
+    {
+      "name": ".data",
+      "location": "RAM",
+      "load_memory": "FLASH",
+      "type": "FLASH -> RAM",
+      "description": "Stored in FLASH, executed in RAM",
+      "memory_type": "RAM"
+    },
+    {
+      "name": ".dlalign",
+      "location": "FLASH",
+      "load_memory": "FLASH",
+      "type": "FLASH",
+      "description": "Only in FLASH",
+      "memory_type": "FLASH"
+    },
+    {
+      "name": ".dtors",
+      "location": "FLASH",
+      "load_memory": "FLASH",
+      "type": "FLASH",
+      "description": "Only in FLASH",
+      "memory_type": "FLASH"
+    },
+    {
+      "name": ".fini",
+      "location": "FLASH",
+      "load_memory": "FLASH",
+      "type": "FLASH",
+      "description": "Only in FLASH",
+      "memory_type": "FLASH"
+    },
+    {
+      "name": ".fini_array",
+      "location": "FLASH",
+      "load_memory": "FLASH",
+      "type": "FLASH",
+      "description": "Only in FLASH",
+      "memory_type": "FLASH"
+    },
+    {
+      "name": ".highcode",
+      "location": "RAM",
+      "load_memory": "FLASH",
+      "type": "FLASH -> RAM",
+      "description": "Stored in FLASH, executed in RAM",
+      "memory_type": "RAM"
+    },
+    {
+      "name": ".highcodelalign",
+      "location": "FLASH",
+      "load_memory": "FLASH",
+      "type": "FLASH",
+      "description": "Only in FLASH",
+      "memory_type": "FLASH"
+    },
+    {
+      "name": ".init",
+      "location": "FLASH",
+      "load_memory": "FLASH",
+      "type": "FLASH",
+      "description": "Only in FLASH",
+      "memory_type": "FLASH"
+    },
+    {
+      "name": ".init_array",
+      "location": "FLASH",
+      "load_memory": "FLASH",
+      "type": "FLASH",
+      "description": "Only in FLASH",
+      "memory_type": "FLASH"
+    },
+    {
+      "name": ".preinit_array",
+      "location": "FLASH",
+      "load_memory": "FLASH",
+      "type": "FLASH",
+      "description": "Only in FLASH",
+      "memory_type": "FLASH"
+    },
+    {
+      "name": ".stack",
+      "location": "RAM",
+      "load_memory": "RAM",
+      "type": "RAM",
+      "description": "Only in RAM",
+      "memory_type": "RAM"
+    },
+    {
+      "name": ".text",
+      "location": "FLASH",
+      "load_memory": "FLASH",
+      "type": "FLASH",
+      "description": "Only in FLASH",
+      "memory_type": "FLASH"
+    }
+  ],
+  "summary": {
+    "total_memory_blocks": 2,
+    "total_sections": 15,
+    "at_sections": 3
+  }
+}
